@@ -1,0 +1,237 @@
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix fibo-fbc-fi-fi: <https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/> .
+@prefix gufo: <http://purl.org/nemo/gufo#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix pav: <http://purl.org/pav/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix swrl: <http://www.w3.org/2003/11/swrl#> .
+@prefix tempo: <http://purl.org/tempo/> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix xqo: <http://schema.ga-group.nl/xqo/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+
+#################################################################
+# Ontology header
+#################################################################
+
+xqo:
+	a	owl:Ontology ;
+	dc:abstract	"""xqo is a lightweight ontology based on fibo's derivatives ontology that captures implementation (i.e. exchange) specific details."""@en ;
+	dc:creator	"Sebastian Freundt"^^xsd:string ;
+	dc:description	"""Overview
+--------
+"""@en ;
+	dcat:downloadURL	<http://schema.ga-group.nl/xqo/rdf> , <http://schema.ga-group.nl/xqo/ttl> ;
+	dct:creator	<https://orcid.org/0000-0002-7352-2825> ;
+	dct:format	"text/turtle"^^xsd:string ;
+	dct:issued	"2026-10-01T05:00:00Z"^^xsd:dateTime ;
+	dct:language	"en"^^xsd:language ;
+	dct:license	<https://creativecommons.org/licenses/by-sa/4.0/> ;
+	dct:modified	"2026-10-01T05:00:00Z"^^xsd:dateTime ;
+	dct:publisher	<https://orcid.org/0000-0002-7352-2825> ;
+	dct:title	"xqo -- exchange quirks ontology" ;
+	owl:imports	fibo-fbc-fi-fi: ;
+	owl:versionIRI	<http://schema.ga-group.nl/xqo/0.1/> ;
+	owl:versionInfo	"0.1"^^xsd:string ;
+	rdfs:label	"xqo"@en ;
+	rdfs:seeAlso	<https://github.com/ga-group/xqo> ;
+	vann:preferredNamespacePrefix	"xqo"^^xsd:string ;
+	vann:preferredNamespaceUri	"http://schema.ga-group.nl/xqo/" .
+
+#################################################################
+# Classes
+#################################################################
+
+xqo:FuturesVariant
+	a	owl:Class ;
+	owl:equivalentClass	[
+		a	owl:Restriction ;
+		owl:onProperty	xqo:variantOf ;
+		owl:minCardinality	"1"^^xsd:nonNegativeInteger
+	] ;
+	rdfs:comment	"A variant of a futures contract that inherits all of the economic attributes of the bare contract and only differs in operational ways."@en ;
+	rdfs:label	"future variant"@en ;
+	rdfs:subClassOf	fibo-fbc-fi-fi:Future .
+
+xqo:ExecutionModality
+	a	owl:Class ;
+	rdfs:comment	"A benchmark‑priced or rule‑driven mode by which a futures contract is entered or exited, where the execution price is determined not by the continuous limit order book but by a reference benchmark, auction process, or designated price‑formation rule."@en ;
+	rdfs:label	"execution modality"@en ;
+	rdfs:subClassOf	gufo:Mode .
+
+xqo:BTIC
+	a	owl:Class ;
+	a	xqo:ExecutionModality , xqo:BTIC ;
+	rdfs:comment	"Modality in which a futures trade is priced relative to the official closing value of an underlying (equity) index, using a negotiated basis that is applied to the index close to determine the final futures execution price."@en ;
+	rdfs:label	"BTIC"@en .
+
+xqo:TACO
+	a	owl:Class ;
+	a	xqo:ExecutionModality , xqo:TACO ;
+	rdfs:comment	"Modality in which a futures trade is priced relative to the official opening value of the underlying (equity) index, using a negotiated basis applied to the cash‑market open to determine the final futures execution price."@en ;
+	rdfs:label	"TACO"@en .
+
+xqo:TAL
+	a	owl:Class ;
+	a	xqo:ExecutionModality , xqo:TAL ;
+	rdfs:comment	"Modality in which a futures trade is priced at the last traded price prior to the TAL execution window."@en ;
+	rdfs:label	"TAL"@en .
+
+xqo:TAM
+	a	owl:Class ;
+	a	xqo:ExecutionModality , xqo:TAM ;
+	rdfs:comment	"Modality in which a futures trade is priced at a session marker."@en ;
+	rdfs:label	"TAM"@en .
+
+xqo:TAMM
+	a	owl:Class ;
+	a	xqo:ExecutionModality , xqo:TAMM ;
+	rdfs:comment	"Modality in which a futures trade is priced at a morning session's marker."@en ;
+	rdfs:label	"TAMM"@en .
+
+xqo:TAS
+	a	owl:Class ;
+	a	xqo:ExecutionModality , xqo:TAS ;
+	rdfs:comment	"Modality in which a futures trade is priced at the official settlement price of the contract, optionally adjusted by a negotiated tick offset."@en ;
+	rdfs:label	"TAS"@en .
+
+xqo:TMAC
+	a	owl:Class ;
+	a	xqo:ExecutionModality , xqo:TMAC ;
+	rdfs:comment	"Modality in which a futures trade is priced at the closing‑auction marker."@en ;
+	rdfs:label	"TMAC"@en .
+
+
+xqo:BTICVariant
+	a	owl:Class ;
+	owl:equivalentClass	[
+		a	owl:Restriction ;
+		owl:onProperty	xqo:executedVia ;
+		owl:someValuesFrom	xqo:BTIC ;
+	] ;
+	rdfs:comment	"Operational contract variant that uses the basis-trade-at-index-close execution modality."@en ;
+	rdfs:label	"BTIC variant"@en ;
+	rdfs:subClassOf	xqo:FuturesVariant .
+
+xqo:TACOVariant
+	a	owl:Class ;
+	owl:equivalentClass	[
+		a	owl:Restriction ;
+		owl:onProperty	xqo:executedVia ;
+		owl:someValuesFrom	xqo:TACO ;
+	] ;
+	rdfs:comment	"Operational contract variant that uses the trade-at-cash-open execution modality."@en ;
+	rdfs:label	"TACO variant"@en ;
+	rdfs:subClassOf	xqo:FuturesVariant .
+
+xqo:TALVariant
+	a	owl:Class ;
+	owl:equivalentClass	[
+		a	owl:Restriction ;
+		owl:onProperty	xqo:executedVia ;
+		owl:someValuesFrom	xqo:TAL ;
+	] ;
+	rdfs:comment	"Operational contract variant that uses the trade-at-last execution modality."@en ;
+	rdfs:label	"TAL variant"@en ;
+	rdfs:subClassOf	xqo:FuturesVariant .
+
+xqo:TAMVariant
+	a	owl:Class ;
+	owl:equivalentClass	[
+		a	owl:Restriction ;
+		owl:onProperty	xqo:executedVia ;
+		owl:someValuesFrom	xqo:TAM ;
+	] ;
+	rdfs:comment	"Operational contract variant that uses the trade-at-marker execution modality."@en ;
+	rdfs:label	"TAM variant"@en ;
+	rdfs:subClassOf	xqo:FuturesVariant .
+
+xqo:TAMMVariant
+	a	owl:Class ;
+	owl:equivalentClass	[
+		a	owl:Restriction ;
+		owl:onProperty	xqo:executedVia ;
+		owl:someValuesFrom	xqo:TAMM ;
+	] ;
+	rdfs:comment	"Operational contract variant that used the trade-at-morning-marker execution modality."@en ;
+	rdfs:label	"TAMM variant"@en ;
+	rdfs:subClassOf	xqo:FuturesVariant .
+
+xqo:TASVariant
+	a	owl:Class ;
+	owl:equivalentClass	[
+		a	owl:Restriction ;
+		owl:onProperty	xqo:executedVia ;
+		owl:someValuesFrom	xqo:TAS ;
+	] ;
+	rdfs:comment	"Operational contract variant that uses the trade-at-settlement execution modality."@en ;
+	rdfs:label	"TAS variant"@en ;
+	rdfs:subClassOf	xqo:FuturesVariant .
+
+xqo:TMACVariant
+	a	owl:Class ;
+	owl:equivalentClass	[
+		a	owl:Restriction ;
+		owl:onProperty	xqo:executedVia ;
+		owl:someValuesFrom	xqo:TMAC ;
+	] ;
+	rdfs:comment	"Operational contract variant that uses the trade-marker-at-close execution modality."@en ;
+	rdfs:label	"TMAC variant"@en ;
+	rdfs:subClassOf	xqo:FuturesVariant .
+
+#################################################################
+# Object Properties
+#################################################################
+
+xqo:variantOf
+	a	owl:ObjectProperty ;
+	rdfs:comment	"Links a futures variant to its outright contract."@en ;
+	rdfs:domain	xqo:FuturesVariant ;
+	rdfs:label	"variant of"@en ;
+	rdfs:subPropertyOf	gufo:isDerivedFrom .
+
+xqo:executedVia
+	a	owl:ObjectProperty ;
+	rdfs:comment	"Links a futures variant to the execution modality that is used to enter or exit a position."@en ;
+	rdfs:domain	xqo:FuturesVariant ;
+	rdfs:range	xqo:ExecutionModality ;
+	rdfs:label	"executed via"@en ;
+	rdfs:subPropertyOf	gufo:participatesIn .
+
+
+#################################################################
+# Datatype Properties
+#################################################################
+
+
+#################################################################
+# Examples
+#################################################################
+
+<http://example.com/cme/CLZ2>
+	a	fibo-fbc-fi-fi:Future ;
+	rdfs:label	"CLZ2" .
+
+<http://example.com/cme/CLTZ2>
+	a	xqo:TASVariant ;
+	rdfs:label	"CLTZ2" ;
+	xqo:variantOf	<http://example.com/cme/CLZ2> .
+
+<http://example.com/cme/CLmmZ2>
+	rdfs:label	"CLTZ2" ;
+	xqo:executedVia	xqo:TAMM ;
+	xqo:variantOf	<http://example.com/cme/CLZ2> .
+
+xqo:CME_TAMM
+	a	xqo:TAMM .
+
+<http://example.com/cme/DAmmZ2>
+	rdfs:label	"DAmmZ2" ;
+	xqo:executedVia	xqo:CME_TAMM ;
+	xqo:variantOf	<http://example.com/cme/CLZ2> .
