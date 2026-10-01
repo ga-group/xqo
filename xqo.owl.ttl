@@ -68,44 +68,61 @@ xqo:ExecutionModality
 xqo:BTIC
 	a	owl:Class ;
 	a	xqo:ExecutionModality , xqo:BTIC ;
-	rdfs:comment	"Modality in which a futures trade is priced relative to the official closing value of an underlying (equity) index, using a negotiated basis that is applied to the index close to determine the final futures execution price."@en ;
-	rdfs:label	"BTIC"@en .
+	rdfs:comment	"Modality in which a futures trade is priced relative to the official closing value of an underlying (equity) index, using a negotiated basis applied to the index close to determine the final futures execution price."@en ;
+	rdfs:label	"BTIC"@en ;
+	skos:editorialNote	"type-punning is used to allow users to either generically reference the execution modality, or to create their own subclasses, possibly encoding further exchange-specific details"@en .
 
 xqo:TACO
 	a	owl:Class ;
 	a	xqo:ExecutionModality , xqo:TACO ;
 	rdfs:comment	"Modality in which a futures trade is priced relative to the official opening value of the underlying (equity) index, using a negotiated basis applied to the cash‑market open to determine the final futures execution price."@en ;
-	rdfs:label	"TACO"@en .
+	rdfs:label	"TACO"@en ;
+	skos:editorialNote	"type-punning is used to allow users to either generically reference the execution modality, or to create their own subclasses, possibly encoding further exchange-specific details"@en .
+
+xqo:TAIC
+	a	owl:Class ;
+	a	xqo:ExecutionModality , xqo:TAIC ;
+	rdfs:comment	"Modality in which a futures trade is priced relative to the official closing value of the underlying index without a basis applied to the index close to determine the final futures execution price."@en ;
+	rdfs:label	"TAIC"@en ;
+	skos:editorialNote	"type-punning is used to allow users to either generically reference the execution modality, or to create their own subclasses, possibly encoding further exchange-specific details"@en .
 
 xqo:TAL
 	a	owl:Class ;
 	a	xqo:ExecutionModality , xqo:TAL ;
 	rdfs:comment	"Modality in which a futures trade is priced at the last traded price prior to the TAL execution window."@en ;
-	rdfs:label	"TAL"@en .
+	rdfs:label	"TAL"@en ;
+	skos:editorialNote	"type-punning is used to allow users to either generically reference the execution modality, or to create their own subclasses, possibly encoding further exchange-specific details"@en .
 
 xqo:TAM
 	a	owl:Class ;
 	a	xqo:ExecutionModality , xqo:TAM ;
 	rdfs:comment	"Modality in which a futures trade is priced at a session marker."@en ;
-	rdfs:label	"TAM"@en .
+	rdfs:label	"TAM"@en ;
+	skos:editorialNote	"type-punning is used to allow users to either generically reference the execution modality, or to create their own subclasses, possibly encoding further exchange-specific details"@en ;
+	skos:scopeNote	"""It is either unambigious which marker is referenced, for example if the trading venue only publishes a single session marker, or TAM markers are indistinguishable, and the combination of base contract plus marker type is not unique.
+
+If one needs to uphold the uniqueness of base contract and marker type, or distinguish several TAM markers specifically they should be introduced as subclasses of xqo:TAM."""@en .
 
 xqo:TAMM
 	a	owl:Class ;
 	a	xqo:ExecutionModality , xqo:TAMM ;
 	rdfs:comment	"Modality in which a futures trade is priced at a morning session's marker."@en ;
-	rdfs:label	"TAMM"@en .
+	rdfs:label	"TAMM"@en ;
+	skos:editorialNote	"type-punning is used to allow users to either generically reference the execution modality, or to create their own subclasses, possibly encoding further exchange-specific details"@en .
 
 xqo:TAS
 	a	owl:Class ;
 	a	xqo:ExecutionModality , xqo:TAS ;
 	rdfs:comment	"Modality in which a futures trade is priced at the official settlement price of the contract, optionally adjusted by a negotiated tick offset."@en ;
-	rdfs:label	"TAS"@en .
+	rdfs:label	"TAS"@en ;
+	skos:editorialNote	"type-punning is used to allow users to either generically reference the execution modality, or to create their own subclasses, possibly encoding further exchange-specific details"@en .
 
 xqo:TMAC
 	a	owl:Class ;
 	a	xqo:ExecutionModality , xqo:TMAC ;
 	rdfs:comment	"Modality in which a futures trade is priced at the closing‑auction marker."@en ;
-	rdfs:label	"TMAC"@en .
+	rdfs:label	"TMAC"@en ;
+	skos:editorialNote	"type-punning is used to allow users to either generically reference the execution modality, or to create their own subclasses, possibly encoding further exchange-specific details"@en .
 
 
 xqo:BTICVariant
@@ -128,6 +145,17 @@ xqo:TACOVariant
 	] ;
 	rdfs:comment	"Operational contract variant that uses the trade-at-cash-open execution modality."@en ;
 	rdfs:label	"TACO variant"@en ;
+	rdfs:subClassOf	xqo:FuturesVariant .
+
+xqo:TAICVariant
+	a	owl:Class ;
+	owl:equivalentClass	[
+		a	owl:Restriction ;
+		owl:onProperty	xqo:executedVia ;
+		owl:someValuesFrom	xqo:TAIC ;
+	] ;
+	rdfs:comment	"Operational contract variant that uses the trade-at-index-close execution modality."@en ;
+	rdfs:label	"TAIC variant"@en ;
 	rdfs:subClassOf	xqo:FuturesVariant .
 
 xqo:TALVariant
@@ -199,7 +227,6 @@ xqo:variantOf
 xqo:executedVia
 	a	owl:ObjectProperty ;
 	rdfs:comment	"Links a futures variant to the execution modality that is used to enter or exit a position."@en ;
-	rdfs:domain	xqo:FuturesVariant ;
 	rdfs:range	xqo:ExecutionModality ;
 	rdfs:label	"executed via"@en ;
 	rdfs:subPropertyOf	gufo:participatesIn .
@@ -232,6 +259,12 @@ xqo:CME_TAMM
 	a	xqo:TAMM .
 
 <http://example.com/cme/DAmmZ2>
+	rdfs:label	"DAmmZ2" ;
+	xqo:executedVia	xqo:CME_TAMM ;
+	xqo:variantOf	<http://example.com/cme/CLZ2> .
+
+<http://example.com/cme/DAmmH3>
+	a	xqo:FuturesVariant ;
 	rdfs:label	"DAmmZ2" ;
 	xqo:executedVia	xqo:CME_TAMM ;
 	xqo:variantOf	<http://example.com/cme/CLZ2> .
