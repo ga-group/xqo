@@ -46,13 +46,17 @@ modalities a variant is introduced, itself a subclass of
 `xqo:FuturesVariant` which is inferred if a resource states
 
     R xqo:executedVia xqo:<Modality> .
+
 =>
+
     R a xqo:<Modality>Variant .
 
 and, conversely:
 
     R a xqo:<Modality>Variant .
+
 =>
+
     R xqo:executedVia [
             a xqo:<Modality> 
     ] .
