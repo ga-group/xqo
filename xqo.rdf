@@ -28,6 +28,11 @@
     <xqo:variantOf rdf:resource="http://example.com/cme/CLZ2"/>
     <rdfs:label>CLTZ2</rdfs:label>
   </rdf:Description>
+  <xqo:FuturesVariant rdf:about="http://example.com/cme/DAmmH3">
+    <xqo:executedVia rdf:resource="http://schema.ga-group.nl/xqo/CME_TAMM"/>
+    <xqo:variantOf rdf:resource="http://example.com/cme/CLZ2"/>
+    <rdfs:label>DAmmZ2</rdfs:label>
+  </xqo:FuturesVariant>
   <rdf:Description rdf:about="http://example.com/cme/DAmmZ2">
     <xqo:executedVia rdf:resource="http://schema.ga-group.nl/xqo/CME_TAMM"/>
     <xqo:variantOf rdf:resource="http://example.com/cme/CLZ2"/>
@@ -38,6 +43,68 @@
     <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sebastian Freundt</dc:creator>
     <dc:description xml:lang="en">Overview
 --------
+The exchange quirks ontology (xqo) provides vocabulary to classify and
+relate certain operational contract variants of exchange-listed
+derivatives.
+
+
+Why?
+----
+
+FIBO's official ontology (much like FIX) stop at exchange-specific
+implementations, and instead refer to the possibility of extending the
+standard unofficially as needed.
+
+Marker trading, in this case, calls for such an extension.
+Implemented as order type, or, more precise, as *execution modality*,
+marker trading bears no price formation burden, instead it uses
+(consumes) a price formed elsewhere.  As such, entry to the market
+without contributing to price discovery mandates an exit from the
+market without price discovery which now implies that such exposure
+must be tracked separately from the outright contract.  Exchanges
+solve this tracking problem via *operational products*: They clone the
+outright contract to create a variant that shares all the economic
+attributes of the "underlying" contract but allows for separate
+book-keeping of open interest.
+
+With this trick, future commission merchants (FCMs) need not change
+infrastructure on their end as the contract variant simply looks like
+another contract to them.  Data vendors, alas, are also oblivious to
+the cloning: Other than mentioning the "underlying" contract in the
+contract description variants look and behave as separate resources.
+
+
+How?
+----
+
+A class, `xqo:ExecutionModality` is introduced, and the most prominent
+modalities are identified and introduced as classes in their own
+right.  Moreover, a class `xqo:FuturesVariant` is introduced, itself a
+subclass of `fibo-fbc-fi-fi:Future` to capture the operational futures
+contract as a variant of FIBO's future.  Then for each of the
+modalities a variant is introduced, itself a subclass of
+`xqo:FuturesVariant` which is inferred if a resource states
+
+    R xqo:executedVia xqo:&lt;Modality&gt; .
+=&gt;
+    R a xqo:&lt;Modality&gt;Variant .
+
+and, conversely:
+
+    R a xqo:&lt;Modality&gt;Variant .
+=&gt;
+    R xqo:executedVia [
+            a xqo:&lt;Modality&gt; 
+    ] .
+
+
+Where?
+------
+
+The [official github repository](https://github.com/ga-group/xqo/) contains the
+published ontology.
+
+The project's canonical home is &lt;http://schema.ga-group.nl/xqo/&gt;.
 </dc:description>
     <dct:creator rdf:resource="https://orcid.org/0000-0002-7352-2825"/>
     <dct:format rdf:datatype="http://www.w3.org/2001/XMLSchema#string">text/turtle</dct:format>
@@ -60,8 +127,9 @@
   <owl:Class rdf:about="http://schema.ga-group.nl/xqo/BTIC">
     <rdf:type rdf:resource="http://schema.ga-group.nl/xqo/BTIC"/>
     <rdf:type rdf:resource="http://schema.ga-group.nl/xqo/ExecutionModality"/>
-    <rdfs:comment xml:lang="en">Modality in which a futures trade is priced relative to the official closing value of an underlying (equity) index, using a negotiated basis that is applied to the index close to determine the final futures execution price.</rdfs:comment>
+    <rdfs:comment xml:lang="en">Modality in which a futures trade is priced relative to the official closing value of an underlying (equity) index, using a negotiated basis applied to the index close to determine the final futures execution price.</rdfs:comment>
     <rdfs:label xml:lang="en">BTIC</rdfs:label>
+    <skos:editorialNote xml:lang="en">type-punning is used to allow users to either generically reference the execution modality, or to create their own subclasses, possibly encoding further exchange-specific details</skos:editorialNote>
   </owl:Class>
   <owl:Class rdf:about="http://schema.ga-group.nl/xqo/BTICVariant">
     <rdfs:comment xml:lang="en">Operational contract variant that uses the basis-trade-at-index-close execution modality.</rdfs:comment>
@@ -96,6 +164,7 @@
     <rdf:type rdf:resource="http://schema.ga-group.nl/xqo/TACO"/>
     <rdfs:comment xml:lang="en">Modality in which a futures trade is priced relative to the official opening value of the underlying (equity) index, using a negotiated basis applied to the cash‑market open to determine the final futures execution price.</rdfs:comment>
     <rdfs:label xml:lang="en">TACO</rdfs:label>
+    <skos:editorialNote xml:lang="en">type-punning is used to allow users to either generically reference the execution modality, or to create their own subclasses, possibly encoding further exchange-specific details</skos:editorialNote>
   </owl:Class>
   <owl:Class rdf:about="http://schema.ga-group.nl/xqo/TACOVariant">
     <rdfs:comment xml:lang="en">Operational contract variant that uses the trade-at-cash-open execution modality.</rdfs:comment>
@@ -108,11 +177,30 @@
       </owl:Restriction>
     </owl:equivalentClass>
   </owl:Class>
+  <owl:Class rdf:about="http://schema.ga-group.nl/xqo/TAIC">
+    <rdf:type rdf:resource="http://schema.ga-group.nl/xqo/ExecutionModality"/>
+    <rdf:type rdf:resource="http://schema.ga-group.nl/xqo/TAIC"/>
+    <rdfs:comment xml:lang="en">Modality in which a futures trade is priced relative to the official closing value of the underlying index without a basis applied to the index close to determine the final futures execution price.</rdfs:comment>
+    <rdfs:label xml:lang="en">TAIC</rdfs:label>
+    <skos:editorialNote xml:lang="en">type-punning is used to allow users to either generically reference the execution modality, or to create their own subclasses, possibly encoding further exchange-specific details</skos:editorialNote>
+  </owl:Class>
+  <owl:Class rdf:about="http://schema.ga-group.nl/xqo/TAICVariant">
+    <rdfs:comment xml:lang="en">Operational contract variant that uses the trade-at-index-close execution modality.</rdfs:comment>
+    <rdfs:label xml:lang="en">TAIC variant</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://schema.ga-group.nl/xqo/FuturesVariant"/>
+    <owl:equivalentClass>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="http://schema.ga-group.nl/xqo/executedVia"/>
+        <owl:someValuesFrom rdf:resource="http://schema.ga-group.nl/xqo/TAIC"/>
+      </owl:Restriction>
+    </owl:equivalentClass>
+  </owl:Class>
   <owl:Class rdf:about="http://schema.ga-group.nl/xqo/TAL">
     <rdf:type rdf:resource="http://schema.ga-group.nl/xqo/ExecutionModality"/>
     <rdf:type rdf:resource="http://schema.ga-group.nl/xqo/TAL"/>
     <rdfs:comment xml:lang="en">Modality in which a futures trade is priced at the last traded price prior to the TAL execution window.</rdfs:comment>
     <rdfs:label xml:lang="en">TAL</rdfs:label>
+    <skos:editorialNote xml:lang="en">type-punning is used to allow users to either generically reference the execution modality, or to create their own subclasses, possibly encoding further exchange-specific details</skos:editorialNote>
   </owl:Class>
   <owl:Class rdf:about="http://schema.ga-group.nl/xqo/TALVariant">
     <rdfs:comment xml:lang="en">Operational contract variant that uses the trade-at-last execution modality.</rdfs:comment>
@@ -130,12 +218,17 @@
     <rdf:type rdf:resource="http://schema.ga-group.nl/xqo/TAM"/>
     <rdfs:comment xml:lang="en">Modality in which a futures trade is priced at a session marker.</rdfs:comment>
     <rdfs:label xml:lang="en">TAM</rdfs:label>
+    <skos:editorialNote xml:lang="en">type-punning is used to allow users to either generically reference the execution modality, or to create their own subclasses, possibly encoding further exchange-specific details</skos:editorialNote>
+    <skos:scopeNote xml:lang="en">It is either unambigious which marker is referenced, for example if the trading venue only publishes a single session marker, or TAM markers are indistinguishable, and the combination of base contract plus marker type is not unique.
+
+If one needs to uphold the uniqueness of base contract and marker type, or distinguish several TAM markers specifically they should be introduced as subclasses of xqo:TAM.</skos:scopeNote>
   </owl:Class>
   <owl:Class rdf:about="http://schema.ga-group.nl/xqo/TAMM">
     <rdf:type rdf:resource="http://schema.ga-group.nl/xqo/ExecutionModality"/>
     <rdf:type rdf:resource="http://schema.ga-group.nl/xqo/TAMM"/>
     <rdfs:comment xml:lang="en">Modality in which a futures trade is priced at a morning session's marker.</rdfs:comment>
     <rdfs:label xml:lang="en">TAMM</rdfs:label>
+    <skos:editorialNote xml:lang="en">type-punning is used to allow users to either generically reference the execution modality, or to create their own subclasses, possibly encoding further exchange-specific details</skos:editorialNote>
   </owl:Class>
   <owl:Class rdf:about="http://schema.ga-group.nl/xqo/TAMMVariant">
     <rdfs:comment xml:lang="en">Operational contract variant that used the trade-at-morning-marker execution modality.</rdfs:comment>
@@ -164,6 +257,7 @@
     <rdf:type rdf:resource="http://schema.ga-group.nl/xqo/TAS"/>
     <rdfs:comment xml:lang="en">Modality in which a futures trade is priced at the official settlement price of the contract, optionally adjusted by a negotiated tick offset.</rdfs:comment>
     <rdfs:label xml:lang="en">TAS</rdfs:label>
+    <skos:editorialNote xml:lang="en">type-punning is used to allow users to either generically reference the execution modality, or to create their own subclasses, possibly encoding further exchange-specific details</skos:editorialNote>
   </owl:Class>
   <owl:Class rdf:about="http://schema.ga-group.nl/xqo/TASVariant">
     <rdfs:comment xml:lang="en">Operational contract variant that uses the trade-at-settlement execution modality.</rdfs:comment>
@@ -181,6 +275,7 @@
     <rdf:type rdf:resource="http://schema.ga-group.nl/xqo/TMAC"/>
     <rdfs:comment xml:lang="en">Modality in which a futures trade is priced at the closing‑auction marker.</rdfs:comment>
     <rdfs:label xml:lang="en">TMAC</rdfs:label>
+    <skos:editorialNote xml:lang="en">type-punning is used to allow users to either generically reference the execution modality, or to create their own subclasses, possibly encoding further exchange-specific details</skos:editorialNote>
   </owl:Class>
   <owl:Class rdf:about="http://schema.ga-group.nl/xqo/TMACVariant">
     <rdfs:comment xml:lang="en">Operational contract variant that uses the trade-marker-at-close execution modality.</rdfs:comment>
@@ -195,7 +290,6 @@
   </owl:Class>
   <owl:ObjectProperty rdf:about="http://schema.ga-group.nl/xqo/executedVia">
     <rdfs:comment xml:lang="en">Links a futures variant to the execution modality that is used to enter or exit a position.</rdfs:comment>
-    <rdfs:domain rdf:resource="http://schema.ga-group.nl/xqo/FuturesVariant"/>
     <rdfs:label xml:lang="en">executed via</rdfs:label>
     <rdfs:range rdf:resource="http://schema.ga-group.nl/xqo/ExecutionModality"/>
     <rdfs:subPropertyOf rdf:resource="http://purl.org/nemo/gufo#participatesIn"/>

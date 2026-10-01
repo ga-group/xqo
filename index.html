@@ -314,7 +314,7 @@ td {
     "https://schema.org/description": [
       {
         "@language": "en",
-        "@value": "Overview\n--------\n"
+        "@value": "Overview\n--------\nThe exchange quirks ontology (xqo) provides vocabulary to classify and\nrelate certain operational contract variants of exchange-listed\nderivatives.\n\n\nWhy?\n----\n\nFIBO's official ontology (much like FIX) stop at exchange-specific\nimplementations, and instead refer to the possibility of extending the\nstandard unofficially as needed.\n\nMarker trading, in this case, calls for such an extension.\nImplemented as order type, or, more precise, as *execution modality*,\nmarker trading bears no price formation burden, instead it uses\n(consumes) a price formed elsewhere.  As such, entry to the market\nwithout contributing to price discovery mandates an exit from the\nmarket without price discovery which now implies that such exposure\nmust be tracked separately from the outright contract.  Exchanges\nsolve this tracking problem via *operational products*: They clone the\noutright contract to create a variant that shares all the economic\nattributes of the \"underlying\" contract but allows for separate\nbook-keeping of open interest.\n\nWith this trick, future commission merchants (FCMs) need not change\ninfrastructure on their end as the contract variant simply looks like\nanother contract to them.  Data vendors, alas, are also oblivious to\nthe cloning: Other than mentioning the \"underlying\" contract in the\ncontract description variants look and behave as separate resources.\n\n\nHow?\n----\n\nA class, `xqo:ExecutionModality` is introduced, and the most prominent\nmodalities are identified and introduced as classes in their own\nright.  Moreover, a class `xqo:FuturesVariant` is introduced, itself a\nsubclass of `fibo-fbc-fi-fi:Future` to capture the operational futures\ncontract as a variant of FIBO's future.  Then for each of the\nmodalities a variant is introduced, itself a subclass of\n`xqo:FuturesVariant` which is inferred if a resource states\n\n    R xqo:executedVia xqo:<Modality> .\n=>\n    R a xqo:<Modality>Variant .\n\nand, conversely:\n\n    R a xqo:<Modality>Variant .\n=>\n    R xqo:executedVia [\n            a xqo:<Modality> \n    ] .\n\n\nWhere?\n------\n\nThe [official github repository](https://github.com/ga-group/xqo/) contains the\npublished ontology.\n\nThe project's canonical home is <http://schema.ga-group.nl/xqo/>.\n"
       }
     ],
     "https://schema.org/license": [
@@ -442,7 +442,53 @@ td {
             <dt>
               <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
             </dt>
-            <dd><h2>Overview</h2></dd>
+            <dd><h2>Overview</h2>
+<p>The exchange quirks ontology (xqo) provides vocabulary to classify and
+relate certain operational contract variants of exchange-listed
+derivatives.</p>
+<h2>Why?</h2>
+<p>FIBO's official ontology (much like FIX) stop at exchange-specific
+implementations, and instead refer to the possibility of extending the
+standard unofficially as needed.</p>
+<p>Marker trading, in this case, calls for such an extension.
+Implemented as order type, or, more precise, as <em>execution modality</em>,
+marker trading bears no price formation burden, instead it uses
+(consumes) a price formed elsewhere.  As such, entry to the market
+without contributing to price discovery mandates an exit from the
+market without price discovery which now implies that such exposure
+must be tracked separately from the outright contract.  Exchanges
+solve this tracking problem via <em>operational products</em>: They clone the
+outright contract to create a variant that shares all the economic
+attributes of the "underlying" contract but allows for separate
+book-keeping of open interest.</p>
+<p>With this trick, future commission merchants (FCMs) need not change
+infrastructure on their end as the contract variant simply looks like
+another contract to them.  Data vendors, alas, are also oblivious to
+the cloning: Other than mentioning the "underlying" contract in the
+contract description variants look and behave as separate resources.</p>
+<h2>How?</h2>
+<p>A class, <code>xqo:ExecutionModality</code> is introduced, and the most prominent
+modalities are identified and introduced as classes in their own
+right.  Moreover, a class <code>xqo:FuturesVariant</code> is introduced, itself a
+subclass of <code>fibo-fbc-fi-fi:Future</code> to capture the operational futures
+contract as a variant of FIBO's future.  Then for each of the
+modalities a variant is introduced, itself a subclass of
+<code>xqo:FuturesVariant</code> which is inferred if a resource states</p>
+<pre><code>R xqo:executedVia xqo:&lt;Modality&gt; .
+</code></pre>
+<p>=&gt;
+    R a xqo:<Modality>Variant .</p>
+<p>and, conversely:</p>
+<pre><code>R a xqo:&lt;Modality&gt;Variant .
+</code></pre>
+<p>=&gt;
+    R xqo:executedVia [
+            a xqo:<Modality> 
+    ] .</p>
+<h2>Where?</h2>
+<p>The <a href="https://github.com/ga-group/xqo/">official github repository</a> contains the
+published ontology.</p>
+<p>The project's canonical home is <a href="http://schema.ga-group.nl/xqo/">http://schema.ga-group.nl/xqo/</a>.</p></dd>
           </div>
           <div>
             <dt>
@@ -505,20 +551,10 @@ td {
                 <a class="hover_property" href="https://w3id.org/profile/ontdoc/inDomainOf" title="Inverse of rdfs:domain. Defined in Ontology Documentation Profile">In Domain Of</a>
               </th>
               <td>
-                <ul>
-                  <li>
-                    <span>
-                      <a href="#variantOf">variant of</a>
-                      <sup class="sup-op" title="OWL Object Property">op</sup>
-                    </span>
-                  </li>
-                  <li>
-                    <span>
-                      <a href="#executedVia">executed via</a>
-                      <sup class="sup-op" title="OWL Object Property">op</sup>
-                    </span>
-                  </li>
-                </ul>
+                <span>
+                  <a href="#variantOf">variant of</a>
+                  <sup class="sup-op" title="OWL Object Property">op</sup>
+                </span>
               </td>
             </tr>
             <tr>
@@ -536,6 +572,12 @@ td {
                   <li>
                     <span>
                       <a href="#TACOVariant">TACO variant</a>
+                      <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                    </span>
+                  </li>
+                  <li>
+                    <span>
+                      <a href="#TAICVariant">TAIC variant</a>
                       <sup class="sup-c" title="OWL/RDFS Class">c</sup>
                     </span>
                   </li>
@@ -627,7 +669,7 @@ td {
               <th>
                 <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
               </th>
-              <td><p>Modality in which a futures trade is priced relative to the official closing value of an underlying (equity) index, using a negotiated basis that is applied to the index close to determine the final futures execution price.</p></td>
+              <td><p>Modality in which a futures trade is priced relative to the official closing value of an underlying (equity) index, using a negotiated basis applied to the index close to determine the final futures execution price.</p></td>
             </tr>
           </table>
         </div>
@@ -647,6 +689,25 @@ td {
                 <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
               </th>
               <td><p>Modality in which a futures trade is priced relative to the official opening value of the underlying (equity) index, using a negotiated basis applied to the cash‑market open to determine the final futures execution price.</p></td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="TAIC">
+          <h3>TAIC
+            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>http://schema.ga-group.nl/xqo/TAIC</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
+              </th>
+              <td><p>Modality in which a futures trade is priced relative to the official closing value of the underlying index without a basis applied to the index close to determine the final futures execution price.</p></td>
             </tr>
           </table>
         </div>
@@ -685,6 +746,13 @@ td {
                 <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
               </th>
               <td><p>Modality in which a futures trade is priced at a session marker.</p></td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2004/02/skos/core#scopeNote" title="A note that helps to clarify the meaning and/or the use of a concept. Defined in SKOS Vocabulary">Scope Note</a>
+              </th>
+              <td><p>It is either unambigious which marker is referenced, for example if the trading venue only publishes a single session marker, or TAM markers are indistinguishable, and the combination of base contract plus marker type is not unique.</p>
+<p>If one needs to uphold the uniqueness of base contract and marker type, or distinguish several TAM markers specifically they should be introduced as subclasses of xqo:TAM.</p></td>
             </tr>
           </table>
         </div>
@@ -843,6 +911,60 @@ td {
                       <span>
                         <span>
                           <a href="#TACO">TACO</a>
+                          <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                        </span>
+                      </span>
+                    </span><br>
+                  </span>
+                </span>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="TAICVariant">
+          <h3>TAIC variant
+            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>http://schema.ga-group.nl/xqo/TAICVariant</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
+              </th>
+              <td><p>Operational contract variant that uses the trade-at-index-close execution modality.</p></td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#subClassOf" title="The subject is a subclass of a class. Defined in The RDF Schema vocabulary (RDFS)">Sub Class Of</a>
+              </th>
+              <td>
+                <span>
+                  <a href="#futurevariant">future variant</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2002/07/owl#equivalentClass" title="The property that determines that two given classes are equivalent, and that is used to specify datatype definitions. Defined in The OWL 2 Schema vocabulary (OWL 2)">Equivalentclass</a>
+              </th>
+              <td>
+                <span>
+                  <span>
+                    <span>
+                      <a href="#executedVia">executed via</a>
+                      <sup class="sup-op" title="OWL Object Property">op</sup>
+                    </span>
+                    <span>
+                      <span class="cardinality">some</span>
+                      <span>
+                        <span>
+                          <a href="#TAIC">TAIC</a>
                           <sup class="sup-c" title="OWL/RDFS Class">c</sup>
                         </span>
                       </span>
@@ -1191,17 +1313,6 @@ td {
             </tr>
             <tr>
               <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
-              </th>
-              <td>
-                <span>
-                  <a href="#futurevariant">future variant</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
                 <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
               </th>
               <td>
@@ -1248,6 +1359,10 @@ td {
           <dt id="rdfs">rdfs</dt>
           <dd>
             <code>http://www.w3.org/2000/01/rdf-schema#</code>
+          </dd>
+          <dt id="skos">skos</dt>
+          <dd>
+            <code>http://www.w3.org/2004/02/skos/core#</code>
           </dd>
           <dt id="vann">vann</dt>
           <dd>
@@ -1316,6 +1431,9 @@ td {
               <a href="#TACO">TACO</a>
             </li>
             <li>
+              <a href="#TAIC">TAIC</a>
+            </li>
+            <li>
               <a href="#TAL">TAL</a>
             </li>
             <li>
@@ -1335,6 +1453,9 @@ td {
             </li>
             <li>
               <a href="#TACOVariant">TACO variant</a>
+            </li>
+            <li>
+              <a href="#TAICVariant">TAIC variant</a>
             </li>
             <li>
               <a href="#TALVariant">TAL variant</a>
@@ -1394,6 +1515,9 @@ td {
             </li>
             <li>
               <a href="#rdfs">rdfs</a>
+            </li>
+            <li>
+              <a href="#skos">skos</a>
             </li>
             <li>
               <a href="#vann">vann</a>
