@@ -314,7 +314,7 @@ td {
     "https://schema.org/description": [
       {
         "@language": "en",
-        "@value": "Overview\n--------\nThe exchange quirks ontology (xqo) provides vocabulary to classify and\nrelate certain operational contract variants of exchange-listed\nderivatives.\n\n\nWhy?\n----\n\nFIBO's official ontology (much like FIX) stop at exchange-specific\nimplementations, and instead refer to the possibility of extending the\nstandard unofficially as needed.\n\nMarker trading, in this case, calls for such an extension.\nImplemented as order type, or, more precise, as *execution modality*,\nmarker trading bears no price formation burden, instead it uses\n(consumes) a price formed elsewhere.  As such, entry to the market\nwithout contributing to price discovery mandates an exit from the\nmarket without price discovery which now implies that such exposure\nmust be tracked separately from the outright contract.  Exchanges\nsolve this tracking problem via *operational products*: They clone the\noutright contract to create a variant that shares all the economic\nattributes of the \"underlying\" contract but allows for separate\nbook-keeping of open interest.\n\nWith this trick, future commission merchants (FCMs) need not change\ninfrastructure on their end as the contract variant simply looks like\nanother contract to them.  Data vendors, alas, are also oblivious to\nthe cloning: Other than mentioning the \"underlying\" contract in the\ncontract description variants look and behave as separate resources.\n\n\nHow?\n----\n\nA class, `xqo:ExecutionModality` is introduced, and the most prominent\nmodalities are identified and introduced as classes in their own\nright.  Moreover, a class `xqo:FuturesVariant` is introduced, itself a\nsubclass of `fibo-fbc-fi-fi:Future` to capture the operational futures\ncontract as a variant of FIBO's future.  Then for each of the\nmodalities a variant is introduced, itself a subclass of\n`xqo:FuturesVariant` which is inferred if a resource states\n\n    R xqo:executedVia xqo:<Modality> .\n\n=>\n\n    R a xqo:<Modality>Variant .\n\nand, conversely:\n\n    R a xqo:<Modality>Variant .\n\n=>\n\n    R xqo:executedVia [\n            a xqo:<Modality> \n    ] .\n\n\nWhere?\n------\n\nThe [official github repository](https://github.com/ga-group/xqo/) contains the\npublished ontology.\n\nThe project's canonical home is <http://schema.ga-group.nl/xqo/>.\n"
+        "@value": "Overview\n--------\nThe exchange quirks ontology (xqo) provides vocabulary to classify and\nrelate certain operational contract variants of exchange-listed\nderivatives.\n\n\nWhy?\n----\n\nFIBO's official ontology (much like FIX) stop at exchange-specific\nimplementations, and instead refer to the possibility of extending the\nstandard unofficially as needed.\n\nMarker trading, in this case, calls for such an extension.\nImplemented as order type, or, more precise, as *execution modality*,\nmarker trading bears no price formation burden, instead it uses\n(consumes) a price formed elsewhere.  As such, entry to the market\nwithout contributing to price discovery mandates an exit from the\nmarket without price discovery which now implies that such exposure\nmust be tracked separately from the outright contract.  Exchanges\nsolve this tracking problem via *operational* products: They clone the\noutright contract to create a variant that shares all the economic\nattributes of the \"underlying\" contract but allows for separate\nbook-keeping of open interest.\n\nWith this trick, future commission merchants (FCMs) need not change\ninfrastructure on their end as the contract variant simply looks like\nanother contract to them.  Data vendors, alas, are also oblivious to\nthe cloning: Other than mentioning the \"underlying\" contract in the\ncontract description these variants look and behave as separate\nresources.\n\n\nHow?\n----\n\nA class, `xqo:ExecutionModality` is introduced, and the most prominent\nmodalities are identified and introduced as classes in their own\nright.  Moreover, a class `xqo:OperationalVariant` is introduced,\nitself a subclass of `fibo-fbc-fi-fi:Future` to capture the\noperational futures contract as a variant of FIBO's future.  Then for\neach of the modalities a variant is introduced, itself a subclass of\n`xqo:OperationalVariant` which is inferred if a resource states\n\n    R xqo:executedVia xqo:<Modality> .\n\n=>\n\n    R a xqo:<Modality>Variant .\n\nand, conversely:\n\n    R a xqo:<Modality>Variant .\n\n=>\n\n    R xqo:executedVia [\n            a xqo:<Modality> \n    ] .\n\n\nWhere?\n------\n\nThe [official github repository](https://github.com/ga-group/xqo/) contains the\npublished ontology.\n\nThe project's canonical home is <http://schema.ga-group.nl/xqo/>.\n"
       }
     ],
     "https://schema.org/license": [
@@ -457,7 +457,7 @@ marker trading bears no price formation burden, instead it uses
 without contributing to price discovery mandates an exit from the
 market without price discovery which now implies that such exposure
 must be tracked separately from the outright contract.  Exchanges
-solve this tracking problem via <em>operational products</em>: They clone the
+solve this tracking problem via <em>operational</em> products: They clone the
 outright contract to create a variant that shares all the economic
 attributes of the "underlying" contract but allows for separate
 book-keeping of open interest.</p>
@@ -465,15 +465,16 @@ book-keeping of open interest.</p>
 infrastructure on their end as the contract variant simply looks like
 another contract to them.  Data vendors, alas, are also oblivious to
 the cloning: Other than mentioning the "underlying" contract in the
-contract description variants look and behave as separate resources.</p>
+contract description these variants look and behave as separate
+resources.</p>
 <h2>How?</h2>
 <p>A class, <code>xqo:ExecutionModality</code> is introduced, and the most prominent
 modalities are identified and introduced as classes in their own
-right.  Moreover, a class <code>xqo:FuturesVariant</code> is introduced, itself a
-subclass of <code>fibo-fbc-fi-fi:Future</code> to capture the operational futures
-contract as a variant of FIBO's future.  Then for each of the
-modalities a variant is introduced, itself a subclass of
-<code>xqo:FuturesVariant</code> which is inferred if a resource states</p>
+right.  Moreover, a class <code>xqo:OperationalVariant</code> is introduced,
+itself a subclass of <code>fibo-fbc-fi-fi:Future</code> to capture the
+operational futures contract as a variant of FIBO's future.  Then for
+each of the modalities a variant is introduced, itself a subclass of
+<code>xqo:OperationalVariant</code> which is inferred if a resource states</p>
 <pre><code>R xqo:executedVia xqo:&lt;Modality&gt; .
 </code></pre>
 <p>=&gt;</p>
@@ -512,7 +513,7 @@ published ontology.</p>
             <tr>
               <th>IRI</th>
               <td>
-                <code>http://schema.ga-group.nl/xqo/FuturesVariant</code>
+                <code>http://schema.ga-group.nl/xqo/OperationalVariant</code>
               </td>
             </tr>
             <tr>
@@ -1265,7 +1266,7 @@ published ontology.</p>
               <th>
                 <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
               </th>
-              <td><p>Links a futures variant to its outright contract.</p></td>
+              <td><p>Links an operational futures variant to its outright contract.</p></td>
             </tr>
             <tr>
               <th>
@@ -1322,6 +1323,92 @@ published ontology.</p>
                   <a href="#executionmodality">execution modality</a>
                   <sup class="sup-c" title="OWL/RDFS Class">c</sup>
                 </span>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="section" id="datatypeproperties">
+        <h2>Datatype Properties</h2>
+        <div class="property entity" id="ordinal">
+          <h3>ordinal
+            <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>http://schema.ga-group.nl/xqo/ordinal</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
+              </th>
+              <td><p>Relates a futures contract to its ordinal value, implying an ordering and adjacency.</p></td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2004/02/skos/core#scopeNote" title="A note that helps to clarify the meaning and/or the use of a concept. Defined in SKOS Vocabulary">Scope Note</a>
+              </th>
+              <td><p>Note that this value is supposed to be an
+ordinal, i.e. non-repetitive, and easily sortable by using ORDER BY in
+SPARQL queries.  That means exchange provided discriminators à la H6,
+M4, or Z7 don't fit the brief because H7 &lt; Z4, and the Z4 of the
+noughties (2004-12) equals the Z4 of the twenties (2024-12).  Use
+"2006-03"^^xsd:gYearMonth, "2014-06"^^xsd:gYearMonth, or
+"2027-12"^^xsd:gYearMonth instead.  Some contracts don't have an xsd
+datatype or an ISO 8601 notation, use raw strings in those cases
+(e.g. "2006-Winter", "2010-Season-2", etc.)</p>
+<p>The exchange discriminator can be captured by xqo:discriminator.</p></td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#subPropertyOf" title="The subject is a subproperty of a property. Defined in The RDF Schema vocabulary (RDFS)">Sub Property Of</a>
+              </th>
+              <td>
+                <a href="http://purl.org/nemo/gufo#hasQualityValue">gufo:hasQualityValue</a>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="discriminator">
+          <h3>discriminator
+            <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>http://schema.ga-group.nl/xqo/discriminator</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
+              </th>
+              <td><p>Relates a futures contract to its symbolic discriminator (e.g. 'Z6' in 'CLZ6')</p></td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2004/02/skos/core#scopeNote" title="A note that helps to clarify the meaning and/or the use of a concept. Defined in SKOS Vocabulary">Scope Note</a>
+              </th>
+              <td><p>The discriminator can also be captured in a canonical (ordinal) way by xqo:ordinal.</p></td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#subPropertyOf" title="The subject is a subproperty of a property. Defined in The RDF Schema vocabulary (RDFS)">Sub Property Of</a>
+              </th>
+              <td>
+                <a href="http://purl.org/nemo/gufo#hasQualityValue">gufo:hasQualityValue</a>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
+              </th>
+              <td>
+                <a href="http://www.w3.org/2000/01/rdf-schema#Literal">Literal</a>
               </td>
             </tr>
           </table>
@@ -1390,6 +1477,12 @@ published ontology.</p>
               <sup class="sup-op" title="OWL Object Property">op</sup>
             </td>
             <td>Object Properties</td>
+          </tr>
+          <tr>
+            <td>
+              <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
+            </td>
+            <td>Datatype Properties</td>
           </tr>
         </table>
       </div>
@@ -1486,6 +1579,19 @@ published ontology.</p>
             </li>
             <li>
               <a href="#executedVia">executed via</a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <h4>
+            <a href="#datatypeproperties">Datatype Properties</a>
+          </h4>
+          <ul class="second">
+            <li>
+              <a href="#ordinal">ordinal</a>
+            </li>
+            <li>
+              <a href="#discriminator">discriminator</a>
             </li>
           </ul>
         </li>

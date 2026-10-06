@@ -45,7 +45,7 @@ marker trading bears no price formation burden, instead it uses
 without contributing to price discovery mandates an exit from the
 market without price discovery which now implies that such exposure
 must be tracked separately from the outright contract.  Exchanges
-solve this tracking problem via *operational products*: They clone the
+solve this tracking problem via *operational* products: They clone the
 outright contract to create a variant that shares all the economic
 attributes of the "underlying" contract but allows for separate
 book-keeping of open interest.
@@ -54,7 +54,8 @@ With this trick, future commission merchants (FCMs) need not change
 infrastructure on their end as the contract variant simply looks like
 another contract to them.  Data vendors, alas, are also oblivious to
 the cloning: Other than mentioning the "underlying" contract in the
-contract description variants look and behave as separate resources.
+contract description these variants look and behave as separate
+resources.
 
 
 How?
@@ -62,11 +63,11 @@ How?
 
 A class, `xqo:ExecutionModality` is introduced, and the most prominent
 modalities are identified and introduced as classes in their own
-right.  Moreover, a class `xqo:FuturesVariant` is introduced, itself a
-subclass of `fibo-fbc-fi-fi:Future` to capture the operational futures
-contract as a variant of FIBO's future.  Then for each of the
-modalities a variant is introduced, itself a subclass of
-`xqo:FuturesVariant` which is inferred if a resource states
+right.  Moreover, a class `xqo:OperationalVariant` is introduced,
+itself a subclass of `fibo-fbc-fi-fi:Future` to capture the
+operational futures contract as a variant of FIBO's future.  Then for
+each of the modalities a variant is introduced, itself a subclass of
+`xqo:OperationalVariant` which is inferred if a resource states
 
     R xqo:executedVia xqo:<Modality> .
 
@@ -114,7 +115,7 @@ The project's canonical home is <http://schema.ga-group.nl/xqo/>.
 # Classes
 #################################################################
 
-xqo:FuturesVariant
+xqo:OperationalVariant
 	a	owl:Class ;
 	owl:equivalentClass	[
 		a	owl:Restriction ;
@@ -200,7 +201,7 @@ xqo:BTICVariant
 	] ;
 	rdfs:comment	"Operational contract variant that uses the basis-trade-at-index-close execution modality."@en ;
 	rdfs:label	"BTIC variant"@en ;
-	rdfs:subClassOf	xqo:FuturesVariant .
+	rdfs:subClassOf	xqo:OperationalVariant .
 
 xqo:TACOVariant
 	a	owl:Class ;
@@ -211,7 +212,7 @@ xqo:TACOVariant
 	] ;
 	rdfs:comment	"Operational contract variant that uses the trade-at-cash-open execution modality."@en ;
 	rdfs:label	"TACO variant"@en ;
-	rdfs:subClassOf	xqo:FuturesVariant .
+	rdfs:subClassOf	xqo:OperationalVariant .
 
 xqo:TAICVariant
 	a	owl:Class ;
@@ -222,7 +223,7 @@ xqo:TAICVariant
 	] ;
 	rdfs:comment	"Operational contract variant that uses the trade-at-index-close execution modality."@en ;
 	rdfs:label	"TAIC variant"@en ;
-	rdfs:subClassOf	xqo:FuturesVariant .
+	rdfs:subClassOf	xqo:OperationalVariant .
 
 xqo:TALVariant
 	a	owl:Class ;
@@ -233,7 +234,7 @@ xqo:TALVariant
 	] ;
 	rdfs:comment	"Operational contract variant that uses the trade-at-last execution modality."@en ;
 	rdfs:label	"TAL variant"@en ;
-	rdfs:subClassOf	xqo:FuturesVariant .
+	rdfs:subClassOf	xqo:OperationalVariant .
 
 xqo:TAMVariant
 	a	owl:Class ;
@@ -244,7 +245,7 @@ xqo:TAMVariant
 	] ;
 	rdfs:comment	"Operational contract variant that uses the trade-at-marker execution modality."@en ;
 	rdfs:label	"TAM variant"@en ;
-	rdfs:subClassOf	xqo:FuturesVariant .
+	rdfs:subClassOf	xqo:OperationalVariant .
 
 xqo:TAMMVariant
 	a	owl:Class ;
@@ -255,7 +256,7 @@ xqo:TAMMVariant
 	] ;
 	rdfs:comment	"Operational contract variant that used the trade-at-morning-marker execution modality."@en ;
 	rdfs:label	"TAMM variant"@en ;
-	rdfs:subClassOf	xqo:FuturesVariant .
+	rdfs:subClassOf	xqo:OperationalVariant .
 
 xqo:TASVariant
 	a	owl:Class ;
@@ -266,7 +267,7 @@ xqo:TASVariant
 	] ;
 	rdfs:comment	"Operational contract variant that uses the trade-at-settlement execution modality."@en ;
 	rdfs:label	"TAS variant"@en ;
-	rdfs:subClassOf	xqo:FuturesVariant .
+	rdfs:subClassOf	xqo:OperationalVariant .
 
 xqo:TMACVariant
 	a	owl:Class ;
@@ -277,7 +278,7 @@ xqo:TMACVariant
 	] ;
 	rdfs:comment	"Operational contract variant that uses the trade-marker-at-close execution modality."@en ;
 	rdfs:label	"TMAC variant"@en ;
-	rdfs:subClassOf	xqo:FuturesVariant .
+	rdfs:subClassOf	xqo:OperationalVariant .
 
 #################################################################
 # Object Properties
@@ -285,8 +286,8 @@ xqo:TMACVariant
 
 xqo:variantOf
 	a	owl:ObjectProperty ;
-	rdfs:comment	"Links a futures variant to its outright contract."@en ;
-	rdfs:domain	xqo:FuturesVariant ;
+	rdfs:comment	"Links an operational futures variant to its outright contract."@en ;
+	rdfs:domain	xqo:OperationalVariant ;
 	rdfs:label	"variant of"@en ;
 	rdfs:subPropertyOf	gufo:isDerivedFrom .
 
@@ -302,6 +303,31 @@ xqo:executedVia
 # Datatype Properties
 #################################################################
 
+xqo:ordinal
+	a	owl:DatatypeProperty ;
+	rdfs:comment	"Relates a futures contract to its ordinal value, implying an ordering and adjacency."@en ;
+	rdfs:label	"ordinal"@en ;
+	rdfs:subPropertyOf	gufo:hasQualityValue ;
+	skos:scopeNote """Note that this value is supposed to be an
+ordinal, i.e. non-repetitive, and easily sortable by using ORDER BY in
+SPARQL queries.  That means exchange provided discriminators à la H6,
+M4, or Z7 don't fit the brief because H7 < Z4, and the Z4 of the
+noughties (2004-12) equals the Z4 of the twenties (2024-12).  Use
+"2006-03"^^xsd:gYearMonth, "2014-06"^^xsd:gYearMonth, or
+"2027-12"^^xsd:gYearMonth instead.  Some contracts don't have an xsd
+datatype or an ISO 8601 notation, use raw strings in those cases
+(e.g. "2006-Winter", "2010-Season-2", etc.)
+
+The exchange discriminator can be captured by xqo:discriminator."""@en .
+
+xqo:discriminator
+	a	owl:DatatypeProperty ;
+	rdfs:comment	"Relates a futures contract to its symbolic discriminator (e.g. 'Z6' in 'CLZ6')" ;
+	rdfs:label	"discriminator"@en ;
+	rdfs:range	rdfs:Literal ;
+	rdfs:subPropertyOf	gufo:hasQualityValue ;
+	skos:scopeNote	"The discriminator can also be captured in a canonical (ordinal) way by xqo:ordinal."@en .
+
 
 #################################################################
 # Examples
@@ -309,16 +335,22 @@ xqo:executedVia
 
 <http://example.com/cme/CLZ2>
 	a	fibo-fbc-fi-fi:Future ;
-	rdfs:label	"CLZ2" .
+	rdfs:label	"CLZ2" ;
+	xqo:discriminator	"Z2" ;
+	xqo:ordinal	"2022-12"^^xsd:gYearMonth .
 
 <http://example.com/cme/CLTZ2>
 	a	xqo:TASVariant ;
 	rdfs:label	"CLTZ2" ;
+	xqo:discriminator	"Z2" ;
+	xqo:ordinal	"2022-12"^^xsd:gYearMonth ;
 	xqo:variantOf	<http://example.com/cme/CLZ2> .
 
 <http://example.com/cme/CLmmZ2>
 	rdfs:label	"CLTZ2" ;
 	xqo:executedVia	xqo:TAMM ;
+	xqo:discriminator	"Z2" ;
+	xqo:ordinal	"2022-12"^^xsd:gYearMonth ;
 	xqo:variantOf	<http://example.com/cme/CLZ2> .
 
 xqo:CME_TAMM
@@ -327,10 +359,14 @@ xqo:CME_TAMM
 <http://example.com/cme/DAmmZ2>
 	rdfs:label	"DAmmZ2" ;
 	xqo:executedVia	xqo:CME_TAMM ;
+	xqo:discriminator	"Z2" ;
+	xqo:ordinal	"2022-12"^^xsd:gYearMonth ;
 	xqo:variantOf	<http://example.com/cme/CLZ2> .
 
 <http://example.com/cme/DAmmH3>
-	a	xqo:FuturesVariant ;
+	a	xqo:OperationalVariant ;
 	rdfs:label	"DAmmZ2" ;
 	xqo:executedVia	xqo:CME_TAMM ;
+	xqo:discriminator	"Z2" ;
+	xqo:ordinal	"2022-12"^^xsd:gYearMonth ;
 	xqo:variantOf	<http://example.com/cme/CLZ2> .

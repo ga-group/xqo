@@ -17,24 +17,34 @@
    xmlns:xqo="http://schema.ga-group.nl/xqo/"
    xmlns:xsd="http://www.w3.org/2001/XMLSchema#">
   <xqo:TASVariant rdf:about="http://example.com/cme/CLTZ2">
+    <xqo:discriminator>Z2</xqo:discriminator>
+    <xqo:ordinal rdf:datatype="http://www.w3.org/2001/XMLSchema#gYearMonth">2022-12</xqo:ordinal>
     <xqo:variantOf rdf:resource="http://example.com/cme/CLZ2"/>
     <rdfs:label>CLTZ2</rdfs:label>
   </xqo:TASVariant>
   <fibo-fbc-fi-fi:Future rdf:about="http://example.com/cme/CLZ2">
+    <xqo:discriminator>Z2</xqo:discriminator>
+    <xqo:ordinal rdf:datatype="http://www.w3.org/2001/XMLSchema#gYearMonth">2022-12</xqo:ordinal>
     <rdfs:label>CLZ2</rdfs:label>
   </fibo-fbc-fi-fi:Future>
   <rdf:Description rdf:about="http://example.com/cme/CLmmZ2">
+    <xqo:discriminator>Z2</xqo:discriminator>
     <xqo:executedVia rdf:resource="http://schema.ga-group.nl/xqo/TAMM"/>
+    <xqo:ordinal rdf:datatype="http://www.w3.org/2001/XMLSchema#gYearMonth">2022-12</xqo:ordinal>
     <xqo:variantOf rdf:resource="http://example.com/cme/CLZ2"/>
     <rdfs:label>CLTZ2</rdfs:label>
   </rdf:Description>
-  <xqo:FuturesVariant rdf:about="http://example.com/cme/DAmmH3">
+  <xqo:OperationalVariant rdf:about="http://example.com/cme/DAmmH3">
+    <xqo:discriminator>Z2</xqo:discriminator>
     <xqo:executedVia rdf:resource="http://schema.ga-group.nl/xqo/CME_TAMM"/>
+    <xqo:ordinal rdf:datatype="http://www.w3.org/2001/XMLSchema#gYearMonth">2022-12</xqo:ordinal>
     <xqo:variantOf rdf:resource="http://example.com/cme/CLZ2"/>
     <rdfs:label>DAmmZ2</rdfs:label>
-  </xqo:FuturesVariant>
+  </xqo:OperationalVariant>
   <rdf:Description rdf:about="http://example.com/cme/DAmmZ2">
+    <xqo:discriminator>Z2</xqo:discriminator>
     <xqo:executedVia rdf:resource="http://schema.ga-group.nl/xqo/CME_TAMM"/>
+    <xqo:ordinal rdf:datatype="http://www.w3.org/2001/XMLSchema#gYearMonth">2022-12</xqo:ordinal>
     <xqo:variantOf rdf:resource="http://example.com/cme/CLZ2"/>
     <rdfs:label>DAmmZ2</rdfs:label>
   </rdf:Description>
@@ -62,7 +72,7 @@ marker trading bears no price formation burden, instead it uses
 without contributing to price discovery mandates an exit from the
 market without price discovery which now implies that such exposure
 must be tracked separately from the outright contract.  Exchanges
-solve this tracking problem via *operational products*: They clone the
+solve this tracking problem via *operational* products: They clone the
 outright contract to create a variant that shares all the economic
 attributes of the "underlying" contract but allows for separate
 book-keeping of open interest.
@@ -71,7 +81,8 @@ With this trick, future commission merchants (FCMs) need not change
 infrastructure on their end as the contract variant simply looks like
 another contract to them.  Data vendors, alas, are also oblivious to
 the cloning: Other than mentioning the "underlying" contract in the
-contract description variants look and behave as separate resources.
+contract description these variants look and behave as separate
+resources.
 
 
 How?
@@ -79,11 +90,11 @@ How?
 
 A class, `xqo:ExecutionModality` is introduced, and the most prominent
 modalities are identified and introduced as classes in their own
-right.  Moreover, a class `xqo:FuturesVariant` is introduced, itself a
-subclass of `fibo-fbc-fi-fi:Future` to capture the operational futures
-contract as a variant of FIBO's future.  Then for each of the
-modalities a variant is introduced, itself a subclass of
-`xqo:FuturesVariant` which is inferred if a resource states
+right.  Moreover, a class `xqo:OperationalVariant` is introduced,
+itself a subclass of `fibo-fbc-fi-fi:Future` to capture the
+operational futures contract as a variant of FIBO's future.  Then for
+each of the modalities a variant is introduced, itself a subclass of
+`xqo:OperationalVariant` which is inferred if a resource states
 
     R xqo:executedVia xqo:&lt;Modality&gt; .
 
@@ -138,7 +149,7 @@ The project's canonical home is &lt;http://schema.ga-group.nl/xqo/&gt;.
   <owl:Class rdf:about="http://schema.ga-group.nl/xqo/BTICVariant">
     <rdfs:comment xml:lang="en">Operational contract variant that uses the basis-trade-at-index-close execution modality.</rdfs:comment>
     <rdfs:label xml:lang="en">BTIC variant</rdfs:label>
-    <rdfs:subClassOf rdf:resource="http://schema.ga-group.nl/xqo/FuturesVariant"/>
+    <rdfs:subClassOf rdf:resource="http://schema.ga-group.nl/xqo/OperationalVariant"/>
     <owl:equivalentClass>
       <owl:Restriction>
         <owl:onProperty rdf:resource="http://schema.ga-group.nl/xqo/executedVia"/>
@@ -152,7 +163,7 @@ The project's canonical home is &lt;http://schema.ga-group.nl/xqo/&gt;.
     <rdfs:label xml:lang="en">execution modality</rdfs:label>
     <rdfs:subClassOf rdf:resource="http://purl.org/nemo/gufo#Mode"/>
   </owl:Class>
-  <owl:Class rdf:about="http://schema.ga-group.nl/xqo/FuturesVariant">
+  <owl:Class rdf:about="http://schema.ga-group.nl/xqo/OperationalVariant">
     <rdfs:comment xml:lang="en">A variant of a futures contract that inherits all of the economic attributes of the bare contract and only differs in operational ways.</rdfs:comment>
     <rdfs:label xml:lang="en">future variant</rdfs:label>
     <rdfs:subClassOf rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/Future"/>
@@ -173,7 +184,7 @@ The project's canonical home is &lt;http://schema.ga-group.nl/xqo/&gt;.
   <owl:Class rdf:about="http://schema.ga-group.nl/xqo/TACOVariant">
     <rdfs:comment xml:lang="en">Operational contract variant that uses the trade-at-cash-open execution modality.</rdfs:comment>
     <rdfs:label xml:lang="en">TACO variant</rdfs:label>
-    <rdfs:subClassOf rdf:resource="http://schema.ga-group.nl/xqo/FuturesVariant"/>
+    <rdfs:subClassOf rdf:resource="http://schema.ga-group.nl/xqo/OperationalVariant"/>
     <owl:equivalentClass>
       <owl:Restriction>
         <owl:onProperty rdf:resource="http://schema.ga-group.nl/xqo/executedVia"/>
@@ -191,7 +202,7 @@ The project's canonical home is &lt;http://schema.ga-group.nl/xqo/&gt;.
   <owl:Class rdf:about="http://schema.ga-group.nl/xqo/TAICVariant">
     <rdfs:comment xml:lang="en">Operational contract variant that uses the trade-at-index-close execution modality.</rdfs:comment>
     <rdfs:label xml:lang="en">TAIC variant</rdfs:label>
-    <rdfs:subClassOf rdf:resource="http://schema.ga-group.nl/xqo/FuturesVariant"/>
+    <rdfs:subClassOf rdf:resource="http://schema.ga-group.nl/xqo/OperationalVariant"/>
     <owl:equivalentClass>
       <owl:Restriction>
         <owl:onProperty rdf:resource="http://schema.ga-group.nl/xqo/executedVia"/>
@@ -209,7 +220,7 @@ The project's canonical home is &lt;http://schema.ga-group.nl/xqo/&gt;.
   <owl:Class rdf:about="http://schema.ga-group.nl/xqo/TALVariant">
     <rdfs:comment xml:lang="en">Operational contract variant that uses the trade-at-last execution modality.</rdfs:comment>
     <rdfs:label xml:lang="en">TAL variant</rdfs:label>
-    <rdfs:subClassOf rdf:resource="http://schema.ga-group.nl/xqo/FuturesVariant"/>
+    <rdfs:subClassOf rdf:resource="http://schema.ga-group.nl/xqo/OperationalVariant"/>
     <owl:equivalentClass>
       <owl:Restriction>
         <owl:onProperty rdf:resource="http://schema.ga-group.nl/xqo/executedVia"/>
@@ -237,7 +248,7 @@ If one needs to uphold the uniqueness of base contract and marker type, or disti
   <owl:Class rdf:about="http://schema.ga-group.nl/xqo/TAMMVariant">
     <rdfs:comment xml:lang="en">Operational contract variant that used the trade-at-morning-marker execution modality.</rdfs:comment>
     <rdfs:label xml:lang="en">TAMM variant</rdfs:label>
-    <rdfs:subClassOf rdf:resource="http://schema.ga-group.nl/xqo/FuturesVariant"/>
+    <rdfs:subClassOf rdf:resource="http://schema.ga-group.nl/xqo/OperationalVariant"/>
     <owl:equivalentClass>
       <owl:Restriction>
         <owl:onProperty rdf:resource="http://schema.ga-group.nl/xqo/executedVia"/>
@@ -248,7 +259,7 @@ If one needs to uphold the uniqueness of base contract and marker type, or disti
   <owl:Class rdf:about="http://schema.ga-group.nl/xqo/TAMVariant">
     <rdfs:comment xml:lang="en">Operational contract variant that uses the trade-at-marker execution modality.</rdfs:comment>
     <rdfs:label xml:lang="en">TAM variant</rdfs:label>
-    <rdfs:subClassOf rdf:resource="http://schema.ga-group.nl/xqo/FuturesVariant"/>
+    <rdfs:subClassOf rdf:resource="http://schema.ga-group.nl/xqo/OperationalVariant"/>
     <owl:equivalentClass>
       <owl:Restriction>
         <owl:onProperty rdf:resource="http://schema.ga-group.nl/xqo/executedVia"/>
@@ -266,7 +277,7 @@ If one needs to uphold the uniqueness of base contract and marker type, or disti
   <owl:Class rdf:about="http://schema.ga-group.nl/xqo/TASVariant">
     <rdfs:comment xml:lang="en">Operational contract variant that uses the trade-at-settlement execution modality.</rdfs:comment>
     <rdfs:label xml:lang="en">TAS variant</rdfs:label>
-    <rdfs:subClassOf rdf:resource="http://schema.ga-group.nl/xqo/FuturesVariant"/>
+    <rdfs:subClassOf rdf:resource="http://schema.ga-group.nl/xqo/OperationalVariant"/>
     <owl:equivalentClass>
       <owl:Restriction>
         <owl:onProperty rdf:resource="http://schema.ga-group.nl/xqo/executedVia"/>
@@ -284,7 +295,7 @@ If one needs to uphold the uniqueness of base contract and marker type, or disti
   <owl:Class rdf:about="http://schema.ga-group.nl/xqo/TMACVariant">
     <rdfs:comment xml:lang="en">Operational contract variant that uses the trade-marker-at-close execution modality.</rdfs:comment>
     <rdfs:label xml:lang="en">TMAC variant</rdfs:label>
-    <rdfs:subClassOf rdf:resource="http://schema.ga-group.nl/xqo/FuturesVariant"/>
+    <rdfs:subClassOf rdf:resource="http://schema.ga-group.nl/xqo/OperationalVariant"/>
     <owl:equivalentClass>
       <owl:Restriction>
         <owl:onProperty rdf:resource="http://schema.ga-group.nl/xqo/executedVia"/>
@@ -292,15 +303,38 @@ If one needs to uphold the uniqueness of base contract and marker type, or disti
       </owl:Restriction>
     </owl:equivalentClass>
   </owl:Class>
+  <owl:DatatypeProperty rdf:about="http://schema.ga-group.nl/xqo/discriminator">
+    <rdfs:comment>Relates a futures contract to its symbolic discriminator (e.g. 'Z6' in 'CLZ6')</rdfs:comment>
+    <rdfs:label xml:lang="en">discriminator</rdfs:label>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <rdfs:subPropertyOf rdf:resource="http://purl.org/nemo/gufo#hasQualityValue"/>
+    <skos:scopeNote xml:lang="en">The discriminator can also be captured in a canonical (ordinal) way by xqo:ordinal.</skos:scopeNote>
+  </owl:DatatypeProperty>
   <owl:ObjectProperty rdf:about="http://schema.ga-group.nl/xqo/executedVia">
     <rdfs:comment xml:lang="en">Links a futures variant to the execution modality that is used to enter or exit a position.</rdfs:comment>
     <rdfs:label xml:lang="en">executed via</rdfs:label>
     <rdfs:range rdf:resource="http://schema.ga-group.nl/xqo/ExecutionModality"/>
     <rdfs:subPropertyOf rdf:resource="http://purl.org/nemo/gufo#participatesIn"/>
   </owl:ObjectProperty>
+  <owl:DatatypeProperty rdf:about="http://schema.ga-group.nl/xqo/ordinal">
+    <rdfs:comment xml:lang="en">Relates a futures contract to its ordinal value, implying an ordering and adjacency.</rdfs:comment>
+    <rdfs:label xml:lang="en">ordinal</rdfs:label>
+    <rdfs:subPropertyOf rdf:resource="http://purl.org/nemo/gufo#hasQualityValue"/>
+    <skos:scopeNote xml:lang="en">Note that this value is supposed to be an
+ordinal, i.e. non-repetitive, and easily sortable by using ORDER BY in
+SPARQL queries.  That means exchange provided discriminators à la H6,
+M4, or Z7 don't fit the brief because H7 &lt; Z4, and the Z4 of the
+noughties (2004-12) equals the Z4 of the twenties (2024-12).  Use
+"2006-03"^^xsd:gYearMonth, "2014-06"^^xsd:gYearMonth, or
+"2027-12"^^xsd:gYearMonth instead.  Some contracts don't have an xsd
+datatype or an ISO 8601 notation, use raw strings in those cases
+(e.g. "2006-Winter", "2010-Season-2", etc.)
+
+The exchange discriminator can be captured by xqo:discriminator.</skos:scopeNote>
+  </owl:DatatypeProperty>
   <owl:ObjectProperty rdf:about="http://schema.ga-group.nl/xqo/variantOf">
-    <rdfs:comment xml:lang="en">Links a futures variant to its outright contract.</rdfs:comment>
-    <rdfs:domain rdf:resource="http://schema.ga-group.nl/xqo/FuturesVariant"/>
+    <rdfs:comment xml:lang="en">Links an operational futures variant to its outright contract.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://schema.ga-group.nl/xqo/OperationalVariant"/>
     <rdfs:label xml:lang="en">variant of</rdfs:label>
     <rdfs:subPropertyOf rdf:resource="http://purl.org/nemo/gufo#isDerivedFrom"/>
   </owl:ObjectProperty>
