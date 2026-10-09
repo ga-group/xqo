@@ -39,11 +39,12 @@ How?
 
 A class, `xqo:ExecutionModality` is introduced, and the most prominent
 modalities are identified and introduced as classes in their own
-right.  Moreover, a class `xqo:FuturesVariant` is introduced, itself a
-subclass of `fibo-fbc-fi-fi:Future` to capture the operational futures
-contract as a variant of FIBO's future.  Then for each of the
-modalities a variant is introduced, itself a subclass of
-`xqo:FuturesVariant` which is inferred if a resource states
+right.  Moreover, a class `xqo:OperationalVariant` is introduced,
+itself a subclass of `gufo:Role` to capture the operational contract
+(or chain, or synthesis) as a variant of the outright contract (or
+chain, or synthesis).  Then for each of the modalities a variant is
+introduced, itself a subclass of `xqo:OperationalVariant` which is
+inferred if a resource states
 
     R xqo:executedVia xqo:<Modality> .
 

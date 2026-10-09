@@ -314,7 +314,7 @@ td {
     "https://schema.org/description": [
       {
         "@language": "en",
-        "@value": "Overview\n--------\nThe exchange quirks ontology (xqo) provides vocabulary to classify and\nrelate certain operational contract variants of exchange-listed\nderivatives.\n\n\nWhy?\n----\n\nFIBO's official ontology (much like FIX) stop at exchange-specific\nimplementations, and instead refer to the possibility of extending the\nstandard unofficially as needed.\n\nMarker trading, in this case, calls for such an extension.\nImplemented as order type, or, more precise, as *execution modality*,\nmarker trading bears no price formation burden, instead it uses\n(consumes) a price formed elsewhere.  As such, entry to the market\nwithout contributing to price discovery mandates an exit from the\nmarket without price discovery which now implies that such exposure\nmust be tracked separately from the outright contract.  Exchanges\nsolve this tracking problem via *operational* products: They clone the\noutright contract to create a variant that shares all the economic\nattributes of the \"underlying\" contract but allows for separate\nbook-keeping of open interest.\n\nWith this trick, future commission merchants (FCMs) need not change\ninfrastructure on their end as the contract variant simply looks like\nanother contract to them.  Data vendors, alas, are also oblivious to\nthe cloning: Other than mentioning the \"underlying\" contract in the\ncontract description these variants look and behave as separate\nresources.\n\n\nHow?\n----\n\nA class, `xqo:ExecutionModality` is introduced, and the most prominent\nmodalities are identified and introduced as classes in their own\nright.  Moreover, a class `xqo:OperationalVariant` is introduced,\nitself a subclass of `fibo-fbc-fi-fi:Future` to capture the\noperational futures contract as a variant of FIBO's future.  Then for\neach of the modalities a variant is introduced, itself a subclass of\n`xqo:OperationalVariant` which is inferred if a resource states\n\n    R xqo:executedVia xqo:<Modality> .\n\n=>\n\n    R a xqo:<Modality>Variant .\n\nand, conversely:\n\n    R a xqo:<Modality>Variant .\n\n=>\n\n    R xqo:executedVia [\n            a xqo:<Modality> \n    ] .\n\n\nWhere?\n------\n\nThe [official github repository](https://github.com/ga-group/xqo/) contains the\npublished ontology.\n\nThe project's canonical home is <http://schema.ga-group.nl/xqo/>.\n"
+        "@value": "Overview\n--------\nThe exchange quirks ontology (xqo) provides vocabulary to classify and\nrelate certain operational contract variants of exchange-listed\nderivatives.\n\n\nWhy?\n----\n\nFIBO's official ontology (much like FIX) stop at exchange-specific\nimplementations, and instead refer to the possibility of extending the\nstandard unofficially as needed.\n\nMarker trading, in this case, calls for such an extension.\nImplemented as order type, or, more precise, as *execution modality*,\nmarker trading bears no price formation burden, instead it uses\n(consumes) a price formed elsewhere.  As such, entry to the market\nwithout contributing to price discovery mandates an exit from the\nmarket without price discovery which now implies that such exposure\nmust be tracked separately from the outright contract.  Exchanges\nsolve this tracking problem via *operational* products: They clone the\noutright contract to create a variant that shares all the economic\nattributes of the \"underlying\" contract but allows for separate\nbook-keeping of open interest.\n\nWith this trick, future commission merchants (FCMs) need not change\ninfrastructure on their end as the contract variant simply looks like\nanother contract to them.  Data vendors, alas, are also oblivious to\nthe cloning: Other than mentioning the \"underlying\" contract in the\ncontract description these variants look and behave as separate\nresources.\n\n\nHow?\n----\n\nA class, `xqo:ExecutionModality` is introduced, and the most prominent\nmodalities are identified and introduced as classes in their own\nright.  Moreover, a class `xqo:OperationalVariant` is introduced,\nitself a subclass of `gufo:Role` to capture the operational contract\n(or chain, or synthesis) as a variant of the outright contract (or\nchain, or synthesis).  Then for each of the modalities a variant is\nintroduced, itself a subclass of `xqo:OperationalVariant` which is\ninferred if a resource states\n\n    R xqo:executedVia xqo:<Modality> .\n\n=>\n\n    R a xqo:<Modality>Variant .\n\nand, conversely:\n\n    R a xqo:<Modality>Variant .\n\n=>\n\n    R xqo:executedVia [\n            a xqo:<Modality> \n    ] .\n\n\nWhere?\n------\n\nThe [official github repository](https://github.com/ga-group/xqo/) contains the\npublished ontology.\n\nThe project's canonical home is <http://schema.ga-group.nl/xqo/>.\n"
       }
     ],
     "https://schema.org/license": [
@@ -471,10 +471,11 @@ resources.</p>
 <p>A class, <code>xqo:ExecutionModality</code> is introduced, and the most prominent
 modalities are identified and introduced as classes in their own
 right.  Moreover, a class <code>xqo:OperationalVariant</code> is introduced,
-itself a subclass of <code>fibo-fbc-fi-fi:Future</code> to capture the
-operational futures contract as a variant of FIBO's future.  Then for
-each of the modalities a variant is introduced, itself a subclass of
-<code>xqo:OperationalVariant</code> which is inferred if a resource states</p>
+itself a subclass of <code>gufo:Role</code> to capture the operational contract
+(or chain, or synthesis) as a variant of the outright contract (or
+chain, or synthesis).  Then for each of the modalities a variant is
+introduced, itself a subclass of <code>xqo:OperationalVariant</code> which is
+inferred if a resource states</p>
 <pre><code>R xqo:executedVia xqo:&lt;Modality&gt; .
 </code></pre>
 <p>=&gt;</p>
@@ -498,7 +499,7 @@ published ontology.</p>
               <a class="hover_property" href="http://www.w3.org/2002/07/owl#imports" title="The property that is used for importing other ontologies into a given ontology. Defined in The OWL 2 Schema vocabulary (OWL 2)">Imports</a>
             </dt>
             <dd>
-              <a href="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/">fibo-fbc-fi-fi:</a>
+              <a href="http://purl.org/nemo/gufo#">gufo:</a>
             </dd>
           </div>
         </dl>
@@ -527,7 +528,7 @@ published ontology.</p>
                 <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#subClassOf" title="The subject is a subclass of a class. Defined in The RDF Schema vocabulary (RDFS)">Sub Class Of</a>
               </th>
               <td>
-                <a href="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/Future">fibo-fbc-fi-fi:Future</a>
+                <a href="http://purl.org/nemo/gufo#Role">gufo:Role</a>
               </td>
             </tr>
             <tr>

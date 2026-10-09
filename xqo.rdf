@@ -91,10 +91,11 @@ How?
 A class, `xqo:ExecutionModality` is introduced, and the most prominent
 modalities are identified and introduced as classes in their own
 right.  Moreover, a class `xqo:OperationalVariant` is introduced,
-itself a subclass of `fibo-fbc-fi-fi:Future` to capture the
-operational futures contract as a variant of FIBO's future.  Then for
-each of the modalities a variant is introduced, itself a subclass of
-`xqo:OperationalVariant` which is inferred if a resource states
+itself a subclass of `gufo:Role` to capture the operational contract
+(or chain, or synthesis) as a variant of the outright contract (or
+chain, or synthesis).  Then for each of the modalities a variant is
+introduced, itself a subclass of `xqo:OperationalVariant` which is
+inferred if a resource states
 
     R xqo:executedVia xqo:&lt;Modality&gt; .
 
@@ -133,7 +134,7 @@ The project's canonical home is &lt;http://schema.ga-group.nl/xqo/&gt;.
     <vann:preferredNamespaceUri>http://schema.ga-group.nl/xqo/</vann:preferredNamespaceUri>
     <rdfs:label xml:lang="en">xqo</rdfs:label>
     <rdfs:seeAlso rdf:resource="https://github.com/ga-group/xqo"/>
-    <owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"/>
+    <owl:imports rdf:resource="http://purl.org/nemo/gufo#"/>
     <owl:versionIRI rdf:resource="http://schema.ga-group.nl/xqo/0.1/"/>
     <owl:versionInfo rdf:datatype="http://www.w3.org/2001/XMLSchema#string">0.1</owl:versionInfo>
     <dcat:downloadURL rdf:resource="http://schema.ga-group.nl/xqo/rdf"/>
@@ -166,7 +167,7 @@ The project's canonical home is &lt;http://schema.ga-group.nl/xqo/&gt;.
   <owl:Class rdf:about="http://schema.ga-group.nl/xqo/OperationalVariant">
     <rdfs:comment xml:lang="en">A variant of a futures contract that inherits all of the economic attributes of the bare contract and only differs in operational ways.</rdfs:comment>
     <rdfs:label xml:lang="en">future variant</rdfs:label>
-    <rdfs:subClassOf rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/Future"/>
+    <rdfs:subClassOf rdf:resource="http://purl.org/nemo/gufo#Role"/>
     <owl:equivalentClass>
       <owl:Restriction>
         <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minCardinality>

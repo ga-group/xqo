@@ -64,10 +64,11 @@ How?
 A class, `xqo:ExecutionModality` is introduced, and the most prominent
 modalities are identified and introduced as classes in their own
 right.  Moreover, a class `xqo:OperationalVariant` is introduced,
-itself a subclass of `fibo-fbc-fi-fi:Future` to capture the
-operational futures contract as a variant of FIBO's future.  Then for
-each of the modalities a variant is introduced, itself a subclass of
-`xqo:OperationalVariant` which is inferred if a resource states
+itself a subclass of `gufo:Role` to capture the operational contract
+(or chain, or synthesis) as a variant of the outright contract (or
+chain, or synthesis).  Then for each of the modalities a variant is
+introduced, itself a subclass of `xqo:OperationalVariant` which is
+inferred if a resource states
 
     R xqo:executedVia xqo:<Modality> .
 
@@ -103,7 +104,7 @@ The project's canonical home is <http://schema.ga-group.nl/xqo/>.
 	dct:modified	"2026-10-01T05:00:00Z"^^xsd:dateTime ;
 	dct:publisher	<https://orcid.org/0000-0002-7352-2825> ;
 	dct:title	"xqo -- exchange quirks ontology" ;
-	owl:imports	fibo-fbc-fi-fi: ;
+	owl:imports	gufo: ;
 	owl:versionIRI	<http://schema.ga-group.nl/xqo/0.1/> ;
 	owl:versionInfo	"0.1"^^xsd:string ;
 	rdfs:label	"xqo"@en ;
@@ -124,7 +125,7 @@ xqo:OperationalVariant
 	] ;
 	rdfs:comment	"A variant of a futures contract that inherits all of the economic attributes of the bare contract and only differs in operational ways."@en ;
 	rdfs:label	"future variant"@en ;
-	rdfs:subClassOf	fibo-fbc-fi-fi:Future .
+	rdfs:subClassOf	gufo:Role .
 
 xqo:ExecutionModality
 	a	owl:Class ;
