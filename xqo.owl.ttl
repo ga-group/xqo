@@ -121,7 +121,7 @@ xqo:OperationalVariant
 	owl:equivalentClass	[
 		a	owl:Restriction ;
 		owl:onProperty	xqo:variantOf ;
-		owl:minCardinality	"1"^^xsd:nonNegativeInteger
+		owl:minCardinality	"1"^^xsd:nonNegativeInteger ;
 	] ;
 	rdfs:comment	"A variant of a futures contract that inherits all of the economic attributes of the bare contract and only differs in operational ways."@en ;
 	rdfs:label	"future variant"@en ;
