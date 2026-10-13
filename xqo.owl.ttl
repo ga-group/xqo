@@ -2,7 +2,6 @@
 @prefix dcat: <http://www.w3.org/ns/dcat#> .
 @prefix dct: <http://purl.org/dc/terms/> .
 @prefix fibo-fbc-fi-fi: <https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/> .
-@prefix gufo: <http://purl.org/nemo/gufo#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix pav: <http://purl.org/pav/> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
@@ -64,11 +63,11 @@ How?
 A class, `xqo:ExecutionModality` is introduced, and the most prominent
 modalities are identified and introduced as classes in their own
 right.  Moreover, a class `xqo:OperationalVariant` is introduced,
-itself a subclass of `gufo:Role` to capture the operational contract
-(or chain, or synthesis) as a variant of the outright contract (or
-chain, or synthesis).  Then for each of the modalities a variant is
-introduced, itself a subclass of `xqo:OperationalVariant` which is
-inferred if a resource states
+itself a subclass of `fibo-fbc-fi-fi:Future` to capture the
+operational contract (or chain, or synthesis) as a variant of the
+outright contract (or chain, or synthesis).  Then for each of the
+modalities a variant is introduced, itself a subclass of
+`xqo:OperationalVariant` which is inferred if a resource states
 
     R xqo:executedVia xqo:<Modality> .
 
@@ -104,7 +103,7 @@ The project's canonical home is <http://schema.ga-group.nl/xqo/>.
 	dct:modified	"2026-10-01T05:00:00Z"^^xsd:dateTime ;
 	dct:publisher	<https://orcid.org/0000-0002-7352-2825> ;
 	dct:title	"xqo -- exchange quirks ontology" ;
-	owl:imports	gufo: ;
+	owl:imports	fibo-fbc-fi-fi: ;
 	owl:versionIRI	<http://schema.ga-group.nl/xqo/0.1/> ;
 	owl:versionInfo	"0.1"^^xsd:string ;
 	rdfs:label	"xqo"@en ;
@@ -125,13 +124,12 @@ xqo:OperationalVariant
 	] ;
 	rdfs:comment	"A variant of a futures contract that inherits all of the economic attributes of the bare contract and only differs in operational ways."@en ;
 	rdfs:label	"future variant"@en ;
-	rdfs:subClassOf	gufo:Role .
+	rdfs:subClassOf	fibo-fbc-fi-fi:Future .
 
 xqo:ExecutionModality
 	a	owl:Class ;
 	rdfs:comment	"A benchmark‑priced or rule‑driven mode by which a futures contract is entered or exited, where the execution price is determined not by the continuous limit order book but by a reference benchmark, auction process, or designated price‑formation rule."@en ;
-	rdfs:label	"execution modality"@en ;
-	rdfs:subClassOf	gufo:Mode .
+	rdfs:label	"execution modality"@en .
 
 xqo:BTIC
 	a	owl:Class ;
@@ -289,15 +287,13 @@ xqo:variantOf
 	a	owl:ObjectProperty ;
 	rdfs:comment	"Links an operational futures variant to its outright contract."@en ;
 	rdfs:domain	xqo:OperationalVariant ;
-	rdfs:label	"variant of"@en ;
-	rdfs:subPropertyOf	gufo:isDerivedFrom .
+	rdfs:label	"variant of"@en .
 
 xqo:executedVia
 	a	owl:ObjectProperty ;
 	rdfs:comment	"Links a futures variant to the execution modality that is used to enter or exit a position."@en ;
 	rdfs:range	xqo:ExecutionModality ;
-	rdfs:label	"executed via"@en ;
-	rdfs:subPropertyOf	gufo:participatesIn .
+	rdfs:label	"executed via"@en .
 
 
 #################################################################
@@ -308,7 +304,6 @@ xqo:ordinal
 	a	owl:DatatypeProperty ;
 	rdfs:comment	"Relates a futures contract to its ordinal value, implying an ordering and adjacency."@en ;
 	rdfs:label	"ordinal"@en ;
-	rdfs:subPropertyOf	gufo:hasQualityValue ;
 	skos:scopeNote """Note that this value is supposed to be an
 ordinal, i.e. non-repetitive, and easily sortable by using ORDER BY in
 SPARQL queries.  That means exchange provided discriminators à la H6,
@@ -326,7 +321,6 @@ xqo:discriminator
 	rdfs:comment	"Relates a futures contract to its symbolic discriminator (e.g. 'Z6' in 'CLZ6')" ;
 	rdfs:label	"discriminator"@en ;
 	rdfs:range	rdfs:Literal ;
-	rdfs:subPropertyOf	gufo:hasQualityValue ;
 	skos:scopeNote	"The discriminator can also be captured in a canonical (ordinal) way by xqo:ordinal."@en .
 
 

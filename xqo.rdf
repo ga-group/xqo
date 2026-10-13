@@ -4,7 +4,6 @@
    xmlns:dcat="http://www.w3.org/ns/dcat#"
    xmlns:dct="http://purl.org/dc/terms/"
    xmlns:fibo-fbc-fi-fi="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"
-   xmlns:gufo="http://purl.org/nemo/gufo#"
    xmlns:owl="http://www.w3.org/2002/07/owl#"
    xmlns:pav="http://purl.org/pav/"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -91,11 +90,11 @@ How?
 A class, `xqo:ExecutionModality` is introduced, and the most prominent
 modalities are identified and introduced as classes in their own
 right.  Moreover, a class `xqo:OperationalVariant` is introduced,
-itself a subclass of `gufo:Role` to capture the operational contract
-(or chain, or synthesis) as a variant of the outright contract (or
-chain, or synthesis).  Then for each of the modalities a variant is
-introduced, itself a subclass of `xqo:OperationalVariant` which is
-inferred if a resource states
+itself a subclass of `fibo-fbc-fi-fi:Future` to capture the
+operational contract (or chain, or synthesis) as a variant of the
+outright contract (or chain, or synthesis).  Then for each of the
+modalities a variant is introduced, itself a subclass of
+`xqo:OperationalVariant` which is inferred if a resource states
 
     R xqo:executedVia xqo:&lt;Modality&gt; .
 
@@ -134,7 +133,7 @@ The project's canonical home is &lt;http://schema.ga-group.nl/xqo/&gt;.
     <vann:preferredNamespaceUri>http://schema.ga-group.nl/xqo/</vann:preferredNamespaceUri>
     <rdfs:label xml:lang="en">xqo</rdfs:label>
     <rdfs:seeAlso rdf:resource="https://github.com/ga-group/xqo"/>
-    <owl:imports rdf:resource="http://purl.org/nemo/gufo#"/>
+    <owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"/>
     <owl:versionIRI rdf:resource="http://schema.ga-group.nl/xqo/0.1/"/>
     <owl:versionInfo rdf:datatype="http://www.w3.org/2001/XMLSchema#string">0.1</owl:versionInfo>
     <dcat:downloadURL rdf:resource="http://schema.ga-group.nl/xqo/rdf"/>
@@ -162,12 +161,11 @@ The project's canonical home is &lt;http://schema.ga-group.nl/xqo/&gt;.
   <owl:Class rdf:about="http://schema.ga-group.nl/xqo/ExecutionModality">
     <rdfs:comment xml:lang="en">A benchmark‑priced or rule‑driven mode by which a futures contract is entered or exited, where the execution price is determined not by the continuous limit order book but by a reference benchmark, auction process, or designated price‑formation rule.</rdfs:comment>
     <rdfs:label xml:lang="en">execution modality</rdfs:label>
-    <rdfs:subClassOf rdf:resource="http://purl.org/nemo/gufo#Mode"/>
   </owl:Class>
   <owl:Class rdf:about="http://schema.ga-group.nl/xqo/OperationalVariant">
     <rdfs:comment xml:lang="en">A variant of a futures contract that inherits all of the economic attributes of the bare contract and only differs in operational ways.</rdfs:comment>
     <rdfs:label xml:lang="en">future variant</rdfs:label>
-    <rdfs:subClassOf rdf:resource="http://purl.org/nemo/gufo#Role"/>
+    <rdfs:subClassOf rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/Future"/>
     <owl:equivalentClass>
       <owl:Restriction>
         <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minCardinality>
@@ -308,19 +306,16 @@ If one needs to uphold the uniqueness of base contract and marker type, or disti
     <rdfs:comment>Relates a futures contract to its symbolic discriminator (e.g. 'Z6' in 'CLZ6')</rdfs:comment>
     <rdfs:label xml:lang="en">discriminator</rdfs:label>
     <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
-    <rdfs:subPropertyOf rdf:resource="http://purl.org/nemo/gufo#hasQualityValue"/>
     <skos:scopeNote xml:lang="en">The discriminator can also be captured in a canonical (ordinal) way by xqo:ordinal.</skos:scopeNote>
   </owl:DatatypeProperty>
   <owl:ObjectProperty rdf:about="http://schema.ga-group.nl/xqo/executedVia">
     <rdfs:comment xml:lang="en">Links a futures variant to the execution modality that is used to enter or exit a position.</rdfs:comment>
     <rdfs:label xml:lang="en">executed via</rdfs:label>
     <rdfs:range rdf:resource="http://schema.ga-group.nl/xqo/ExecutionModality"/>
-    <rdfs:subPropertyOf rdf:resource="http://purl.org/nemo/gufo#participatesIn"/>
   </owl:ObjectProperty>
   <owl:DatatypeProperty rdf:about="http://schema.ga-group.nl/xqo/ordinal">
     <rdfs:comment xml:lang="en">Relates a futures contract to its ordinal value, implying an ordering and adjacency.</rdfs:comment>
     <rdfs:label xml:lang="en">ordinal</rdfs:label>
-    <rdfs:subPropertyOf rdf:resource="http://purl.org/nemo/gufo#hasQualityValue"/>
     <skos:scopeNote xml:lang="en">Note that this value is supposed to be an
 ordinal, i.e. non-repetitive, and easily sortable by using ORDER BY in
 SPARQL queries.  That means exchange provided discriminators à la H6,
@@ -337,6 +332,5 @@ The exchange discriminator can be captured by xqo:discriminator.</skos:scopeNote
     <rdfs:comment xml:lang="en">Links an operational futures variant to its outright contract.</rdfs:comment>
     <rdfs:domain rdf:resource="http://schema.ga-group.nl/xqo/OperationalVariant"/>
     <rdfs:label xml:lang="en">variant of</rdfs:label>
-    <rdfs:subPropertyOf rdf:resource="http://purl.org/nemo/gufo#isDerivedFrom"/>
   </owl:ObjectProperty>
 </rdf:RDF>
