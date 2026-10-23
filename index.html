@@ -314,7 +314,7 @@ td {
     "https://schema.org/description": [
       {
         "@language": "en",
-        "@value": "Overview\n--------\nThe exchange quirks ontology (xqo) provides vocabulary to classify and\nrelate certain operational contract variants of exchange-listed\nderivatives.\n\n\nWhy?\n----\n\nFIBO's official ontology (much like FIX) stop at exchange-specific\nimplementations, and instead refer to the possibility of extending the\nstandard unofficially as needed.\n\nMarker trading, in this case, calls for such an extension.\nImplemented as order type, or, more precise, as *execution modality*,\nmarker trading bears no price formation burden, instead it uses\n(consumes) a price formed elsewhere.  As such, entry to the market\nwithout contributing to price discovery mandates an exit from the\nmarket without price discovery which now implies that such exposure\nmust be tracked separately from the outright contract.  Exchanges\nsolve this tracking problem via *operational* products: They clone the\noutright contract to create a variant that shares all the economic\nattributes of the \"underlying\" contract but allows for separate\nbook-keeping of open interest.\n\nWith this trick, future commission merchants (FCMs) need not change\ninfrastructure on their end as the contract variant simply looks like\nanother contract to them.  Data vendors, alas, are also oblivious to\nthe cloning: Other than mentioning the \"underlying\" contract in the\ncontract description these variants look and behave as separate\nresources.\n\n\nHow?\n----\n\nA class, `xqo:ExecutionModality` is introduced, and the most prominent\nmodalities are identified and introduced as classes in their own\nright.  Moreover, a class `xqo:OperationalVariant` is introduced,\nitself a subclass of `fibo-fbc-fi-fi:Future` to capture the\noperational contract (or chain, or synthesis) as a variant of the\noutright contract (or chain, or synthesis).  Then for each of the\nmodalities a variant is introduced, itself a subclass of\n`xqo:OperationalVariant` which is inferred if a resource states\n\n    R xqo:executedVia xqo:<Modality> .\n\n=>\n\n    R a xqo:<Modality>Variant .\n\nand, conversely:\n\n    R a xqo:<Modality>Variant .\n\n=>\n\n    R xqo:executedVia [\n            a xqo:<Modality> \n    ] .\n\n\nWhere?\n------\n\nThe [official github repository](https://github.com/ga-group/xqo/) contains the\npublished ontology.\n\nThe project's canonical home is <http://schema.ga-group.nl/xqo/>.\n"
+        "@value": "Overview\n--------\nThe exchange quirks ontology (xqo) provides vocabulary .\n\n\nWhy?\n----\n\nFIBO's official ontology (much like FIX) stop at exchange-specific\nimplementations, and instead refer to the possibility of extending the\nstandard unofficially as needed.  And while FIX covers pre-trade, FIBO\nis generally post-trade, and neither cover analytical workflows like\nuniverse selection, exchange selection, order type selection, etc.\n\n\nWhere?\n------\n\nThe [official github repository](https://github.com/ga-group/xqo/)\ncontains the published ontology.\n\nThe project's canonical home is <http://schema.ga-group.nl/xqo/>.\n"
       }
     ],
     "https://schema.org/license": [
@@ -443,55 +443,16 @@ td {
               <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
             </dt>
             <dd><h2>Overview</h2>
-<p>The exchange quirks ontology (xqo) provides vocabulary to classify and
-relate certain operational contract variants of exchange-listed
-derivatives.</p>
+<p>The exchange quirks ontology (xqo) provides vocabulary .</p>
 <h2>Why?</h2>
 <p>FIBO's official ontology (much like FIX) stop at exchange-specific
 implementations, and instead refer to the possibility of extending the
-standard unofficially as needed.</p>
-<p>Marker trading, in this case, calls for such an extension.
-Implemented as order type, or, more precise, as <em>execution modality</em>,
-marker trading bears no price formation burden, instead it uses
-(consumes) a price formed elsewhere.  As such, entry to the market
-without contributing to price discovery mandates an exit from the
-market without price discovery which now implies that such exposure
-must be tracked separately from the outright contract.  Exchanges
-solve this tracking problem via <em>operational</em> products: They clone the
-outright contract to create a variant that shares all the economic
-attributes of the "underlying" contract but allows for separate
-book-keeping of open interest.</p>
-<p>With this trick, future commission merchants (FCMs) need not change
-infrastructure on their end as the contract variant simply looks like
-another contract to them.  Data vendors, alas, are also oblivious to
-the cloning: Other than mentioning the "underlying" contract in the
-contract description these variants look and behave as separate
-resources.</p>
-<h2>How?</h2>
-<p>A class, <code>xqo:ExecutionModality</code> is introduced, and the most prominent
-modalities are identified and introduced as classes in their own
-right.  Moreover, a class <code>xqo:OperationalVariant</code> is introduced,
-itself a subclass of <code>fibo-fbc-fi-fi:Future</code> to capture the
-operational contract (or chain, or synthesis) as a variant of the
-outright contract (or chain, or synthesis).  Then for each of the
-modalities a variant is introduced, itself a subclass of
-<code>xqo:OperationalVariant</code> which is inferred if a resource states</p>
-<pre><code>R xqo:executedVia xqo:&lt;Modality&gt; .
-</code></pre>
-<p>=&gt;</p>
-<pre><code>R a xqo:&lt;Modality&gt;Variant .
-</code></pre>
-<p>and, conversely:</p>
-<pre><code>R a xqo:&lt;Modality&gt;Variant .
-</code></pre>
-<p>=&gt;</p>
-<pre><code>R xqo:executedVia [
-        a xqo:&lt;Modality&gt; 
-] .
-</code></pre>
+standard unofficially as needed.  And while FIX covers pre-trade, FIBO
+is generally post-trade, and neither cover analytical workflows like
+universe selection, exchange selection, order type selection, etc.</p>
 <h2>Where?</h2>
-<p>The <a href="https://github.com/ga-group/xqo/">official github repository</a> contains the
-published ontology.</p>
+<p>The <a href="https://github.com/ga-group/xqo/">official github repository</a>
+contains the published ontology.</p>
 <p>The project's canonical home is <a href="http://schema.ga-group.nl/xqo/">http://schema.ga-group.nl/xqo/</a>.</p></dd>
           </div>
           <div>
@@ -499,811 +460,17 @@ published ontology.</p>
               <a class="hover_property" href="http://www.w3.org/2002/07/owl#imports" title="The property that is used for importing other ontologies into a given ontology. Defined in The OWL 2 Schema vocabulary (OWL 2)">Imports</a>
             </dt>
             <dd>
-              <a href="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/">fibo-fbc-fi-fi:</a>
+              <ul>
+                <li>
+                  <a href="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/">fibo-fbc-fi-fi:</a>
+                </li>
+                <li>
+                  <a href="http://purl.org/nemo/gufo#">gufo:</a>
+                </li>
+              </ul>
             </dd>
           </div>
         </dl>
-      </div>
-      <div class="section" id="classes">
-        <h2>Classes</h2>
-        <div class="property entity" id="futurevariant">
-          <h3>future variant
-            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://schema.ga-group.nl/xqo/OperationalVariant</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
-              </th>
-              <td><p>A variant of a futures contract that inherits all of the economic attributes of the bare contract and only differs in operational ways.</p></td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#subClassOf" title="The subject is a subclass of a class. Defined in The RDF Schema vocabulary (RDFS)">Sub Class Of</a>
-              </th>
-              <td>
-                <a href="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/Future">fibo-fbc-fi-fi:Future</a>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2002/07/owl#equivalentClass" title="The property that determines that two given classes are equivalent, and that is used to specify datatype definitions. Defined in The OWL 2 Schema vocabulary (OWL 2)">Equivalentclass</a>
-              </th>
-              <td>
-                <span>
-                  <span>
-                    <span>
-                      <a href="#variantOf">variant of</a>
-                      <sup class="sup-op" title="OWL Object Property">op</sup>
-                    </span>
-                    <span>
-                      <span class="cardinality">min</span>
-                      <span>1</span>
-                    </span><br>
-                  </span>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="https://w3id.org/profile/ontdoc/inDomainOf" title="Inverse of rdfs:domain. Defined in Ontology Documentation Profile">In Domain Of</a>
-              </th>
-              <td>
-                <span>
-                  <a href="#variantOf">variant of</a>
-                  <sup class="sup-op" title="OWL Object Property">op</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="https://w3id.org/profile/ontdoc/superClassOf" title="Inverse of RDFS' subClassOf. Defined in Ontology Documentation Profile">Super Class Of</a>
-              </th>
-              <td>
-                <ul>
-                  <li>
-                    <span>
-                      <a href="#BTICVariant">BTIC variant</a>
-                      <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                    </span>
-                  </li>
-                  <li>
-                    <span>
-                      <a href="#TACOVariant">TACO variant</a>
-                      <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                    </span>
-                  </li>
-                  <li>
-                    <span>
-                      <a href="#TAICVariant">TAIC variant</a>
-                      <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                    </span>
-                  </li>
-                  <li>
-                    <span>
-                      <a href="#TALVariant">TAL variant</a>
-                      <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                    </span>
-                  </li>
-                  <li>
-                    <span>
-                      <a href="#TAMVariant">TAM variant</a>
-                      <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                    </span>
-                  </li>
-                  <li>
-                    <span>
-                      <a href="#TAMMVariant">TAMM variant</a>
-                      <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                    </span>
-                  </li>
-                  <li>
-                    <span>
-                      <a href="#TASVariant">TAS variant</a>
-                      <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                    </span>
-                  </li>
-                  <li>
-                    <span>
-                      <a href="#TMACVariant">TMAC variant</a>
-                      <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                    </span>
-                  </li>
-                </ul>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="executionmodality">
-          <h3>execution modality
-            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://schema.ga-group.nl/xqo/ExecutionModality</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
-              </th>
-              <td><p>A benchmark‑priced or rule‑driven mode by which a futures contract is entered or exited, where the execution price is determined not by the continuous limit order book but by a reference benchmark, auction process, or designated price‑formation rule.</p></td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="https://w3id.org/profile/ontdoc/inRangeOf" title="Inverse of rdfs:range. Defined in Ontology Documentation Profile">In Range Of</a>
-              </th>
-              <td>
-                <span>
-                  <a href="#executedVia">executed via</a>
-                  <sup class="sup-op" title="OWL Object Property">op</sup>
-                </span>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="BTIC">
-          <h3>BTIC
-            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://schema.ga-group.nl/xqo/BTIC</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
-              </th>
-              <td><p>Modality in which a futures trade is priced relative to the official closing value of an underlying (equity) index, using a negotiated basis applied to the index close to determine the final futures execution price.</p></td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="TACO">
-          <h3>TACO
-            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://schema.ga-group.nl/xqo/TACO</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
-              </th>
-              <td><p>Modality in which a futures trade is priced relative to the official opening value of the underlying (equity) index, using a negotiated basis applied to the cash‑market open to determine the final futures execution price.</p></td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="TAIC">
-          <h3>TAIC
-            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://schema.ga-group.nl/xqo/TAIC</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
-              </th>
-              <td><p>Modality in which a futures trade is priced relative to the official closing value of the underlying index without a basis applied to the index close to determine the final futures execution price.</p></td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="TAL">
-          <h3>TAL
-            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://schema.ga-group.nl/xqo/TAL</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
-              </th>
-              <td><p>Modality in which a futures trade is priced at the last traded price prior to the TAL execution window.</p></td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="TAM">
-          <h3>TAM
-            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://schema.ga-group.nl/xqo/TAM</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
-              </th>
-              <td><p>Modality in which a futures trade is priced at a session marker.</p></td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2004/02/skos/core#scopeNote" title="A note that helps to clarify the meaning and/or the use of a concept. Defined in SKOS Vocabulary">Scope Note</a>
-              </th>
-              <td><p>It is either unambigious which marker is referenced, for example if the trading venue only publishes a single session marker, or TAM markers are indistinguishable, and the combination of base contract plus marker type is not unique.</p>
-<p>If one needs to uphold the uniqueness of base contract and marker type, or distinguish several TAM markers specifically they should be introduced as subclasses of xqo:TAM.</p></td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="TAMM">
-          <h3>TAMM
-            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://schema.ga-group.nl/xqo/TAMM</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
-              </th>
-              <td><p>Modality in which a futures trade is priced at a morning session's marker.</p></td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="TAS">
-          <h3>TAS
-            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://schema.ga-group.nl/xqo/TAS</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
-              </th>
-              <td><p>Modality in which a futures trade is priced at the official settlement price of the contract, optionally adjusted by a negotiated tick offset.</p></td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="TMAC">
-          <h3>TMAC
-            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://schema.ga-group.nl/xqo/TMAC</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
-              </th>
-              <td><p>Modality in which a futures trade is priced at the closing‑auction marker.</p></td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="BTICVariant">
-          <h3>BTIC variant
-            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://schema.ga-group.nl/xqo/BTICVariant</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
-              </th>
-              <td><p>Operational contract variant that uses the basis-trade-at-index-close execution modality.</p></td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#subClassOf" title="The subject is a subclass of a class. Defined in The RDF Schema vocabulary (RDFS)">Sub Class Of</a>
-              </th>
-              <td>
-                <span>
-                  <a href="#futurevariant">future variant</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2002/07/owl#equivalentClass" title="The property that determines that two given classes are equivalent, and that is used to specify datatype definitions. Defined in The OWL 2 Schema vocabulary (OWL 2)">Equivalentclass</a>
-              </th>
-              <td>
-                <span>
-                  <span>
-                    <span>
-                      <a href="#executedVia">executed via</a>
-                      <sup class="sup-op" title="OWL Object Property">op</sup>
-                    </span>
-                    <span>
-                      <span class="cardinality">some</span>
-                      <span>
-                        <span>
-                          <a href="#BTIC">BTIC</a>
-                          <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                        </span>
-                      </span>
-                    </span><br>
-                  </span>
-                </span>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="TACOVariant">
-          <h3>TACO variant
-            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://schema.ga-group.nl/xqo/TACOVariant</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
-              </th>
-              <td><p>Operational contract variant that uses the trade-at-cash-open execution modality.</p></td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#subClassOf" title="The subject is a subclass of a class. Defined in The RDF Schema vocabulary (RDFS)">Sub Class Of</a>
-              </th>
-              <td>
-                <span>
-                  <a href="#futurevariant">future variant</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2002/07/owl#equivalentClass" title="The property that determines that two given classes are equivalent, and that is used to specify datatype definitions. Defined in The OWL 2 Schema vocabulary (OWL 2)">Equivalentclass</a>
-              </th>
-              <td>
-                <span>
-                  <span>
-                    <span>
-                      <a href="#executedVia">executed via</a>
-                      <sup class="sup-op" title="OWL Object Property">op</sup>
-                    </span>
-                    <span>
-                      <span class="cardinality">some</span>
-                      <span>
-                        <span>
-                          <a href="#TACO">TACO</a>
-                          <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                        </span>
-                      </span>
-                    </span><br>
-                  </span>
-                </span>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="TAICVariant">
-          <h3>TAIC variant
-            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://schema.ga-group.nl/xqo/TAICVariant</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
-              </th>
-              <td><p>Operational contract variant that uses the trade-at-index-close execution modality.</p></td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#subClassOf" title="The subject is a subclass of a class. Defined in The RDF Schema vocabulary (RDFS)">Sub Class Of</a>
-              </th>
-              <td>
-                <span>
-                  <a href="#futurevariant">future variant</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2002/07/owl#equivalentClass" title="The property that determines that two given classes are equivalent, and that is used to specify datatype definitions. Defined in The OWL 2 Schema vocabulary (OWL 2)">Equivalentclass</a>
-              </th>
-              <td>
-                <span>
-                  <span>
-                    <span>
-                      <a href="#executedVia">executed via</a>
-                      <sup class="sup-op" title="OWL Object Property">op</sup>
-                    </span>
-                    <span>
-                      <span class="cardinality">some</span>
-                      <span>
-                        <span>
-                          <a href="#TAIC">TAIC</a>
-                          <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                        </span>
-                      </span>
-                    </span><br>
-                  </span>
-                </span>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="TALVariant">
-          <h3>TAL variant
-            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://schema.ga-group.nl/xqo/TALVariant</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
-              </th>
-              <td><p>Operational contract variant that uses the trade-at-last execution modality.</p></td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#subClassOf" title="The subject is a subclass of a class. Defined in The RDF Schema vocabulary (RDFS)">Sub Class Of</a>
-              </th>
-              <td>
-                <span>
-                  <a href="#futurevariant">future variant</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2002/07/owl#equivalentClass" title="The property that determines that two given classes are equivalent, and that is used to specify datatype definitions. Defined in The OWL 2 Schema vocabulary (OWL 2)">Equivalentclass</a>
-              </th>
-              <td>
-                <span>
-                  <span>
-                    <span>
-                      <a href="#executedVia">executed via</a>
-                      <sup class="sup-op" title="OWL Object Property">op</sup>
-                    </span>
-                    <span>
-                      <span class="cardinality">some</span>
-                      <span>
-                        <span>
-                          <a href="#TAL">TAL</a>
-                          <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                        </span>
-                      </span>
-                    </span><br>
-                  </span>
-                </span>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="TAMVariant">
-          <h3>TAM variant
-            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://schema.ga-group.nl/xqo/TAMVariant</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
-              </th>
-              <td><p>Operational contract variant that uses the trade-at-marker execution modality.</p></td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#subClassOf" title="The subject is a subclass of a class. Defined in The RDF Schema vocabulary (RDFS)">Sub Class Of</a>
-              </th>
-              <td>
-                <span>
-                  <a href="#futurevariant">future variant</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2002/07/owl#equivalentClass" title="The property that determines that two given classes are equivalent, and that is used to specify datatype definitions. Defined in The OWL 2 Schema vocabulary (OWL 2)">Equivalentclass</a>
-              </th>
-              <td>
-                <span>
-                  <span>
-                    <span>
-                      <a href="#executedVia">executed via</a>
-                      <sup class="sup-op" title="OWL Object Property">op</sup>
-                    </span>
-                    <span>
-                      <span class="cardinality">some</span>
-                      <span>
-                        <span>
-                          <a href="#TAM">TAM</a>
-                          <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                        </span>
-                      </span>
-                    </span><br>
-                  </span>
-                </span>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="TAMMVariant">
-          <h3>TAMM variant
-            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://schema.ga-group.nl/xqo/TAMMVariant</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
-              </th>
-              <td><p>Operational contract variant that used the trade-at-morning-marker execution modality.</p></td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#subClassOf" title="The subject is a subclass of a class. Defined in The RDF Schema vocabulary (RDFS)">Sub Class Of</a>
-              </th>
-              <td>
-                <span>
-                  <a href="#futurevariant">future variant</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2002/07/owl#equivalentClass" title="The property that determines that two given classes are equivalent, and that is used to specify datatype definitions. Defined in The OWL 2 Schema vocabulary (OWL 2)">Equivalentclass</a>
-              </th>
-              <td>
-                <span>
-                  <span>
-                    <span>
-                      <a href="#executedVia">executed via</a>
-                      <sup class="sup-op" title="OWL Object Property">op</sup>
-                    </span>
-                    <span>
-                      <span class="cardinality">some</span>
-                      <span>
-                        <span>
-                          <a href="#TAMM">TAMM</a>
-                          <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                        </span>
-                      </span>
-                    </span><br>
-                  </span>
-                </span>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="TASVariant">
-          <h3>TAS variant
-            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://schema.ga-group.nl/xqo/TASVariant</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
-              </th>
-              <td><p>Operational contract variant that uses the trade-at-settlement execution modality.</p></td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#subClassOf" title="The subject is a subclass of a class. Defined in The RDF Schema vocabulary (RDFS)">Sub Class Of</a>
-              </th>
-              <td>
-                <span>
-                  <a href="#futurevariant">future variant</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2002/07/owl#equivalentClass" title="The property that determines that two given classes are equivalent, and that is used to specify datatype definitions. Defined in The OWL 2 Schema vocabulary (OWL 2)">Equivalentclass</a>
-              </th>
-              <td>
-                <span>
-                  <span>
-                    <span>
-                      <a href="#executedVia">executed via</a>
-                      <sup class="sup-op" title="OWL Object Property">op</sup>
-                    </span>
-                    <span>
-                      <span class="cardinality">some</span>
-                      <span>
-                        <span>
-                          <a href="#TAS">TAS</a>
-                          <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                        </span>
-                      </span>
-                    </span><br>
-                  </span>
-                </span>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="TMACVariant">
-          <h3>TMAC variant
-            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://schema.ga-group.nl/xqo/TMACVariant</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
-              </th>
-              <td><p>Operational contract variant that uses the trade-marker-at-close execution modality.</p></td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#subClassOf" title="The subject is a subclass of a class. Defined in The RDF Schema vocabulary (RDFS)">Sub Class Of</a>
-              </th>
-              <td>
-                <span>
-                  <a href="#futurevariant">future variant</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2002/07/owl#equivalentClass" title="The property that determines that two given classes are equivalent, and that is used to specify datatype definitions. Defined in The OWL 2 Schema vocabulary (OWL 2)">Equivalentclass</a>
-              </th>
-              <td>
-                <span>
-                  <span>
-                    <span>
-                      <a href="#executedVia">executed via</a>
-                      <sup class="sup-op" title="OWL Object Property">op</sup>
-                    </span>
-                    <span>
-                      <span class="cardinality">some</span>
-                      <span>
-                        <span>
-                          <a href="#TMAC">TMAC</a>
-                          <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                        </span>
-                      </span>
-                    </span><br>
-                  </span>
-                </span>
-              </td>
-            </tr>
-          </table>
-        </div>
-      </div>
-      <div class="section" id="objectproperties">
-        <h2>Object Properties</h2>
-        <div class="property entity" id="variantOf">
-          <h3>variant of
-            <sup class="sup-op" title="OWL Object Property">op</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://schema.ga-group.nl/xqo/variantOf</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
-              </th>
-              <td><p>Links an operational futures variant to its outright contract.</p></td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
-              </th>
-              <td>
-                <span>
-                  <a href="#futurevariant">future variant</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="executedVia">
-          <h3>executed via
-            <sup class="sup-op" title="OWL Object Property">op</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://schema.ga-group.nl/xqo/executedVia</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
-              </th>
-              <td><p>Links a futures variant to the execution modality that is used to enter or exit a position.</p></td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
-              </th>
-              <td>
-                <span>
-                  <a href="#executionmodality">execution modality</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-          </table>
-        </div>
       </div>
       <div class="section" id="datatypeproperties">
         <h2>Datatype Properties</h2>
@@ -1338,6 +505,14 @@ noughties (2004-12) equals the Z4 of the twenties (2024-12).  Use
 datatype or an ISO 8601 notation, use raw strings in those cases
 (e.g. "2006-Winter", "2010-Season-2", etc.)</p>
 <p>The exchange discriminator can be captured by xqo:discriminator.</p></td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
+              </th>
+              <td>
+                <a href="http://www.w3.org/2000/01/rdf-schema#Literal">Literal</a>
+              </td>
             </tr>
           </table>
         </div>
@@ -1374,6 +549,130 @@ datatype or an ISO 8601 notation, use raw strings in those cases
             </tr>
           </table>
         </div>
+        <div class="property entity" id="symbol">
+          <h3>symbol
+            <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>http://schema.ga-group.nl/xqo/symbol</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
+              </th>
+              <td><p>Relates a product or contract specification to the exchange's symbol code used for identifying it.</p></td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="https://w3id.org/profile/ontdoc/superPropertyOf" title="Inverse of RDFS' subPropertyOf. Defined in Ontology Documentation Profile">Super Property Of</a>
+              </th>
+              <td>
+                <ul>
+                  <li>
+                    <span>
+                      <a href="#logicalCode">xqo:logicalCode</a>
+                      <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
+                    </span>
+                  </li>
+                  <li>
+                    <span>
+                      <a href="#physicalCode">xqo:physicalCode</a>
+                      <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
+                    </span>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
+              </th>
+              <td>
+                <a href="http://www.w3.org/2000/01/rdf-schema#Literal">Literal</a>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="logicalCode">
+          <h3>logical code
+            <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>http://schema.ga-group.nl/xqo/logicalCode</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
+              </th>
+              <td><p>Relates a contract specification to its logical code, thereby roughly identifying a contract family.  Used for ICE products.</p></td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#subPropertyOf" title="The subject is a subproperty of a property. Defined in The RDF Schema vocabulary (RDFS)">Sub Property Of</a>
+              </th>
+              <td>
+                <span>
+                  <a href="#symbol">symbol</a>
+                  <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
+              </th>
+              <td>
+                <a href="http://www.w3.org/2000/01/rdf-schema#Literal">Literal</a>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="physicalCode">
+          <h3>physical code
+            <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>http://schema.ga-group.nl/xqo/physicalCode</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
+              </th>
+              <td><p>Relates a product or contract specification to its physical code, thereby identifying a concrete tradable listing.  Used for ICE products.</p></td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#subPropertyOf" title="The subject is a subproperty of a property. Defined in The RDF Schema vocabulary (RDFS)">Sub Property Of</a>
+              </th>
+              <td>
+                <span>
+                  <a href="#symbol">symbol</a>
+                  <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
+              </th>
+              <td>
+                <a href="http://www.w3.org/2000/01/rdf-schema#Literal">Literal</a>
+              </td>
+            </tr>
+          </table>
+        </div>
       </div>
       <div id="namespaces">
         <h2>Namespaces</h2>
@@ -1393,6 +692,10 @@ datatype or an ISO 8601 notation, use raw strings in those cases
           <dt id="fibo-fbc-fi-fi">fibo-fbc-fi-fi</dt>
           <dd>
             <code>https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/</code>
+          </dd>
+          <dt id="gufo">gufo</dt>
+          <dd>
+            <code>http://purl.org/nemo/gufo#</code>
           </dd>
           <dt id="owl">owl</dt>
           <dd>
@@ -1425,18 +728,6 @@ datatype or an ISO 8601 notation, use raw strings in those cases
         <table class="entity">
           <tr>
             <td>
-              <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-            </td>
-            <td>Classes</td>
-          </tr>
-          <tr>
-            <td>
-              <sup class="sup-op" title="OWL Object Property">op</sup>
-            </td>
-            <td>Object Properties</td>
-          </tr>
-          <tr>
-            <td>
               <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
             </td>
             <td>Datatype Properties</td>
@@ -1467,80 +758,6 @@ datatype or an ISO 8601 notation, use raw strings in those cases
         </li>
         <li>
           <h4>
-            <a href="#classes">Classes</a>
-          </h4>
-          <ul class="second">
-            <li>
-              <a href="#futurevariant">future variant</a>
-            </li>
-            <li>
-              <a href="#executionmodality">execution modality</a>
-            </li>
-            <li>
-              <a href="#BTIC">BTIC</a>
-            </li>
-            <li>
-              <a href="#TACO">TACO</a>
-            </li>
-            <li>
-              <a href="#TAIC">TAIC</a>
-            </li>
-            <li>
-              <a href="#TAL">TAL</a>
-            </li>
-            <li>
-              <a href="#TAM">TAM</a>
-            </li>
-            <li>
-              <a href="#TAMM">TAMM</a>
-            </li>
-            <li>
-              <a href="#TAS">TAS</a>
-            </li>
-            <li>
-              <a href="#TMAC">TMAC</a>
-            </li>
-            <li>
-              <a href="#BTICVariant">BTIC variant</a>
-            </li>
-            <li>
-              <a href="#TACOVariant">TACO variant</a>
-            </li>
-            <li>
-              <a href="#TAICVariant">TAIC variant</a>
-            </li>
-            <li>
-              <a href="#TALVariant">TAL variant</a>
-            </li>
-            <li>
-              <a href="#TAMVariant">TAM variant</a>
-            </li>
-            <li>
-              <a href="#TAMMVariant">TAMM variant</a>
-            </li>
-            <li>
-              <a href="#TASVariant">TAS variant</a>
-            </li>
-            <li>
-              <a href="#TMACVariant">TMAC variant</a>
-            </li>
-          </ul>
-        </li>
-        <li>
-          <h4>
-            <a href="#objectproperties">Object Properties</a>
-          </h4>
-          <ul class="second">
-            <li>
-              <a href="#variantOf">variant of</a>
-            </li>
-            <li>
-              <a href="#executedVia">executed via</a>
-            </li>
-          </ul>
-        </li>
-        <li>
-          <h4>
             <a href="#datatypeproperties">Datatype Properties</a>
           </h4>
           <ul class="second">
@@ -1549,6 +766,15 @@ datatype or an ISO 8601 notation, use raw strings in those cases
             </li>
             <li>
               <a href="#discriminator">discriminator</a>
+            </li>
+            <li>
+              <a href="#symbol">symbol</a>
+            </li>
+            <li>
+              <a href="#logicalCode">logical code</a>
+            </li>
+            <li>
+              <a href="#physicalCode">physical code</a>
             </li>
           </ul>
         </li>
@@ -1568,6 +794,9 @@ datatype or an ISO 8601 notation, use raw strings in those cases
             </li>
             <li>
               <a href="#fibo-fbc-fi-fi">fibo-fbc-fi-fi</a>
+            </li>
+            <li>
+              <a href="#gufo">gufo</a>
             </li>
             <li>
               <a href="#owl">owl</a>

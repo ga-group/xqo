@@ -1,0 +1,357 @@
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix fibo-fbc-fi-fi: <https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/> .
+@prefix gufo: <http://purl.org/nemo/gufo#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix pav: <http://purl.org/pav/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix swrl: <http://www.w3.org/2003/11/swrl#> .
+@prefix tempo: <http://purl.org/tempo/> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix xqo: <http://schema.ga-group.nl/xqo/> .
+@prefix xqo-xm: <http://schema.ga-group.nl/xqo/xm/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+
+#################################################################
+# Ontology header
+#################################################################
+
+xqo-xm:
+	a	owl:Ontology ;
+	dc:abstract	"""xqo-xm is an xqo module that captures execution modalities."""@en ;
+	dc:creator	"Sebastian Freundt"^^xsd:string ;
+	dc:description	"""Overview
+--------
+The exchange quirks ontology (xqo) execution modality (xm) module
+provides vocabulary to classify and relate certain operational
+contract variants of exchange-listed derivatives.
+
+
+Why?
+----
+
+FIBO's official ontology (much like FIX) stop at exchange-specific
+implementations, and instead refer to the possibility of extending the
+standard unofficially as needed.
+
+Marker trading, in this case, calls for such an extension.
+Implemented as order type, or, more precise, as *execution modality*,
+marker trading bears no price formation burden, instead it uses
+(consumes) a price formed elsewhere.  As such, entry to the market
+without contributing to price discovery mandates an exit from the
+market without price discovery which now implies that such exposure
+must be tracked separately from the outright contract.  Exchanges
+solve this tracking problem via *operational* products: They clone the
+outright contract to create a variant that shares all the economic
+attributes of the "underlying" contract but allows for separate
+book-keeping of open interest.
+
+With this trick, future commission merchants (FCMs) need not change
+infrastructure on their end as the contract variant simply looks like
+another contract to them.  Data vendors, alas, are also oblivious to
+the cloning: Other than mentioning the "underlying" contract in the
+contract description these variants look and behave as separate
+resources.
+
+
+How?
+----
+
+A class, `xqo-xm:ExecutionModality` is introduced, and the most
+prominent modalities are identified and introduced as classes in their
+own right.  Moreover, a class `xqo-xm:OperationalVariant` is
+introduced, itself a subclass of `gufo:Role` to capture the
+operational contract (or chain, or synthesis) as a variant of the
+outright contract (or chain, or synthesis).  Then for each of the
+modalities a variant is introduced, itself a subclass of
+`xqo-xm:OperationalVariant` which is inferred if a resource states
+
+    R xqo-xm:executedVia xqo-xm:<Modality> .
+
+=>
+
+    R a xqo-xm:<Modality>Variant .
+
+and, conversely:
+
+    R a xqo-xm:<Modality>Variant .
+
+=>
+
+    R xqo-xm:executedVia [
+            a xqo-xm:<Modality> 
+    ] .
+
+
+Anything else?
+--------------
+
+This ontology is part of [xqo](http://schema.ga-group.nl/xqo/),
+([official github repository](https://github.com/ga-group/xqo/)).
+
+The module's canonical home is <http://schema.ga-group.nl/xqo/xm/>.
+"""@en ;
+	dcat:downloadURL	<http://schema.ga-group.nl/xqo/xm/rdf> , <http://schema.ga-group.nl/xqo/xm/ttl> ;
+	dct:creator	<https://orcid.org/0000-0002-7352-2825> ;
+	dct:format	"text/turtle"^^xsd:string ;
+	dct:issued	"2026-10-01T05:00:00Z"^^xsd:dateTime ;
+	dct:language	"en"^^xsd:language ;
+	dct:license	<https://creativecommons.org/licenses/by-sa/4.0/> ;
+	dct:modified	"2026-10-01T05:00:00Z"^^xsd:dateTime ;
+	dct:publisher	<https://orcid.org/0000-0002-7352-2825> ;
+	dct:title	"xqo-xm -- execution modalities" ;
+	owl:imports	fibo-fbc-fi-fi: , gufo: ;
+	owl:versionIRI	<http://schema.ga-group.nl/xqo/0.1/xm/> ;
+	owl:versionInfo	"0.1"^^xsd:string ;
+	rdfs:label	"xqo-xm"@en ;
+	rdfs:seeAlso	<https://github.com/ga-group/xqo> ;
+	vann:preferredNamespacePrefix	"xqo-xm"^^xsd:string ;
+	vann:preferredNamespaceUri	"http://schema.ga-group.nl/xqo/xm/" .
+
+#################################################################
+# Classes
+#################################################################
+
+xqo-xm:OperationalVariant
+	a	owl:Class ;
+	owl:equivalentClass	[
+		a	owl:Restriction ;
+		owl:onProperty	xqo-xm:variantOf ;
+		owl:minCardinality	"1"^^xsd:nonNegativeInteger ;
+	] ;
+	rdfs:comment	"A variant of a futures contract that inherits all of the economic attributes of the bare contract and only differs in operational ways."@en ;
+	rdfs:label	"future variant"@en ;
+	rdfs:subClassOf	gufo:Role ;
+	skos:editorialNote	"""This class isn't subclass of any particular thing involving """@en .
+
+xqo-xm:ExecutionModality
+	a	owl:Class ;
+	rdfs:comment	"A benchmark‑priced or rule‑driven mode by which a futures contract is entered or exited, where the execution price is determined not by the continuous limit order book but by a reference benchmark, auction process, or designated price‑formation rule."@en ;
+	rdfs:label	"execution modality"@en .
+
+xqo-xm:BTIC
+	a	owl:Class ;
+	a	xqo-xm:ExecutionModality , xqo-xm:BTIC ;
+	rdfs:comment	"Modality in which a futures trade is priced relative to the official closing value of an underlying (equity) index, using a negotiated basis applied to the index close to determine the final futures execution price."@en ;
+	rdfs:label	"BTIC"@en ;
+	skos:editorialNote	"type-punning is used to allow users to either generically reference the execution modality, or to create their own subclasses, possibly encoding further exchange-specific details"@en .
+
+xqo-xm:TACO
+	a	owl:Class ;
+	a	xqo-xm:ExecutionModality , xqo-xm:TACO ;
+	rdfs:comment	"Modality in which a futures trade is priced relative to the official opening value of the underlying (equity) index, using a negotiated basis applied to the cash‑market open to determine the final futures execution price."@en ;
+	rdfs:label	"TACO"@en ;
+	skos:editorialNote	"type-punning is used to allow users to either generically reference the execution modality, or to create their own subclasses, possibly encoding further exchange-specific details"@en .
+
+xqo-xm:TAIC
+	a	owl:Class ;
+	a	xqo-xm:ExecutionModality , xqo-xm:TAIC ;
+	rdfs:comment	"Modality in which a futures trade is priced relative to the official closing value of the underlying index without a basis applied to the index close to determine the final futures execution price."@en ;
+	rdfs:label	"TAIC"@en ;
+	skos:editorialNote	"type-punning is used to allow users to either generically reference the execution modality, or to create their own subclasses, possibly encoding further exchange-specific details"@en .
+
+xqo-xm:TAL
+	a	owl:Class ;
+	a	xqo-xm:ExecutionModality , xqo-xm:TAL ;
+	rdfs:comment	"Modality in which a futures trade is priced at the last traded price prior to the TAL execution window."@en ;
+	rdfs:label	"TAL"@en ;
+	skos:editorialNote	"type-punning is used to allow users to either generically reference the execution modality, or to create their own subclasses, possibly encoding further exchange-specific details"@en .
+
+xqo-xm:TAM
+	a	owl:Class ;
+	a	xqo-xm:ExecutionModality , xqo-xm:TAM ;
+	rdfs:comment	"Modality in which a futures trade is priced at a session marker."@en ;
+	rdfs:label	"TAM"@en ;
+	skos:editorialNote	"type-punning is used to allow users to either generically reference the execution modality, or to create their own subclasses, possibly encoding further exchange-specific details"@en ;
+	skos:scopeNote	"""It is either unambigious which marker is referenced, for example if the trading venue only publishes a single session marker, or TAM markers are indistinguishable, and the combination of base contract plus marker type is not unique.
+
+If one needs to uphold the uniqueness of base contract and marker type, or distinguish several TAM markers specifically they should be introduced as subclasses of xqo-xm:TAM."""@en .
+
+xqo-xm:TAMM
+	a	owl:Class ;
+	a	xqo-xm:ExecutionModality , xqo-xm:TAMM ;
+	rdfs:comment	"Modality in which a futures trade is priced at a morning session's marker."@en ;
+	rdfs:label	"TAMM"@en ;
+	skos:editorialNote	"type-punning is used to allow users to either generically reference the execution modality, or to create their own subclasses, possibly encoding further exchange-specific details"@en .
+
+xqo-xm:TAS
+	a	owl:Class ;
+	a	xqo-xm:ExecutionModality , xqo-xm:TAS ;
+	rdfs:comment	"Modality in which a futures trade is priced at the official settlement price of the contract, optionally adjusted by a negotiated tick offset."@en ;
+	rdfs:label	"TAS"@en ;
+	skos:editorialNote	"type-punning is used to allow users to either generically reference the execution modality, or to create their own subclasses, possibly encoding further exchange-specific details"@en .
+
+xqo-xm:TMAC
+	a	owl:Class ;
+	a	xqo-xm:ExecutionModality , xqo-xm:TMAC ;
+	rdfs:comment	"Modality in which a futures trade is priced at the closing‑auction marker."@en ;
+	rdfs:label	"TMAC"@en ;
+	skos:editorialNote	"type-punning is used to allow users to either generically reference the execution modality, or to create their own subclasses, possibly encoding further exchange-specific details"@en .
+
+
+xqo-xm:BTICVariant
+	a	owl:Class ;
+	owl:equivalentClass	[
+		a	owl:Restriction ;
+		owl:onProperty	xqo-xm:executedVia ;
+		owl:someValuesFrom	xqo-xm:BTIC ;
+	] ;
+	rdfs:comment	"Operational contract variant that uses the basis-trade-at-index-close execution modality."@en ;
+	rdfs:label	"BTIC variant"@en ;
+	rdfs:subClassOf	xqo-xm:OperationalVariant .
+
+xqo-xm:TACOVariant
+	a	owl:Class ;
+	owl:equivalentClass	[
+		a	owl:Restriction ;
+		owl:onProperty	xqo-xm:executedVia ;
+		owl:someValuesFrom	xqo-xm:TACO ;
+	] ;
+	rdfs:comment	"Operational contract variant that uses the trade-at-cash-open execution modality."@en ;
+	rdfs:label	"TACO variant"@en ;
+	rdfs:subClassOf	xqo-xm:OperationalVariant .
+
+xqo-xm:TAICVariant
+	a	owl:Class ;
+	owl:equivalentClass	[
+		a	owl:Restriction ;
+		owl:onProperty	xqo-xm:executedVia ;
+		owl:someValuesFrom	xqo-xm:TAIC ;
+	] ;
+	rdfs:comment	"Operational contract variant that uses the trade-at-index-close execution modality."@en ;
+	rdfs:label	"TAIC variant"@en ;
+	rdfs:subClassOf	xqo-xm:OperationalVariant .
+
+xqo-xm:TALVariant
+	a	owl:Class ;
+	owl:equivalentClass	[
+		a	owl:Restriction ;
+		owl:onProperty	xqo-xm:executedVia ;
+		owl:someValuesFrom	xqo-xm:TAL ;
+	] ;
+	rdfs:comment	"Operational contract variant that uses the trade-at-last execution modality."@en ;
+	rdfs:label	"TAL variant"@en ;
+	rdfs:subClassOf	xqo-xm:OperationalVariant .
+
+xqo-xm:TAMVariant
+	a	owl:Class ;
+	owl:equivalentClass	[
+		a	owl:Restriction ;
+		owl:onProperty	xqo-xm:executedVia ;
+		owl:someValuesFrom	xqo-xm:TAM ;
+	] ;
+	rdfs:comment	"Operational contract variant that uses the trade-at-marker execution modality."@en ;
+	rdfs:label	"TAM variant"@en ;
+	rdfs:subClassOf	xqo-xm:OperationalVariant .
+
+xqo-xm:TAMMVariant
+	a	owl:Class ;
+	owl:equivalentClass	[
+		a	owl:Restriction ;
+		owl:onProperty	xqo-xm:executedVia ;
+		owl:someValuesFrom	xqo-xm:TAMM ;
+	] ;
+	rdfs:comment	"Operational contract variant that used the trade-at-morning-marker execution modality."@en ;
+	rdfs:label	"TAMM variant"@en ;
+	rdfs:subClassOf	xqo-xm:OperationalVariant .
+
+xqo-xm:TASVariant
+	a	owl:Class ;
+	owl:equivalentClass	[
+		a	owl:Restriction ;
+		owl:onProperty	xqo-xm:executedVia ;
+		owl:someValuesFrom	xqo-xm:TAS ;
+	] ;
+	rdfs:comment	"Operational contract variant that uses the trade-at-settlement execution modality."@en ;
+	rdfs:label	"TAS variant"@en ;
+	rdfs:subClassOf	xqo-xm:OperationalVariant .
+
+xqo-xm:TMACVariant
+	a	owl:Class ;
+	owl:equivalentClass	[
+		a	owl:Restriction ;
+		owl:onProperty	xqo-xm:executedVia ;
+		owl:someValuesFrom	xqo-xm:TMAC ;
+	] ;
+	rdfs:comment	"Operational contract variant that uses the trade-marker-at-close execution modality."@en ;
+	rdfs:label	"TMAC variant"@en ;
+	rdfs:subClassOf	xqo-xm:OperationalVariant .
+
+#################################################################
+# Object Properties
+#################################################################
+
+xqo-xm:variantOf
+	a	owl:ObjectProperty ;
+	rdfs:comment	"Links an operational futures variant to its outright contract."@en ;
+	rdfs:domain	xqo-xm:OperationalVariant ;
+	rdfs:label	"variant of"@en ;
+	rdfs:subPropertyOf	gufo:isDerivedFrom .
+
+xqo-xm:executedVia
+	a	owl:ObjectProperty ;
+	rdfs:comment	"Links a futures variant to the execution modality that is used to enter or exit a position."@en ;
+	rdfs:label	"executed via"@en ;
+	rdfs:range	xqo-xm:ExecutionModality .
+
+
+#################################################################
+# Datatype Properties
+#################################################################
+
+
+
+#################################################################
+# Examples
+#################################################################
+
+#<http://example.com/cme/CLZ2>
+#	a	fibo-fbc-fi-fi:Future ;
+#	rdfs:label	"CLZ2" ;
+#	xqo:discriminator	"Z2" ;
+#	xqo:ordinal	"2022-12"^^xsd:gYearMonth .
+#
+#<http://example.com/cme/CLTZ2>
+#	a	xqo-xm:TASVariant ;
+#	rdfs:label	"CLTZ2" ;
+#	xqo:discriminator	"Z2" ;
+#	xqo:ordinal	"2022-12"^^xsd:gYearMonth ;
+#	xqo-xm:variantOf	<http://example.com/cme/CLZ2> .
+#
+#<http://example.com/cme/CLmmZ2>
+#	rdfs:label	"CLTZ2" ;
+#	xqo-xm:executedVia	xqo-xm:TAMM ;
+#	xqo:discriminator	"Z2" ;
+#	xqo:ordinal	"2022-12"^^xsd:gYearMonth ;
+#	xqo-xm:variantOf	<http://example.com/cme/CLZ2> .
+
+xqo-xm:CME_TAMM
+	a	xqo-xm:TAMM .
+
+#<http://example.com/cme/DAmmZ2>
+#	rdfs:label	"DAmmZ2" ;
+#	xqo-xm:executedVia	xqo-xm:CME_TAMM ;
+#	xqo:discriminator	"Z2" ;
+#	xqo:ordinal	"2022-12"^^xsd:gYearMonth ;
+#	xqo-xm:variantOf	<http://example.com/cme/CLZ2> .
+#
+#<http://example.com/cme/DAmmH3>
+#	a	xqo-xm:OperationalVariant ;
+#	rdfs:label	"DAmmH3" ;
+#	xqo-xm:executedVia	xqo-xm:CME_TAMM ;
+#	xqo:discriminator	"H3" ;
+#	xqo:ordinal	"2023-03"^^xsd:gYearMonth ;
+#	xqo-xm:variantOf	<http://example.com/cme/CLZ2> .
+#
+#<http://example.com/cme/DAmmM3>
+#	a	xqo-xm:OperationalVariant ;
+#	a	xqo-xm:TAMMVariant ;
+#	rdfs:label	"DAmmM3" ;
+#	xqo:discriminator	"M3" ;
+#	xqo:ordinal	"2023-06"^^xsd:gYearMonth ;
+#	xqo-xm:variantOf	<http://example.com/cme/CLZ2> .
