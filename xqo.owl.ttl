@@ -1,7 +1,6 @@
 @prefix dc: <http://purl.org/dc/elements/1.1/> .
 @prefix dcat: <http://www.w3.org/ns/dcat#> .
 @prefix dct: <http://purl.org/dc/terms/> .
-@prefix fibo-fbc-fi-fi: <https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/> .
 @prefix gufo: <http://purl.org/nemo/gufo#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix pav: <http://purl.org/pav/> .
@@ -56,7 +55,7 @@ The project's canonical home is <http://schema.ga-group.nl/xqo/>.
 	dct:modified	"2026-10-01T05:00:00Z"^^xsd:dateTime ;
 	dct:publisher	<https://orcid.org/0000-0002-7352-2825> ;
 	dct:title	"xqo -- exchange quirks ontology" ;
-	owl:imports	fibo-fbc-fi-fi: , gufo: ;
+	owl:imports	gufo: ;
 	owl:versionIRI	<http://schema.ga-group.nl/xqo/0.1/> ;
 	owl:versionInfo	"0.1"^^xsd:string ;
 	rdfs:label	"xqo"@en ;
@@ -105,25 +104,11 @@ xqo:discriminator
 	rdfs:range	rdfs:Literal ;
 	skos:scopeNote	"The discriminator can also be captured in a canonical (ordinal) way by xqo:ordinal."@en .
 
-## on specs
-
 xqo:symbol
 	a	owl:DatatypeProperty ;
 	rdfs:comment	"Relates a product or contract specification to the exchange's symbol code used for identifying it."@en ;
 	rdfs:label	"symbol"@en ;
 	rdfs:range	rdfs:Literal .
-
-xqo:logicalCode
-	a	owl:DatatypeProperty ;
-	rdfs:comment	"Relates a contract specification to its logical code, thereby roughly identifying a contract family.  Used for ICE products."@en ;
-	rdfs:range	rdfs:Literal ;
-	rdfs:subPropertyOf	xqo:symbol .
-
-xqo:physicalCode
-	a	owl:DatatypeProperty ;
-	rdfs:comment	"Relates a product or contract specification to its physical code, thereby identifying a concrete tradable listing.  Used for ICE products."@en ;;
-	rdfs:range	rdfs:Literal ;
-	rdfs:subPropertyOf	xqo:symbol .
 
 
 #################################################################

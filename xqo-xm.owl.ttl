@@ -296,6 +296,7 @@ xqo-xm:variantOf
 xqo-xm:executedVia
 	a	owl:ObjectProperty ;
 	rdfs:comment	"Links a futures variant to the execution modality that is used to enter or exit a position."@en ;
+	rdfs:domain	xqo-xm:OperationalVariant ;
 	rdfs:label	"executed via"@en ;
 	rdfs:range	xqo-xm:ExecutionModality .
 

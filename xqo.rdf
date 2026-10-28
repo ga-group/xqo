@@ -3,7 +3,6 @@
 <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/"
    xmlns:dcat="http://www.w3.org/ns/dcat#"
    xmlns:dct="http://purl.org/dc/terms/"
-   xmlns:fibo-fbc-fi-fi="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"
    xmlns:gufo="http://purl.org/nemo/gufo#"
    xmlns:owl="http://www.w3.org/2002/07/owl#"
    xmlns:pav="http://purl.org/pav/"
@@ -55,7 +54,6 @@ The project's canonical home is &lt;http://schema.ga-group.nl/xqo/&gt;.
     <rdfs:label xml:lang="en">xqo</rdfs:label>
     <rdfs:seeAlso rdf:resource="https://github.com/ga-group/xqo"/>
     <owl:imports rdf:resource="http://purl.org/nemo/gufo#"/>
-    <owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"/>
     <owl:versionIRI rdf:resource="http://schema.ga-group.nl/xqo/0.1/"/>
     <owl:versionInfo rdf:datatype="http://www.w3.org/2001/XMLSchema#string">0.1</owl:versionInfo>
     <dcat:downloadURL rdf:resource="http://schema.ga-group.nl/xqo/rdf"/>
@@ -66,11 +64,6 @@ The project's canonical home is &lt;http://schema.ga-group.nl/xqo/&gt;.
     <rdfs:label xml:lang="en">discriminator</rdfs:label>
     <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
     <skos:scopeNote xml:lang="en">The discriminator can also be captured in a canonical (ordinal) way by xqo:ordinal.</skos:scopeNote>
-  </owl:DatatypeProperty>
-  <owl:DatatypeProperty rdf:about="http://schema.ga-group.nl/xqo/logicalCode">
-    <rdfs:comment xml:lang="en">Relates a contract specification to its logical code, thereby roughly identifying a contract family.  Used for ICE products.</rdfs:comment>
-    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
-    <rdfs:subPropertyOf rdf:resource="http://schema.ga-group.nl/xqo/symbol"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="http://schema.ga-group.nl/xqo/ordinal">
     <rdfs:comment xml:lang="en">Relates a futures contract to its ordinal value, implying an ordering and adjacency.</rdfs:comment>
@@ -87,11 +80,6 @@ datatype or an ISO 8601 notation, use raw strings in those cases
 (e.g. "2006-Winter", "2010-Season-2", etc.)
 
 The exchange discriminator can be captured by xqo:discriminator.</skos:scopeNote>
-  </owl:DatatypeProperty>
-  <owl:DatatypeProperty rdf:about="http://schema.ga-group.nl/xqo/physicalCode">
-    <rdfs:comment xml:lang="en">Relates a product or contract specification to its physical code, thereby identifying a concrete tradable listing.  Used for ICE products.</rdfs:comment>
-    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
-    <rdfs:subPropertyOf rdf:resource="http://schema.ga-group.nl/xqo/symbol"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="http://schema.ga-group.nl/xqo/symbol">
     <rdfs:comment xml:lang="en">Relates a product or contract specification to the exchange's symbol code used for identifying it.</rdfs:comment>

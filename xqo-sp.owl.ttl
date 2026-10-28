@@ -1,0 +1,142 @@
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix fibo-fbc-fi-fi: <https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/> .
+@prefix gufo: <http://purl.org/nemo/gufo#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix pav: <http://purl.org/pav/> .
+@prefix qudt: <http://qudt.org/schema/qudt/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix swrl: <http://www.w3.org/2003/11/swrl#> .
+@prefix tempo: <http://purl.org/tempo/> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix xqo: <http://schema.ga-group.nl/xqo/> .
+@prefix xqo-ps: <http://schema.ga-group.nl/xqo/ps/> .
+@prefix xqo-sp: <http://schema.ga-group.nl/xqo/sp/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+
+#################################################################
+# Ontology header
+#################################################################
+
+xqo-sp:
+	a	owl:Ontology ;
+	dc:abstract	"""xqo-sp is an xqo module that captures specific products."""@en ;
+	dc:creator	"Sebastian Freundt"^^xsd:string ;
+	dc:description	"""Overview
+--------
+The exchange quirks ontology (xqo) specific products (sp) module provides
+vocabulary to capture instatiations of exchange-listed derivatives.
+
+
+Why?
+----
+
+Neither FIBO nor FIX deal with analytical workflows like, in this
+case, contract parameters.
+
+
+How?
+----
+
+
+
+Where?
+------
+
+This ontology is part of [xqo](http://schema.ga-group.nl/xqo/),
+([official github repository](https://github.com/ga-group/xqo/)).
+
+The project's canonical home is <http://schema.ga-group.nl/xqo/sp/>.
+"""@en ;
+	dcat:downloadURL	<http://schema.ga-group.nl/xqo/sp/rdf> , <http://schema.ga-group.nl/xqo/sp/ttl> ;
+	dct:creator	<https://orcid.org/0000-0002-7352-2825> ;
+	dct:format	"text/turtle"^^xsd:string ;
+	dct:issued	"2026-10-01T05:00:00Z"^^xsd:dateTime ;
+	dct:language	"en"^^xsd:language ;
+	dct:license	<https://creativecommons.org/licenses/by-sa/4.0/> ;
+	dct:modified	"2026-10-01T05:00:00Z"^^xsd:dateTime ;
+	dct:publisher	<https://orcid.org/0000-0002-7352-2825> ;
+	dct:title	"xqo-sp -- specific products" ;
+	owl:imports	fibo-fbc-fi-fi: , gufo: , xqo-ps: ;
+	owl:versionIRI	<http://schema.ga-group.nl/xqo/0.1/sp/> ;
+	owl:versionInfo	"0.1"^^xsd:string ;
+	rdfs:label	"xqo-sp"@en ;
+	rdfs:seeAlso	<https://github.com/ga-group/xqo> ;
+	vann:preferredNamespacePrefix	"xqo-sp"^^xsd:string ;
+	vann:preferredNamespaceUri	"http://schema.ga-group.nl/xqo/sp/" .
+
+#################################################################
+# Classes
+#################################################################
+
+
+
+#################################################################
+# Object Properties
+#################################################################
+
+xqo-sp:specifiedBy
+	a	owl:ObjectProperty ;
+	owl:inverseOf	gufo:describes ;
+	rdfs:comment	"Links a futures contract to its contract specifications."@en ;
+	rdfs:domain	fibo-fbc-fi-fi:Future ;
+	rdfs:label	"specified by"@en ;
+	rdfs:range	xqo-ps:ContractSpecs .
+
+
+#################################################################
+# Datatype Properties
+#################################################################
+
+xqo-sp:first-notice
+	a	owl:DatatypeProperty ;
+	rdfs:comment	"Physical or notional amount of the underlying that one contract controls."@en ;
+	rdfs:domain	xqo-ps:ContractSpecs ;
+	rdfs:label	"first notice date"@en ;
+	rdfs:range	xsd:date .
+
+xqo-sp:first-trade
+	a	owl:DatatypeProperty ;
+	rdfs:comment	"Monetary value of a one-point move."@en ;
+	rdfs:domain	xqo-ps:ContractSpecs ;
+	rdfs:label	"first trade date"@en ;
+	rdfs:range	xsd:date .
+
+xqo-sp:last-trade
+	a	owl:DatatypeProperty ;
+	rdfs:comment	"Minimum price increment in points."@en ;
+	rdfs:domain	xqo-ps:ContractSpecs ;
+	rdfs:label	"last trade trade"@en ;
+	rdfs:range	xsd:date .
+
+xqo-sp:first-delivery
+	a	owl:DatatypeProperty ;
+	rdfs:comment	"Monetary value of the minimum price increment, calculated as xqo-ps:tick-size * xqo-ps:point-value, expressed in xqo-ps:point-ccy."@en ;
+	rdfs:domain	xqo-ps:ContractSpecs ;
+	rdfs:label	"first delivery date"@en ;
+	rdfs:range	xsd:date .
+
+xqo-sp:last-delivery
+	a	owl:DatatypeProperty ;
+	rdfs:comment	"Indicator of concurrently active contracts in truffle syntax."@en ;
+	rdfs:domain	xqo-ps:ContractSpecs ;
+	rdfs:label	"last delivery date"@en ;
+	rdfs:range	xsd:date .
+
+xqo-sp:final-settlement
+	a	owl:DatatypeProperty ;
+	rdfs:comment	"Indicator of concurrently active contracts in truffle syntax."@en ;
+	rdfs:domain	xqo-ps:ContractSpecs ;
+	rdfs:label	"final settlement date"@en ;
+	rdfs:range	xsd:date .
+
+
+#################################################################
+# Examples
+#################################################################
+

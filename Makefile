@@ -1,6 +1,6 @@
 PYTHON = ~/usr/intel/intelpython/python3.9/bin/python
 
-all: xqo.rdf xqo-xm.rdf xqo-ps.rdf index.html ps/index.html xm/index.html
+all: xqo.rdf xqo-xm.rdf xqo-ps.rdf xqo-sp.rdf index.html ps/index.html sp/index.html xm/index.html
 
 %.rdf: %.owl.ttl
 	rapper -i turtle -o rdfxml-abbrev $< \
@@ -12,12 +12,7 @@ index.html: xqo.owl.ttl
 	|| $(RM) $@
 	sed -i 's/ns1:0000/orcid:0000/' $@
 
-ps/index.html: xqo-ps.owl.ttl
-	$(PYTHON) -m pylode -c true -o $@ $< \
-	|| $(RM) $@
-	sed -i 's/ns1:0000/orcid:0000/' $@
-
-xm/index.html: xqo-xm.owl.ttl
+%/index.html: xqo-%.owl.ttl
 	$(PYTHON) -m pylode -c true -o $@ $< \
 	|| $(RM) $@
 	sed -i 's/ns1:0000/orcid:0000/' $@

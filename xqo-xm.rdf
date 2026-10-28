@@ -276,6 +276,7 @@ If one needs to uphold the uniqueness of base contract and marker type, or disti
   </owl:Class>
   <owl:ObjectProperty rdf:about="http://schema.ga-group.nl/xqo/xm/executedVia">
     <rdfs:comment xml:lang="en">Links a futures variant to the execution modality that is used to enter or exit a position.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://schema.ga-group.nl/xqo/xm/OperationalVariant"/>
     <rdfs:label xml:lang="en">executed via</rdfs:label>
     <rdfs:range rdf:resource="http://schema.ga-group.nl/xqo/xm/ExecutionModality"/>
   </owl:ObjectProperty>
