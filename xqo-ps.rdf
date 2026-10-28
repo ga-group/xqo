@@ -19,6 +19,15 @@
    xmlns:xqo-ps="http://schema.ga-group.nl/xqo/ps/"
    xmlns:xqo="http://schema.ga-group.nl/xqo/"
    xmlns:xsd="http://www.w3.org/2001/XMLSchema#">
+  <rdf:Description rdf:about="http://example.com/bbg/CLA_Comdty">
+    <xqo-ps:contract-size rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1000</xqo-ps:contract-size>
+    <xqo-ps:contract-unit rdf:resource="http://qudt.org/vocab/unit/Barrel"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.com/cme/CLZ6_Comdty">
+    <xqo:ordinal rdf:datatype="http://www.w3.org/2001/XMLSchema#gYearMonth">2026-12</xqo:ordinal>
+    <xqo-ps:specifiedBy rdf:resource="http://example.com/bbg/CLA_Comdty"/>
+    <rdfs:label>CLZ6</rdfs:label>
+  </rdf:Description>
   <owl:Ontology rdf:about="http://schema.ga-group.nl/xqo/ps/">
     <dc:abstract xml:lang="en">xqo-ps is an xqo module that captures product specs.</dc:abstract>
     <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sebastian Freundt</dc:creator>
@@ -88,6 +97,12 @@ The project's canonical home is &lt;http://schema.ga-group.nl/xqo/ps/&gt;.
   <owl:Class rdf:about="http://schema.ga-group.nl/xqo/ps/ShortDated">
     <rdfs:subClassOf rdf:resource="http://purl.org/nemo/gufo#Role"/>
   </owl:Class>
+  <owl:DatatypeProperty rdf:about="http://schema.ga-group.nl/xqo/ps/contract-months">
+    <rdfs:comment xml:lang="en">Indicator of concurrently active contracts in truffle syntax.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://schema.ga-group.nl/xqo/ps/ContractSpecs"/>
+    <rdfs:label xml:lang="en">contract months</rdfs:label>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+  </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="http://schema.ga-group.nl/xqo/ps/contract-size">
     <rdfs:comment xml:lang="en">Physical or notional amount of the underlying that one contract controls.</rdfs:comment>
     <rdfs:domain rdf:resource="http://schema.ga-group.nl/xqo/ps/ContractSpecs"/>
@@ -129,4 +144,29 @@ beginning or the end of daylight saving.</skos:editorialNote>
     <rdfs:seeAlso rdf:resource="http://schema.ga-group.nl/xqo/ps/point-value"/>
     <owl:deprecated rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</owl:deprecated>
   </owl:ObjectProperty>
+  <owl:DatatypeProperty rdf:about="http://schema.ga-group.nl/xqo/ps/tick-size">
+    <rdfs:comment xml:lang="en">Minimum price increment in points.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://schema.ga-group.nl/xqo/ps/ContractSpecs"/>
+    <rdfs:label xml:lang="en">tick size</rdfs:label>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+    <skos:editorialNote xml:lang="en">Some exchanges stipulate different
+tick sizes depending on whether the contract is, say, the front month
+(as opposed to back month and later), or e.g. a serial month (as
+opposed to a weekly or quarterly).  xqo provides supporting classes
+(anti-rigid roles) to distinguish these from one another but
+ultimately it is up to the modeller and the envisaged granularity to
+decide whether to use them.</skos:editorialNote>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://schema.ga-group.nl/xqo/ps/tick-value">
+    <rdfs:comment xml:lang="en">Monetary value of the minimum price increment, calculated as xqo-ps:tick-size * xqo-ps:point-value, expressed in xqo-ps:point-ccy.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://schema.ga-group.nl/xqo/ps/ContractSpecs"/>
+    <rdfs:label xml:lang="en">tick value</rdfs:label>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+    <rdfs:seeAlso rdf:resource="http://schema.ga-group.nl/xqo/ps/point-ccy"/>
+    <skos:editorialNote xml:lang="en">The note on `xqo-ps:tick-size`
+applies here too.  FIBO provides `fibo-der-drc-bsc:hasTickValue` to
+capture the tick value (calculated as above) on a per-contract basis.
+Otherwise it's up to the modeller to define different contract specs
+for front month/back month, or serial month/quarterly, etc.</skos:editorialNote>
+  </owl:DatatypeProperty>
 </rdf:RDF>

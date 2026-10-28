@@ -141,7 +141,7 @@ xqo-ps:contract-size
 	rdfs:label	"contract size"@en ;
 	rdfs:range	xsd:decimal ;
 	rdfs:seeAlso	xqo-ps:contract-unit ;
-	skos:editorialNote """Certain products stipulate different
+	skos:editorialNote	"""Certain products stipulate different
 contract sizes depending on the month, the quarter, the semester, or
 the year in question.  For example if the contract were to specify a
 fixed amount per hour (as is the case for electricity), the resulting
@@ -163,13 +163,13 @@ xqo-ps:tick-size
 	rdfs:domain	xqo-ps:ContractSpecs ;
 	rdfs:label	"tick size"@en ;
 	rdfs:range	xsd:decimal ;
-	skos:editorialNote """Some exchanges stipulate different tick
-sizes depending on whether the contract is, say, the front month (as
-opposed to back month and later), or e.g. a serial month (as opposed
-to a weekly or quarterly).  xqo provides supporting classes
+	skos:editorialNote	"""Some exchanges stipulate different
+tick sizes depending on whether the contract is, say, the front month
+(as opposed to back month and later), or e.g. a serial month (as
+opposed to a weekly or quarterly).  xqo provides supporting classes
 (anti-rigid roles) to distinguish these from one another but
 ultimately it is up to the modeller and the envisaged granularity to
-decide whether to use them."@en .
+decide whether to use them."""@en .
 
 xqo-ps:tick-value
 	a	owl:DatatypeProperty ;
@@ -177,7 +177,12 @@ xqo-ps:tick-value
 	rdfs:domain	xqo-ps:ContractSpecs ;
 	rdfs:label	"tick value"@en ;
 	rdfs:range	xsd:decimal ;
-	rdfs:seeAlso	xqo-ps:point-ccy .
+	rdfs:seeAlso	xqo-ps:point-ccy ;
+	skos:editorialNote	"""The note on `xqo-ps:tick-size`
+applies here too.  FIBO provides `fibo-der-drc-bsc:hasTickValue` to
+capture the tick value (calculated as above) on a per-contract basis.
+Otherwise it's up to the modeller to define different contract specs
+for front month/back month, or serial month/quarterly, etc."""@en .
 
 xqo-ps:contract-months
 	a	owl:DatatypeProperty ;

@@ -314,7 +314,7 @@ td {
     "https://schema.org/description": [
       {
         "@language": "en",
-        "@value": "Overview\n--------\nThe exchange quirks ontology (xqo) product specs (xm) module provides\nvocabulary to capture the instatiation templates of exchange-listed\nderivatives.\n\n\nWhy?\n----\n\nNeither FIBO nor FIX deal with analytical workflows like, in this\ncase, universe selection.\n\n\nHow?\n----\n\n\n\nWhere?\n------\n\nThis ontology is part of [xqo](http://schema.ga-group.nl/xqo/),\n([official github repository](https://github.com/ga-group/xqo/)).\n\nThe project's canonical home is <http://schema.ga-group.nl/xqo/ps/>.\n"
+        "@value": "Overview\n--------\nThe exchange quirks ontology (xqo) product specs (ps) module provides\nvocabulary to capture the instatiation templates of exchange-listed\nderivatives.\n\n\nWhy?\n----\n\nNeither FIBO nor FIX deal with analytical workflows like, in this\ncase, universe selection.\n\n\nHow?\n----\n\n\n\nWhere?\n------\n\nThis ontology is part of [xqo](http://schema.ga-group.nl/xqo/),\n([official github repository](https://github.com/ga-group/xqo/)).\n\nThe project's canonical home is <http://schema.ga-group.nl/xqo/ps/>.\n"
       }
     ],
     "https://schema.org/license": [
@@ -443,7 +443,7 @@ td {
               <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
             </dt>
             <dd><h2>Overview</h2>
-<p>The exchange quirks ontology (xqo) product specs (xm) module provides
+<p>The exchange quirks ontology (xqo) product specs (ps) module provides
 vocabulary to capture the instatiation templates of exchange-listed
 derivatives.</p>
 <h2>Why?</h2>
@@ -461,9 +461,6 @@ case, universe selection.</p>
             </dt>
             <dd>
               <ul>
-                <li>
-                  <a href="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/">fibo-fbc-fi-fi:</a>
-                </li>
                 <li>
                   <a href="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/">fibo-fnd-acc-cur:</a>
                 </li>
@@ -510,40 +507,140 @@ case, universe selection.</p>
                 <ul>
                   <li>
                     <span>
-                      <a href="#contract-size">xqo-ps:contract-size</a>
+                      <a href="#contract-size">contract size</a>
                       <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
                     </span>
                   </li>
                   <li>
                     <span>
-                      <a href="#point-value">xqo-ps:point-value</a>
+                      <a href="#point-value">point value</a>
                       <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
                     </span>
                   </li>
                   <li>
                     <span>
-                      <a href="#tick-size">xqo-ps:tick-size</a>
+                      <a href="#tick-size">tick size</a>
                       <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
                     </span>
                   </li>
                   <li>
                     <span>
-                      <a href="#tick-value">xqo-ps:tick-value</a>
+                      <a href="#tick-value">tick value</a>
+                      <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
+                    </span>
+                  </li>
+                  <li>
+                    <span>
+                      <a href="#contract-months">contract months</a>
                       <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
                     </span>
                   </li>
                 </ul>
               </td>
             </tr>
+          </table>
+        </div>
+        <div class="property entity" id="FrontMonth">
+          <h3>Front Month
+            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>http://schema.ga-group.nl/xqo/ps/FrontMonth</code>
+              </td>
+            </tr>
             <tr>
               <th>
-                <a class="hover_property" href="https://w3id.org/profile/ontdoc/inRangeOf" title="Inverse of rdfs:range. Defined in Ontology Documentation Profile">In Range Of</a>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#subClassOf" title="The subject is a subclass of a class. Defined in The RDF Schema vocabulary (RDFS)">Sub Class Of</a>
               </th>
               <td>
-                <span>
-                  <a href="#specifiedBy">specified by</a>
-                  <sup class="sup-op" title="OWL Object Property">op</sup>
-                </span>
+                <a href="http://purl.org/nemo/gufo#Role">gufo:Role</a>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="BackMonth">
+          <h3>Back Month
+            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>http://schema.ga-group.nl/xqo/ps/BackMonth</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#subClassOf" title="The subject is a subclass of a class. Defined in The RDF Schema vocabulary (RDFS)">Sub Class Of</a>
+              </th>
+              <td>
+                <a href="http://purl.org/nemo/gufo#Role">gufo:Role</a>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="SerialMonth">
+          <h3>Serial Month
+            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>http://schema.ga-group.nl/xqo/ps/SerialMonth</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#subClassOf" title="The subject is a subclass of a class. Defined in The RDF Schema vocabulary (RDFS)">Sub Class Of</a>
+              </th>
+              <td>
+                <a href="http://purl.org/nemo/gufo#Role">gufo:Role</a>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="Quarterly">
+          <h3>Quarterly
+            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>http://schema.ga-group.nl/xqo/ps/Quarterly</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#subClassOf" title="The subject is a subclass of a class. Defined in The RDF Schema vocabulary (RDFS)">Sub Class Of</a>
+              </th>
+              <td>
+                <a href="http://purl.org/nemo/gufo#Role">gufo:Role</a>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="ShortDated">
+          <h3>Short Dated
+            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>http://schema.ga-group.nl/xqo/ps/ShortDated</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#subClassOf" title="The subject is a subclass of a class. Defined in The RDF Schema vocabulary (RDFS)">Sub Class Of</a>
+              </th>
+              <td>
+                <a href="http://purl.org/nemo/gufo#Role">gufo:Role</a>
               </td>
             </tr>
           </table>
@@ -551,44 +648,6 @@ case, universe selection.</p>
       </div>
       <div class="section" id="objectproperties">
         <h2>Object Properties</h2>
-        <div class="property entity" id="specifiedBy">
-          <h3>specified by
-            <sup class="sup-op" title="OWL Object Property">op</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://schema.ga-group.nl/xqo/ps/specifiedBy</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
-              </th>
-              <td><p>Links a futures contract to its contract specifications.</p></td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
-              </th>
-              <td>
-                <a href="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/Future">fibo-fbc-fi-fi:Future</a>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
-              </th>
-              <td>
-                <span>
-                  <a href="#contractspecs">contract specs</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-          </table>
-        </div>
         <div class="property entity" id="contractunit">
           <h3>contract unit
             <sup class="sup-op" title="OWL Object Property">op</sup>
@@ -604,7 +663,15 @@ case, universe selection.</p>
               <th>
                 <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
               </th>
-              <td></td>
+              <td><p>Unit of the physical or notional amount of the underlying.</p></td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
+              </th>
+              <td>
+                <a href="http://qudt.org/schema/qudt/Unit">qudt:Unit</a>
+              </td>
             </tr>
           </table>
         </div>
@@ -623,7 +690,7 @@ case, universe selection.</p>
               <th>
                 <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
               </th>
-              <td></td>
+              <td><p>Currency in which the monetary value of a one-point move is expressed.</p></td>
             </tr>
             <tr>
               <th>
@@ -635,11 +702,38 @@ case, universe selection.</p>
             </tr>
           </table>
         </div>
+        <div class="property entity" id="quoteunit">
+          <h3>quote unit
+            <sup class="sup-op" title="OWL Object Property">op</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>http://schema.ga-group.nl/xqo/ps/quote-unit</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
+              </th>
+              <td><p>Unit of quoting, deprecated.  Replaced by the 4-tuple of xqo-ps:contract-value, xqo-ps:contract-unit, xqo-ps:point-value, and xqo-ps:point-ccy.  Calculated as (xqo-ps:point-value / xqo-ps:contract-value) * (xqo-ps:point-ccy / xqo-ps:contract-unit).</p></td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
+              </th>
+              <td>
+                <a href="http://qudt.org/schema/qudt/Unit">qudt:Unit</a>
+              </td>
+            </tr>
+          </table>
+        </div>
       </div>
       <div class="section" id="datatypeproperties">
         <h2>Datatype Properties</h2>
         <div class="property entity" id="contract-size">
-          <h3>contract-size
+          <h3>contract size
             <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
           </h3>
           <table>
@@ -653,7 +747,7 @@ case, universe selection.</p>
               <th>
                 <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
               </th>
-              <td></td>
+              <td><p>Physical or notional amount of the underlying that one contract controls.</p></td>
             </tr>
             <tr>
               <th>
@@ -677,7 +771,7 @@ case, universe selection.</p>
           </table>
         </div>
         <div class="property entity" id="point-value">
-          <h3>point-value
+          <h3>point value
             <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
           </h3>
           <table>
@@ -691,7 +785,7 @@ case, universe selection.</p>
               <th>
                 <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
               </th>
-              <td></td>
+              <td><p>Monetary value of a one-point move.</p></td>
             </tr>
             <tr>
               <th>
@@ -715,7 +809,7 @@ case, universe selection.</p>
           </table>
         </div>
         <div class="property entity" id="tick-size">
-          <h3>tick-size
+          <h3>tick size
             <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
           </h3>
           <table>
@@ -729,7 +823,7 @@ case, universe selection.</p>
               <th>
                 <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
               </th>
-              <td></td>
+              <td><p>Minimum price increment in points.</p></td>
             </tr>
             <tr>
               <th>
@@ -753,7 +847,7 @@ case, universe selection.</p>
           </table>
         </div>
         <div class="property entity" id="tick-value">
-          <h3>tick-value
+          <h3>tick value
             <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
           </h3>
           <table>
@@ -767,7 +861,7 @@ case, universe selection.</p>
               <th>
                 <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
               </th>
-              <td></td>
+              <td><p>Monetary value of the minimum price increment, calculated as xqo-ps:tick-size * xqo-ps:point-value, expressed in xqo-ps:point-ccy.</p></td>
             </tr>
             <tr>
               <th>
@@ -790,6 +884,44 @@ case, universe selection.</p>
             </tr>
           </table>
         </div>
+        <div class="property entity" id="contract-months">
+          <h3>contract months
+            <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>http://schema.ga-group.nl/xqo/ps/contract-months</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
+              </th>
+              <td><p>Indicator of concurrently active contracts in truffle syntax.</p></td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
+              </th>
+              <td>
+                <span>
+                  <a href="#contractspecs">contract specs</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
+              </th>
+              <td>
+                <a href="http://www.w3.org/2000/01/rdf-schema#Literal">Literal</a>
+              </td>
+            </tr>
+          </table>
+        </div>
       </div>
       <div id="namespaces">
         <h2>Namespaces</h2>
@@ -806,10 +938,6 @@ case, universe selection.</p>
           <dd>
             <code>http://purl.org/dc/terms/</code>
           </dd>
-          <dt id="fibo-fbc-fi-fi">fibo-fbc-fi-fi</dt>
-          <dd>
-            <code>https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/</code>
-          </dd>
           <dt id="fibo-fnd-acc-cur">fibo-fnd-acc-cur</dt>
           <dd>
             <code>https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/</code>
@@ -822,6 +950,10 @@ case, universe selection.</p>
           <dd>
             <code>http://www.w3.org/2002/07/owl#</code>
           </dd>
+          <dt id="qudt">qudt</dt>
+          <dd>
+            <code>http://qudt.org/schema/qudt/</code>
+          </dd>
           <dt id="rdf">rdf</dt>
           <dd>
             <code>http://www.w3.org/1999/02/22-rdf-syntax-ns#</code>
@@ -830,9 +962,13 @@ case, universe selection.</p>
           <dd>
             <code>http://www.w3.org/2000/01/rdf-schema#</code>
           </dd>
+          <dt id="skos">skos</dt>
+          <dd>
+            <code>http://www.w3.org/2004/02/skos/core#</code>
+          </dd>
           <dt id="unit">unit</dt>
           <dd>
-            <code>http://qudt.org/vocab/unit#</code>
+            <code>http://qudt.org/vocab/unit/</code>
           </dd>
           <dt id="vann">vann</dt>
           <dd>
@@ -905,6 +1041,21 @@ case, universe selection.</p>
             <li>
               <a href="#contractspecs">contract specs</a>
             </li>
+            <li>
+              <a href="#FrontMonth">Front Month</a>
+            </li>
+            <li>
+              <a href="#BackMonth">Back Month</a>
+            </li>
+            <li>
+              <a href="#SerialMonth">Serial Month</a>
+            </li>
+            <li>
+              <a href="#Quarterly">Quarterly</a>
+            </li>
+            <li>
+              <a href="#ShortDated">Short Dated</a>
+            </li>
           </ul>
         </li>
         <li>
@@ -913,13 +1064,13 @@ case, universe selection.</p>
           </h4>
           <ul class="second">
             <li>
-              <a href="#specifiedBy">specified by</a>
-            </li>
-            <li>
               <a href="#contractunit">contract unit</a>
             </li>
             <li>
               <a href="#pointcurrency">point currency</a>
+            </li>
+            <li>
+              <a href="#quoteunit">quote unit</a>
             </li>
           </ul>
         </li>
@@ -929,16 +1080,19 @@ case, universe selection.</p>
           </h4>
           <ul class="second">
             <li>
-              <a href="#contract-size">contract-size</a>
+              <a href="#contract-size">contract size</a>
             </li>
             <li>
-              <a href="#point-value">point-value</a>
+              <a href="#point-value">point value</a>
             </li>
             <li>
-              <a href="#tick-size">tick-size</a>
+              <a href="#tick-size">tick size</a>
             </li>
             <li>
-              <a href="#tick-value">tick-value</a>
+              <a href="#tick-value">tick value</a>
+            </li>
+            <li>
+              <a href="#contract-months">contract months</a>
             </li>
           </ul>
         </li>
@@ -957,9 +1111,6 @@ case, universe selection.</p>
               <a href="#dct">dct</a>
             </li>
             <li>
-              <a href="#fibo-fbc-fi-fi">fibo-fbc-fi-fi</a>
-            </li>
-            <li>
               <a href="#fibo-fnd-acc-cur">fibo-fnd-acc-cur</a>
             </li>
             <li>
@@ -969,10 +1120,16 @@ case, universe selection.</p>
               <a href="#owl">owl</a>
             </li>
             <li>
+              <a href="#qudt">qudt</a>
+            </li>
+            <li>
               <a href="#rdf">rdf</a>
             </li>
             <li>
               <a href="#rdfs">rdfs</a>
+            </li>
+            <li>
+              <a href="#skos">skos</a>
             </li>
             <li>
               <a href="#unit">unit</a>
