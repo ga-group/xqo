@@ -153,7 +153,7 @@ The module's canonical home is &lt;http://schema.ga-group.nl/xqo/xm/&gt;.
     <skos:editorialNote xml:lang="en">type-punning is used to allow users to either generically reference the execution modality, or to create their own subclasses, possibly encoding further exchange-specific details</skos:editorialNote>
   </owl:Class>
   <owl:Class rdf:about="http://schema.ga-group.nl/xqo/xm/TACOVariant">
-    <rdfs:comment xml:lang="en">Operational contract variant that uses the trade-at-cash-open execution modality.</rdfs:comment>
+    <rdfs:comment xml:lang="en">Operational contract variant that uses the (basis-)trade-at-cash-open execution modality.</rdfs:comment>
     <rdfs:label xml:lang="en">TACO variant</rdfs:label>
     <rdfs:subClassOf rdf:resource="http://schema.ga-group.nl/xqo/xm/OperationalVariant"/>
     <owl:equivalentClass>

@@ -78,8 +78,19 @@ The project's canonical home is <http://schema.ga-group.nl/xqo/ps/>.
 xqo-ps:ContractSpecs
 	a	owl:Class ;
 	rdfs:comment	"Exchange-specific, instantiation-neutral description of a futures contract."@en ;
-	rdfs:label	"contract specs" ;
+	rdfs:label	"contract specs"@en ;
 	rdfs:subClassOf	gufo:Description .
+
+xqo-ps:StripSpecs
+	a	owl:Class ;
+	owl:equivalentClass	[
+		a	owl:Restriction ;
+		owl:onProperty	xqo-ps:strip-length ;
+		owl:minCardinality	"1"^^xsd:nonNegativeInteger ;
+	] ;
+	rdfs:comment	"Exchange-specific, instantiation-neutral description of futures strips."@en ;
+	rdfs:label	"strip specs"@en ;
+	rdfs:subClassOf	xqo-ps:ContractSpecs .
 
 ## supporting roles
 
@@ -129,6 +140,14 @@ xqo-ps:quote-unit
 	rdfs:label	"quote unit"@en ;
 	rdfs:range	qudt:Unit ;
 	rdfs:seeAlso	xqo-ps:contract-unit , xqo-ps:point-value .
+
+xqo-ps:stripOf
+	a	owl:ObjectProperty ;
+	rdfs:comment	"Relates a futures strip to the contract specs that it is made up of."@en ;
+	rdfs:domain	xqo-ps:StripSpecs ;
+	rdfs:label	"strip of"@en ;
+	rdfs:range	xqo-ps:ContractSpecs .
+
 
 #################################################################
 # Datatype Properties
@@ -190,6 +209,13 @@ xqo-ps:contract-months
 	rdfs:domain	xqo-ps:ContractSpecs ;
 	rdfs:label	"contract months"@en ;
 	rdfs:range	rdfs:Literal .
+
+xqo-ps:strip-length
+	a	owl:DatatypeProperty ;
+	rdfs:comment	"Number of consecutive contracts that make up a strip."@en ;
+	rdfs:domain	xqo-ps:StripSpecs ;
+	rdfs:label	"strip length"@en ;
+	rdfs:range	xsd:decimal .
 
 
 #################################################################

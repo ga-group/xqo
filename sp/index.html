@@ -314,7 +314,7 @@ td {
     "https://schema.org/description": [
       {
         "@language": "en",
-        "@value": "Overview\n--------\nThe exchange quirks ontology (xqo) specific products (sp) module provides\nvocabulary to capture instatiations of exchange-listed derivatives.\n\n\nWhy?\n----\n\nNeither FIBO nor FIX deal with analytical workflows like, in this\ncase, contract parameters.\n\n\nHow?\n----\n\n\n\nWhere?\n------\n\nThis ontology is part of [xqo](http://schema.ga-group.nl/xqo/),\n([official github repository](https://github.com/ga-group/xqo/)).\n\nThe project's canonical home is <http://schema.ga-group.nl/xqo/sp/>.\n"
+        "@value": "Overview\n--------\nThe exchange quirks ontology (xqo) specific products (sp) module\nprovides vocabulary to capture instatiations of exchange-listed\nderivatives.\n\n\nWhy?\n----\n\nWhile FIBO does have support for delivery and settlement terms of\nfutures contracts, they don't have support for trade dates nor trading\nparameters.\n\n\nHow?\n----\n\n\n\nWhere?\n------\n\nThis ontology is part of [xqo](http://schema.ga-group.nl/xqo/),\n([official github repository](https://github.com/ga-group/xqo/)).\n\nThe project's canonical home is <http://schema.ga-group.nl/xqo/sp/>.\n"
       }
     ],
     "https://schema.org/license": [
@@ -443,11 +443,13 @@ td {
               <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
             </dt>
             <dd><h2>Overview</h2>
-<p>The exchange quirks ontology (xqo) specific products (sp) module provides
-vocabulary to capture instatiations of exchange-listed derivatives.</p>
+<p>The exchange quirks ontology (xqo) specific products (sp) module
+provides vocabulary to capture instatiations of exchange-listed
+derivatives.</p>
 <h2>Why?</h2>
-<p>Neither FIBO nor FIX deal with analytical workflows like, in this
-case, contract parameters.</p>
+<p>While FIBO does have support for delivery and settlement terms of
+futures contracts, they don't have support for trade dates nor trading
+parameters.</p>
 <h2>How?</h2>
 <h2>Where?</h2>
 <p>This ontology is part of <a href="http://schema.ga-group.nl/xqo/">xqo</a>,
@@ -467,6 +469,9 @@ case, contract parameters.</p>
                   <a href="http://purl.org/nemo/gufo#">gufo:</a>
                 </li>
                 <li>
+                  <a href="http://schema.ga-group.nl/xqo/">xqo:</a>
+                </li>
+                <li>
                   <a href="http://schema.ga-group.nl/xqo/ps/">xqo-ps:</a>
                 </li>
               </ul>
@@ -474,9 +479,63 @@ case, contract parameters.</p>
           </div>
         </dl>
       </div>
+      <div class="section" id="classes">
+        <h2>Classes</h2>
+        <div class="property entity" id="futuresstrip">
+          <h3>futures strip
+            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>http://schema.ga-group.nl/xqo/sp/FuturesStrip</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
+              </th>
+              <td><p>Series of futures contracts that are traded or analysed together as a package, usually covering consecutive delivery months or quarters.</p></td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#subClassOf" title="The subject is a subclass of a class. Defined in The RDF Schema vocabulary (RDFS)">Sub Class Of</a>
+              </th>
+              <td>
+                <a href="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/Future">fibo-fbc-fi-fi:Future</a>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2002/07/owl#equivalentClass" title="The property that determines that two given classes are equivalent, and that is used to specify datatype definitions. Defined in The OWL 2 Schema vocabulary (OWL 2)">Equivalentclass</a>
+              </th>
+              <td>
+                <span>
+                  <span>
+                    <span>
+                      <a href="#specifiedBy">specified by</a>
+                      <sup class="sup-op" title="OWL Object Property">op</sup>
+                    </span>
+                    <span>
+                      <span class="cardinality">some</span>
+                      <span>
+                        <span>
+                          <a href="http://schema.ga-group.nl/xqo/ps/StripSpecs">xqo-ps:StripSpecs</a>
+                          <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                        </span>
+                      </span>
+                    </span><br>
+                  </span>
+                </span>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
       <div class="section" id="objectproperties">
         <h2>Object Properties</h2>
-        <div class="property entity" id="specifiedby">
+        <div class="property entity" id="specifiedBy">
           <h3>specified by
             <sup class="sup-op" title="OWL Object Property">op</sup>
           </h3>
@@ -787,6 +846,12 @@ case, contract parameters.</p>
         <table class="entity">
           <tr>
             <td>
+              <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+            </td>
+            <td>Classes</td>
+          </tr>
+          <tr>
+            <td>
               <sup class="sup-op" title="OWL Object Property">op</sup>
             </td>
             <td>Object Properties</td>
@@ -823,11 +888,21 @@ case, contract parameters.</p>
         </li>
         <li>
           <h4>
+            <a href="#classes">Classes</a>
+          </h4>
+          <ul class="second">
+            <li>
+              <a href="#futuresstrip">futures strip</a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <h4>
             <a href="#objectproperties">Object Properties</a>
           </h4>
           <ul class="second">
             <li>
-              <a href="#specifiedby">specified by</a>
+              <a href="#specifiedBy">specified by</a>
             </li>
           </ul>
         </li>

@@ -29,15 +29,17 @@ xqo-sp:
 	dc:creator	"Sebastian Freundt"^^xsd:string ;
 	dc:description	"""Overview
 --------
-The exchange quirks ontology (xqo) specific products (sp) module provides
-vocabulary to capture instatiations of exchange-listed derivatives.
+The exchange quirks ontology (xqo) specific products (sp) module
+provides vocabulary to capture instatiations of exchange-listed
+derivatives.
 
 
 Why?
 ----
 
-Neither FIBO nor FIX deal with analytical workflows like, in this
-case, contract parameters.
+While FIBO does have support for delivery and settlement terms of
+futures contracts, they don't have support for trade dates nor trading
+parameters.
 
 
 How?
@@ -62,7 +64,7 @@ The project's canonical home is <http://schema.ga-group.nl/xqo/sp/>.
 	dct:modified	"2026-10-01T05:00:00Z"^^xsd:dateTime ;
 	dct:publisher	<https://orcid.org/0000-0002-7352-2825> ;
 	dct:title	"xqo-sp -- specific products" ;
-	owl:imports	fibo-fbc-fi-fi: , gufo: , xqo-ps: ;
+	owl:imports	fibo-fbc-fi-fi: , gufo: , xqo: , xqo-ps: ;
 	owl:versionIRI	<http://schema.ga-group.nl/xqo/0.1/sp/> ;
 	owl:versionInfo	"0.1"^^xsd:string ;
 	rdfs:label	"xqo-sp"@en ;
@@ -74,6 +76,16 @@ The project's canonical home is <http://schema.ga-group.nl/xqo/sp/>.
 # Classes
 #################################################################
 
+xqo-sp:FuturesStrip
+	a	owl:Class ;
+	owl:equivalentClass [
+		a	owl:Restriction ;
+		owl:onProperty	xqo-sp:specifiedBy ;
+		owl:someValuesFrom	xqo-ps:StripSpecs ;
+	] ;
+	rdfs:comment	"Series of futures contracts that are traded or analysed together as a package, usually covering consecutive delivery months or quarters."@en ;
+	rdfs:label	"futures strip"@en ;
+	rdfs:subClassOf	fibo-fbc-fi-fi:Future .
 
 
 #################################################################

@@ -465,6 +465,55 @@ contains the published ontology.</p>
           </div>
         </dl>
       </div>
+      <div class="section" id="objectproperties">
+        <h2>Object Properties</h2>
+        <div class="property entity" id="composedof">
+          <h3>composed of
+            <sup class="sup-op" title="OWL Object Property">op</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>http://schema.ga-group.nl/xqo/composedOf</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
+              </th>
+              <td><p>Relates a concept to the futures contracts it is composed of.</p></td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="componentof">
+          <h3>component of
+            <sup class="sup-op" title="OWL Object Property">op</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>http://schema.ga-group.nl/xqo/componentOf</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
+              </th>
+              <td><p>Relates a futures contract to a composition concept.</p></td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#subPropertyOf" title="The subject is a subproperty of a property. Defined in The RDF Schema vocabulary (RDFS)">Sub Property Of</a>
+              </th>
+              <td>
+                <a href="http://purl.org/nemo/gufo#isProperPartOf">gufo:isProperPartOf</a>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
       <div class="section" id="datatypeproperties">
         <h2>Datatype Properties</h2>
         <div class="property entity" id="ordinal">
@@ -620,6 +669,12 @@ datatype or an ISO 8601 notation, use raw strings in those cases
         <table class="entity">
           <tr>
             <td>
+              <sup class="sup-op" title="OWL Object Property">op</sup>
+            </td>
+            <td>Object Properties</td>
+          </tr>
+          <tr>
+            <td>
               <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
             </td>
             <td>Datatype Properties</td>
@@ -647,6 +702,19 @@ datatype or an ISO 8601 notation, use raw strings in those cases
           <h4>
             <a href="#metadata">Metadata</a>
           </h4>
+        </li>
+        <li>
+          <h4>
+            <a href="#objectproperties">Object Properties</a>
+          </h4>
+          <ul class="second">
+            <li>
+              <a href="#composedof">composed of</a>
+            </li>
+            <li>
+              <a href="#componentof">component of</a>
+            </li>
+          </ul>
         </li>
         <li>
           <h4>

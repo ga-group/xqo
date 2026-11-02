@@ -212,7 +212,7 @@ xqo-xm:TACOVariant
 		owl:onProperty	xqo-xm:executedVia ;
 		owl:someValuesFrom	xqo-xm:TACO ;
 	] ;
-	rdfs:comment	"Operational contract variant that uses the trade-at-cash-open execution modality."@en ;
+	rdfs:comment	"Operational contract variant that uses the (basis-)trade-at-cash-open execution modality."@en ;
 	rdfs:label	"TACO variant"@en ;
 	rdfs:subClassOf	xqo-xm:OperationalVariant .
 

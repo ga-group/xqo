@@ -59,6 +59,17 @@ The project's canonical home is &lt;http://schema.ga-group.nl/xqo/&gt;.
     <dcat:downloadURL rdf:resource="http://schema.ga-group.nl/xqo/rdf"/>
     <dcat:downloadURL rdf:resource="http://schema.ga-group.nl/xqo/ttl"/>
   </owl:Ontology>
+  <owl:ObjectProperty rdf:about="http://schema.ga-group.nl/xqo/componentOf">
+    <rdfs:comment xml:lang="en">Relates a futures contract to a composition concept.</rdfs:comment>
+    <rdfs:label xml:lang="en">component of</rdfs:label>
+    <rdfs:subPropertyOf rdf:resource="http://purl.org/nemo/gufo#isProperPartOf"/>
+    <owl:inverseOf rdf:resource="http://schema.ga-group.nl/xqo/composedOf"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://schema.ga-group.nl/xqo/composedOf">
+    <rdfs:comment xml:lang="en">Relates a concept to the futures contracts it is composed of.</rdfs:comment>
+    <rdfs:label xml:lang="en">composed of</rdfs:label>
+    <owl:inverseOf rdf:resource="http://schema.ga-group.nl/xqo/componentOf"/>
+  </owl:ObjectProperty>
   <owl:DatatypeProperty rdf:about="http://schema.ga-group.nl/xqo/discriminator">
     <rdfs:comment xml:lang="en">Relates a futures contract to its symbolic discriminator (e.g. 'Z6' in 'CLZ6')</rdfs:comment>
     <rdfs:label xml:lang="en">discriminator</rdfs:label>

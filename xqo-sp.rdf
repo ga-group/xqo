@@ -24,15 +24,17 @@
     <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sebastian Freundt</dc:creator>
     <dc:description xml:lang="en">Overview
 --------
-The exchange quirks ontology (xqo) specific products (sp) module provides
-vocabulary to capture instatiations of exchange-listed derivatives.
+The exchange quirks ontology (xqo) specific products (sp) module
+provides vocabulary to capture instatiations of exchange-listed
+derivatives.
 
 
 Why?
 ----
 
-Neither FIBO nor FIX deal with analytical workflows like, in this
-case, contract parameters.
+While FIBO does have support for delivery and settlement terms of
+futures contracts, they don't have support for trade dates nor trading
+parameters.
 
 
 How?
@@ -61,6 +63,7 @@ The project's canonical home is &lt;http://schema.ga-group.nl/xqo/sp/&gt;.
     <rdfs:label xml:lang="en">xqo-sp</rdfs:label>
     <rdfs:seeAlso rdf:resource="https://github.com/ga-group/xqo"/>
     <owl:imports rdf:resource="http://purl.org/nemo/gufo#"/>
+    <owl:imports rdf:resource="http://schema.ga-group.nl/xqo/"/>
     <owl:imports rdf:resource="http://schema.ga-group.nl/xqo/ps/"/>
     <owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"/>
     <owl:versionIRI rdf:resource="http://schema.ga-group.nl/xqo/0.1/sp/"/>
@@ -68,6 +71,17 @@ The project's canonical home is &lt;http://schema.ga-group.nl/xqo/sp/&gt;.
     <dcat:downloadURL rdf:resource="http://schema.ga-group.nl/xqo/sp/rdf"/>
     <dcat:downloadURL rdf:resource="http://schema.ga-group.nl/xqo/sp/ttl"/>
   </owl:Ontology>
+  <owl:Class rdf:about="http://schema.ga-group.nl/xqo/sp/FuturesStrip">
+    <rdfs:comment xml:lang="en">Series of futures contracts that are traded or analysed together as a package, usually covering consecutive delivery months or quarters.</rdfs:comment>
+    <rdfs:label xml:lang="en">futures strip</rdfs:label>
+    <rdfs:subClassOf rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/Future"/>
+    <owl:equivalentClass>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="http://schema.ga-group.nl/xqo/sp/specifiedBy"/>
+        <owl:someValuesFrom rdf:resource="http://schema.ga-group.nl/xqo/ps/StripSpecs"/>
+      </owl:Restriction>
+    </owl:equivalentClass>
+  </owl:Class>
   <owl:DatatypeProperty rdf:about="http://schema.ga-group.nl/xqo/sp/final-settlement">
     <rdfs:comment xml:lang="en">Indicator of concurrently active contracts in truffle syntax.</rdfs:comment>
     <rdfs:domain rdf:resource="http://schema.ga-group.nl/xqo/ps/ContractSpecs"/>

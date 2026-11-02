@@ -72,6 +72,18 @@ The project's canonical home is <http://schema.ga-group.nl/xqo/>.
 # Object Properties
 #################################################################
 
+xqo:composedOf
+	a	owl:ObjectProperty ;
+	owl:inverseOf	xqo:componentOf ;
+	rdfs:comment	"Relates a concept to the futures contracts it is composed of."@en ;
+	rdfs:label	"composed of"@en .
+
+xqo:componentOf
+	a	owl:ObjectProperty ;
+	owl:inverseOf	xqo:composedOf ;
+	rdfs:comment	"Relates a futures contract to a composition concept."@en ;
+	rdfs:label	"component of"@en ;
+	rdfs:subPropertyOf	gufo:isProperPartOf .
 
 
 #################################################################
