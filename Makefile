@@ -1,6 +1,6 @@
 PYTHON = ~/usr/intel/intelpython/python3.9/bin/python
 
-all: xqo.rdf xqo-xm.rdf xqo-ps.rdf xqo-sp.rdf index.html ps/index.html sp/index.html xm/index.html
+all: xqo.rdf index.html
 
 %.rdf: %.owl.ttl
 	rapper -i turtle -o rdfxml-abbrev $< \

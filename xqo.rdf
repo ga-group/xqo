@@ -3,15 +3,19 @@
 <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/"
    xmlns:dcat="http://www.w3.org/ns/dcat#"
    xmlns:dct="http://purl.org/dc/terms/"
+   xmlns:fibo-fbc-fi-fi="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"
+   xmlns:fibo-fnd-acc-cur="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"
    xmlns:gufo="http://purl.org/nemo/gufo#"
    xmlns:owl="http://www.w3.org/2002/07/owl#"
    xmlns:pav="http://purl.org/pav/"
+   xmlns:qudt="http://qudt.org/schema/qudt/"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
    xmlns:sh="http://www.w3.org/ns/shacl#"
    xmlns:skos="http://www.w3.org/2004/02/skos/core#"
    xmlns:swrl="http://www.w3.org/2003/11/swrl#"
    xmlns:tempo="http://purl.org/tempo/"
+   xmlns:unit="http://qudt.org/vocab/unit/"
    xmlns:vann="http://purl.org/vocab/vann/"
    xmlns:xqo="http://schema.ga-group.nl/xqo/"
    xmlns:xsd="http://www.w3.org/2001/XMLSchema#">
@@ -20,7 +24,11 @@
     <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sebastian Freundt</dc:creator>
     <dc:description xml:lang="en">Overview
 --------
-The exchange quirks ontology (xqo) provides vocabulary .
+The exchange quirks ontology (xqo) provides vocabulary to classify and
+relate certain operational contract variants of exchange-listed
+derivatives, to capture the instantiation templates of exchange-listed
+derivatives, as well as their instantiations.
+
 
 
 Why?
@@ -30,7 +38,38 @@ FIBO's official ontology (much like FIX) stop at exchange-specific
 implementations, and instead refer to the possibility of extending the
 standard unofficially as needed.  And while FIX covers pre-trade, FIBO
 is generally post-trade, and neither cover analytical workflows like
-universe selection, exchange selection, order type selection, etc.
+universe selection, exchange selection, order type selection, trading
+parameters nor important dates associated with the exposure.
+
+
+How?
+----
+
+A class, `xqo:ExecutionModality` is introduced, and the most
+prominent modalities are identified and introduced as classes in their
+own right.  Moreover, a class `xqo:OperationalVariant` is
+introduced, itself a subclass of `gufo:Role` to capture the
+operational contract (or chain, or synthesis) as a variant of the
+outright contract (or chain, or synthesis).  Then for each of the
+modalities a variant is introduced, itself a subclass of
+`xqo:OperationalVariant` which is inferred if a resource states
+
+    R xqo:executedVia xqo:&lt;Modality&gt; .
+
+=&gt;
+
+    R a xqo:&lt;Modality&gt;Variant .
+
+and, conversely:
+
+    R a xqo:&lt;Modality&gt;Variant .
+
+=&gt;
+
+    R xqo:executedVia [
+            a xqo:&lt;Modality&gt; 
+    ] .
+
 
 
 Where?
@@ -54,11 +93,256 @@ The project's canonical home is &lt;http://schema.ga-group.nl/xqo/&gt;.
     <rdfs:label xml:lang="en">xqo</rdfs:label>
     <rdfs:seeAlso rdf:resource="https://github.com/ga-group/xqo"/>
     <owl:imports rdf:resource="http://purl.org/nemo/gufo#"/>
+    <owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"/>
+    <owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"/>
     <owl:versionIRI rdf:resource="http://schema.ga-group.nl/xqo/0.1/"/>
     <owl:versionInfo rdf:datatype="http://www.w3.org/2001/XMLSchema#string">0.1</owl:versionInfo>
     <dcat:downloadURL rdf:resource="http://schema.ga-group.nl/xqo/rdf"/>
     <dcat:downloadURL rdf:resource="http://schema.ga-group.nl/xqo/ttl"/>
   </owl:Ontology>
+  <owl:Class rdf:about="http://schema.ga-group.nl/xqo/BTIC">
+    <rdf:type rdf:resource="http://schema.ga-group.nl/xqo/BTIC"/>
+    <rdf:type rdf:resource="http://schema.ga-group.nl/xqo/ExecutionModality"/>
+    <rdfs:comment xml:lang="en">Modality in which a futures trade is priced relative to the official closing value of an underlying (equity) index, using a negotiated basis applied to the index close to determine the final futures execution price.</rdfs:comment>
+    <rdfs:label xml:lang="en">BTIC</rdfs:label>
+    <skos:editorialNote xml:lang="en">type-punning is used to allow users to either generically reference the execution modality, or to create their own subclasses, possibly encoding further exchange-specific details</skos:editorialNote>
+  </owl:Class>
+  <owl:Class rdf:about="http://schema.ga-group.nl/xqo/BTICVariant">
+    <rdfs:comment xml:lang="en">Operational contract variant that uses the basis-trade-at-index-close execution modality.</rdfs:comment>
+    <rdfs:label xml:lang="en">BTIC variant</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://schema.ga-group.nl/xqo/OperationalVariant"/>
+    <owl:equivalentClass>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="http://schema.ga-group.nl/xqo/executedVia"/>
+        <owl:someValuesFrom rdf:resource="http://schema.ga-group.nl/xqo/BTIC"/>
+      </owl:Restriction>
+    </owl:equivalentClass>
+  </owl:Class>
+  <owl:Class rdf:about="http://schema.ga-group.nl/xqo/BackMonth">
+    <rdfs:subClassOf rdf:resource="http://purl.org/nemo/gufo#Role"/>
+  </owl:Class>
+  <owl:Class rdf:about="http://schema.ga-group.nl/xqo/Bundle">
+    <rdfs:comment xml:lang="en">Standardised bundle of packs, e.g. 2-year bundle equals white pack plus red pack.</rdfs:comment>
+    <rdfs:label xml:lang="en">bundle</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://schema.ga-group.nl/xqo/FuturesStrip"/>
+  </owl:Class>
+  <xqo:TAMM rdf:about="http://schema.ga-group.nl/xqo/CME_TAMM"/>
+  <owl:Class rdf:about="http://schema.ga-group.nl/xqo/ComboSpecs">
+    <rdfs:comment xml:lang="en">Exchange-specific, instantiation-neutral description of futures comboes.</rdfs:comment>
+    <rdfs:label xml:lang="en">combo specs</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://schema.ga-group.nl/xqo/ContractSpecs"/>
+  </owl:Class>
+  <owl:Class rdf:about="http://schema.ga-group.nl/xqo/ContractSpecs">
+    <rdfs:comment xml:lang="en">Exchange-specific, instantiation-neutral description of a futures contract.</rdfs:comment>
+    <rdfs:label xml:lang="en">contract specs</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://purl.org/nemo/gufo#Description"/>
+  </owl:Class>
+  <owl:Class rdf:about="http://schema.ga-group.nl/xqo/ExecutionModality">
+    <rdfs:comment xml:lang="en">A benchmark‑priced or rule‑driven mode by which a futures contract is entered or exited, where the execution price is determined not by the continuous limit order book but by a reference benchmark, auction process, or designated price‑formation rule.</rdfs:comment>
+    <rdfs:label xml:lang="en">execution modality</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:about="http://schema.ga-group.nl/xqo/FrontMonth">
+    <rdfs:subClassOf rdf:resource="http://purl.org/nemo/gufo#Role"/>
+  </owl:Class>
+  <owl:Class rdf:about="http://schema.ga-group.nl/xqo/FuturesCombo">
+    <rdfs:comment xml:lang="en">Combination of futures contracts that are traded or analysed together as a package.</rdfs:comment>
+    <rdfs:label xml:lang="en">futures strip</rdfs:label>
+    <rdfs:subClassOf rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/Future"/>
+    <owl:equivalentClass>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="http://schema.ga-group.nl/xqo/specifiedBy"/>
+        <owl:someValuesFrom rdf:resource="http://schema.ga-group.nl/xqo/ComboSpecs"/>
+      </owl:Restriction>
+    </owl:equivalentClass>
+  </owl:Class>
+  <owl:Class rdf:about="http://schema.ga-group.nl/xqo/FuturesSpread">
+    <rdfs:comment xml:lang="en">Futures combo that ....</rdfs:comment>
+    <rdfs:label xml:lang="en">futures spread</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://schema.ga-group.nl/xqo/FuturesCombo"/>
+    <owl:equivalentClass>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="http://schema.ga-group.nl/xqo/specifiedBy"/>
+        <owl:someValuesFrom rdf:resource="http://schema.ga-group.nl/xqo/SpreadSpecs"/>
+      </owl:Restriction>
+    </owl:equivalentClass>
+  </owl:Class>
+  <owl:Class rdf:about="http://schema.ga-group.nl/xqo/FuturesStrip">
+    <rdfs:comment xml:lang="en">Futures combo that covers consecutive delivery months or quarters.</rdfs:comment>
+    <rdfs:label xml:lang="en">futures strip</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://schema.ga-group.nl/xqo/FuturesCombo"/>
+    <owl:equivalentClass>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="http://schema.ga-group.nl/xqo/specifiedBy"/>
+        <owl:someValuesFrom rdf:resource="http://schema.ga-group.nl/xqo/StripSpecs"/>
+      </owl:Restriction>
+    </owl:equivalentClass>
+  </owl:Class>
+  <owl:Class rdf:about="http://schema.ga-group.nl/xqo/OperationalVariant">
+    <rdfs:comment xml:lang="en">A variant of a futures contract that inherits all of the economic attributes of the bare contract and only differs in operational ways.</rdfs:comment>
+    <rdfs:label xml:lang="en">future variant</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://purl.org/nemo/gufo#Role"/>
+    <owl:equivalentClass>
+      <owl:Restriction>
+        <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minCardinality>
+        <owl:onProperty rdf:resource="http://schema.ga-group.nl/xqo/variantOf"/>
+      </owl:Restriction>
+    </owl:equivalentClass>
+    <skos:editorialNote xml:lang="en">This class isn't subclass of any particular thing involving </skos:editorialNote>
+  </owl:Class>
+  <owl:Class rdf:about="http://schema.ga-group.nl/xqo/Pack">
+    <rdfs:comment xml:lang="en">Standardised strip of four consecutive quarterly contracts in a colour band.</rdfs:comment>
+    <rdfs:label xml:lang="en">pack</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://schema.ga-group.nl/xqo/FuturesStrip"/>
+  </owl:Class>
+  <owl:Class rdf:about="http://schema.ga-group.nl/xqo/Quarterly">
+    <rdfs:subClassOf rdf:resource="http://purl.org/nemo/gufo#Role"/>
+  </owl:Class>
+  <owl:Class rdf:about="http://schema.ga-group.nl/xqo/SerialMonth">
+    <rdfs:subClassOf rdf:resource="http://purl.org/nemo/gufo#Role"/>
+  </owl:Class>
+  <owl:Class rdf:about="http://schema.ga-group.nl/xqo/ShortDated">
+    <rdfs:subClassOf rdf:resource="http://purl.org/nemo/gufo#Role"/>
+  </owl:Class>
+  <owl:Class rdf:about="http://schema.ga-group.nl/xqo/StripSpecs">
+    <rdfs:comment xml:lang="en">Exchange-specific, instantiation-neutral description of futures strips.</rdfs:comment>
+    <rdfs:label xml:lang="en">strip specs</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://schema.ga-group.nl/xqo/ComboSpecs"/>
+    <owl:equivalentClass>
+      <owl:Restriction>
+        <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minCardinality>
+        <owl:onProperty rdf:resource="http://schema.ga-group.nl/xqo/strip-length"/>
+      </owl:Restriction>
+    </owl:equivalentClass>
+  </owl:Class>
+  <owl:Class rdf:about="http://schema.ga-group.nl/xqo/TACO">
+    <rdf:type rdf:resource="http://schema.ga-group.nl/xqo/ExecutionModality"/>
+    <rdf:type rdf:resource="http://schema.ga-group.nl/xqo/TACO"/>
+    <rdfs:comment xml:lang="en">Modality in which a futures trade is priced relative to the official opening value of the underlying (equity) index, using a negotiated basis applied to the cash‑market open to determine the final futures execution price.</rdfs:comment>
+    <rdfs:label xml:lang="en">TACO</rdfs:label>
+    <skos:editorialNote xml:lang="en">type-punning is used to allow users to either generically reference the execution modality, or to create their own subclasses, possibly encoding further exchange-specific details</skos:editorialNote>
+  </owl:Class>
+  <owl:Class rdf:about="http://schema.ga-group.nl/xqo/TACOVariant">
+    <rdfs:comment xml:lang="en">Operational contract variant that uses the (basis-)trade-at-cash-open execution modality.</rdfs:comment>
+    <rdfs:label xml:lang="en">TACO variant</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://schema.ga-group.nl/xqo/OperationalVariant"/>
+    <owl:equivalentClass>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="http://schema.ga-group.nl/xqo/executedVia"/>
+        <owl:someValuesFrom rdf:resource="http://schema.ga-group.nl/xqo/TACO"/>
+      </owl:Restriction>
+    </owl:equivalentClass>
+  </owl:Class>
+  <owl:Class rdf:about="http://schema.ga-group.nl/xqo/TAIC">
+    <rdf:type rdf:resource="http://schema.ga-group.nl/xqo/ExecutionModality"/>
+    <rdf:type rdf:resource="http://schema.ga-group.nl/xqo/TAIC"/>
+    <rdfs:comment xml:lang="en">Modality in which a futures trade is priced relative to the official closing value of the underlying index without a basis applied to the index close to determine the final futures execution price.</rdfs:comment>
+    <rdfs:label xml:lang="en">TAIC</rdfs:label>
+    <skos:editorialNote xml:lang="en">type-punning is used to allow users to either generically reference the execution modality, or to create their own subclasses, possibly encoding further exchange-specific details</skos:editorialNote>
+  </owl:Class>
+  <owl:Class rdf:about="http://schema.ga-group.nl/xqo/TAICVariant">
+    <rdfs:comment xml:lang="en">Operational contract variant that uses the trade-at-index-close execution modality.</rdfs:comment>
+    <rdfs:label xml:lang="en">TAIC variant</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://schema.ga-group.nl/xqo/OperationalVariant"/>
+    <owl:equivalentClass>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="http://schema.ga-group.nl/xqo/executedVia"/>
+        <owl:someValuesFrom rdf:resource="http://schema.ga-group.nl/xqo/TAIC"/>
+      </owl:Restriction>
+    </owl:equivalentClass>
+  </owl:Class>
+  <owl:Class rdf:about="http://schema.ga-group.nl/xqo/TAL">
+    <rdf:type rdf:resource="http://schema.ga-group.nl/xqo/ExecutionModality"/>
+    <rdf:type rdf:resource="http://schema.ga-group.nl/xqo/TAL"/>
+    <rdfs:comment xml:lang="en">Modality in which a futures trade is priced at the last traded price prior to the TAL execution window.</rdfs:comment>
+    <rdfs:label xml:lang="en">TAL</rdfs:label>
+    <skos:editorialNote xml:lang="en">type-punning is used to allow users to either generically reference the execution modality, or to create their own subclasses, possibly encoding further exchange-specific details</skos:editorialNote>
+  </owl:Class>
+  <owl:Class rdf:about="http://schema.ga-group.nl/xqo/TALVariant">
+    <rdfs:comment xml:lang="en">Operational contract variant that uses the trade-at-last execution modality.</rdfs:comment>
+    <rdfs:label xml:lang="en">TAL variant</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://schema.ga-group.nl/xqo/OperationalVariant"/>
+    <owl:equivalentClass>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="http://schema.ga-group.nl/xqo/executedVia"/>
+        <owl:someValuesFrom rdf:resource="http://schema.ga-group.nl/xqo/TAL"/>
+      </owl:Restriction>
+    </owl:equivalentClass>
+  </owl:Class>
+  <owl:Class rdf:about="http://schema.ga-group.nl/xqo/TAM">
+    <rdf:type rdf:resource="http://schema.ga-group.nl/xqo/ExecutionModality"/>
+    <rdf:type rdf:resource="http://schema.ga-group.nl/xqo/TAM"/>
+    <rdfs:comment xml:lang="en">Modality in which a futures trade is priced at a session marker.</rdfs:comment>
+    <rdfs:label xml:lang="en">TAM</rdfs:label>
+    <skos:editorialNote xml:lang="en">type-punning is used to allow users to either generically reference the execution modality, or to create their own subclasses, possibly encoding further exchange-specific details</skos:editorialNote>
+    <skos:scopeNote xml:lang="en">It is either unambigious which marker is referenced, for example if the trading venue only publishes a single session marker, or TAM markers are indistinguishable, and the combination of base contract plus marker type is not unique.
+
+If one needs to uphold the uniqueness of base contract and marker type, or distinguish several TAM markers specifically they should be introduced as subclasses of xqo:TAM.</skos:scopeNote>
+  </owl:Class>
+  <owl:Class rdf:about="http://schema.ga-group.nl/xqo/TAMM">
+    <rdf:type rdf:resource="http://schema.ga-group.nl/xqo/ExecutionModality"/>
+    <rdf:type rdf:resource="http://schema.ga-group.nl/xqo/TAMM"/>
+    <rdfs:comment xml:lang="en">Modality in which a futures trade is priced at a morning session's marker.</rdfs:comment>
+    <rdfs:label xml:lang="en">TAMM</rdfs:label>
+    <skos:editorialNote xml:lang="en">type-punning is used to allow users to either generically reference the execution modality, or to create their own subclasses, possibly encoding further exchange-specific details</skos:editorialNote>
+  </owl:Class>
+  <owl:Class rdf:about="http://schema.ga-group.nl/xqo/TAMMVariant">
+    <rdfs:comment xml:lang="en">Operational contract variant that used the trade-at-morning-marker execution modality.</rdfs:comment>
+    <rdfs:label xml:lang="en">TAMM variant</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://schema.ga-group.nl/xqo/OperationalVariant"/>
+    <owl:equivalentClass>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="http://schema.ga-group.nl/xqo/executedVia"/>
+        <owl:someValuesFrom rdf:resource="http://schema.ga-group.nl/xqo/TAMM"/>
+      </owl:Restriction>
+    </owl:equivalentClass>
+  </owl:Class>
+  <owl:Class rdf:about="http://schema.ga-group.nl/xqo/TAMVariant">
+    <rdfs:comment xml:lang="en">Operational contract variant that uses the trade-at-marker execution modality.</rdfs:comment>
+    <rdfs:label xml:lang="en">TAM variant</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://schema.ga-group.nl/xqo/OperationalVariant"/>
+    <owl:equivalentClass>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="http://schema.ga-group.nl/xqo/executedVia"/>
+        <owl:someValuesFrom rdf:resource="http://schema.ga-group.nl/xqo/TAM"/>
+      </owl:Restriction>
+    </owl:equivalentClass>
+  </owl:Class>
+  <owl:Class rdf:about="http://schema.ga-group.nl/xqo/TAS">
+    <rdf:type rdf:resource="http://schema.ga-group.nl/xqo/ExecutionModality"/>
+    <rdf:type rdf:resource="http://schema.ga-group.nl/xqo/TAS"/>
+    <rdfs:comment xml:lang="en">Modality in which a futures trade is priced at the official settlement price of the contract, optionally adjusted by a negotiated tick offset.</rdfs:comment>
+    <rdfs:label xml:lang="en">TAS</rdfs:label>
+    <skos:editorialNote xml:lang="en">type-punning is used to allow users to either generically reference the execution modality, or to create their own subclasses, possibly encoding further exchange-specific details</skos:editorialNote>
+  </owl:Class>
+  <owl:Class rdf:about="http://schema.ga-group.nl/xqo/TASVariant">
+    <rdfs:comment xml:lang="en">Operational contract variant that uses the trade-at-settlement execution modality.</rdfs:comment>
+    <rdfs:label xml:lang="en">TAS variant</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://schema.ga-group.nl/xqo/OperationalVariant"/>
+    <owl:equivalentClass>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="http://schema.ga-group.nl/xqo/executedVia"/>
+        <owl:someValuesFrom rdf:resource="http://schema.ga-group.nl/xqo/TAS"/>
+      </owl:Restriction>
+    </owl:equivalentClass>
+  </owl:Class>
+  <owl:Class rdf:about="http://schema.ga-group.nl/xqo/TMAC">
+    <rdf:type rdf:resource="http://schema.ga-group.nl/xqo/ExecutionModality"/>
+    <rdf:type rdf:resource="http://schema.ga-group.nl/xqo/TMAC"/>
+    <rdfs:comment xml:lang="en">Modality in which a futures trade is priced at the closing‑auction marker.</rdfs:comment>
+    <rdfs:label xml:lang="en">TMAC</rdfs:label>
+    <skos:editorialNote xml:lang="en">type-punning is used to allow users to either generically reference the execution modality, or to create their own subclasses, possibly encoding further exchange-specific details</skos:editorialNote>
+  </owl:Class>
+  <owl:Class rdf:about="http://schema.ga-group.nl/xqo/TMACVariant">
+    <rdfs:comment xml:lang="en">Operational contract variant that uses the trade-marker-at-close execution modality.</rdfs:comment>
+    <rdfs:label xml:lang="en">TMAC variant</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://schema.ga-group.nl/xqo/OperationalVariant"/>
+    <owl:equivalentClass>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="http://schema.ga-group.nl/xqo/executedVia"/>
+        <owl:someValuesFrom rdf:resource="http://schema.ga-group.nl/xqo/TMAC"/>
+      </owl:Restriction>
+    </owl:equivalentClass>
+  </owl:Class>
   <owl:ObjectProperty rdf:about="http://schema.ga-group.nl/xqo/componentOf">
     <rdfs:comment xml:lang="en">Relates a futures contract to a composition concept.</rdfs:comment>
     <rdfs:label xml:lang="en">component of</rdfs:label>
@@ -70,11 +354,86 @@ The project's canonical home is &lt;http://schema.ga-group.nl/xqo/&gt;.
     <rdfs:label xml:lang="en">composed of</rdfs:label>
     <owl:inverseOf rdf:resource="http://schema.ga-group.nl/xqo/componentOf"/>
   </owl:ObjectProperty>
+  <owl:DatatypeProperty rdf:about="http://schema.ga-group.nl/xqo/contract-months">
+    <rdfs:comment xml:lang="en">Indicator of concurrently active contracts in truffle syntax.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://schema.ga-group.nl/xqo/ContractSpecs"/>
+    <rdfs:label xml:lang="en">contract months</rdfs:label>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://schema.ga-group.nl/xqo/contract-size">
+    <rdfs:comment xml:lang="en">Physical or notional amount of the underlying that one contract controls.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://schema.ga-group.nl/xqo/ContractSpecs"/>
+    <rdfs:label xml:lang="en">contract size</rdfs:label>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+    <rdfs:seeAlso rdf:resource="http://schema.ga-group.nl/xqo/contract-unit"/>
+    <skos:editorialNote xml:lang="en">Certain products stipulate different
+contract sizes depending on the month, the quarter, the semester, or
+the year in question.  For example if the contract were to specify a
+fixed amount per hour (as is the case for electricity), the resulting
+contract can be of size 672, 696, 719, 720, 721, 743, 744, 745, for
+months of 28, 29, 30, or 31 days and possibly accounting for the
+beginning or the end of daylight saving.</skos:editorialNote>
+  </owl:DatatypeProperty>
+  <owl:ObjectProperty rdf:about="http://schema.ga-group.nl/xqo/contract-unit">
+    <rdfs:comment xml:lang="en">Unit of the physical or notional amount of the underlying.</rdfs:comment>
+    <rdfs:label xml:lang="en">contract unit</rdfs:label>
+    <rdfs:range rdf:resource="http://qudt.org/schema/qudt/Unit"/>
+    <rdfs:seeAlso rdf:resource="http://schema.ga-group.nl/xqo/contract-size"/>
+  </owl:ObjectProperty>
   <owl:DatatypeProperty rdf:about="http://schema.ga-group.nl/xqo/discriminator">
     <rdfs:comment xml:lang="en">Relates a futures contract to its symbolic discriminator (e.g. 'Z6' in 'CLZ6')</rdfs:comment>
     <rdfs:label xml:lang="en">discriminator</rdfs:label>
     <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
     <skos:scopeNote xml:lang="en">The discriminator can also be captured in a canonical (ordinal) way by xqo:ordinal.</skos:scopeNote>
+  </owl:DatatypeProperty>
+  <owl:ObjectProperty rdf:about="http://schema.ga-group.nl/xqo/executedVia">
+    <rdfs:comment xml:lang="en">Links a futures variant to the execution modality that is used to enter or exit a position.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://schema.ga-group.nl/xqo/OperationalVariant"/>
+    <rdfs:label xml:lang="en">executed via</rdfs:label>
+    <rdfs:range rdf:resource="http://schema.ga-group.nl/xqo/ExecutionModality"/>
+  </owl:ObjectProperty>
+  <owl:DatatypeProperty rdf:about="http://schema.ga-group.nl/xqo/final-settlement">
+    <rdfs:comment xml:lang="en"></rdfs:comment>
+    <rdfs:domain rdf:resource="http://schema.ga-group.nl/xqo/ContractSpecs"/>
+    <rdfs:label xml:lang="en">final settlement date</rdfs:label>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://schema.ga-group.nl/xqo/first-delivery">
+    <rdfs:comment xml:lang="en"></rdfs:comment>
+    <rdfs:domain rdf:resource="http://schema.ga-group.nl/xqo/ContractSpecs"/>
+    <rdfs:label xml:lang="en">first delivery date</rdfs:label>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://schema.ga-group.nl/xqo/first-intent">
+    <rdfs:comment xml:lang="en">The first day on which traders are notified of their obligation to deliver or take delivery.</rdfs:comment>
+    <rdfs:label xml:lang="en">first notice date</rdfs:label>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://schema.ga-group.nl/xqo/first-notice">
+    <rdfs:comment xml:lang="en">The first day on which traders are notified of their obligation to deliver or take delivery.</rdfs:comment>
+    <rdfs:label xml:lang="en">first notice date</rdfs:label>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://schema.ga-group.nl/xqo/first-trade">
+    <rdfs:comment xml:lang="en">The first day on which a contract is available for trading.</rdfs:comment>
+    <rdfs:label xml:lang="en">first trade date</rdfs:label>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://schema.ga-group.nl/xqo/last-delivery">
+    <rdfs:comment xml:lang="en"></rdfs:comment>
+    <rdfs:domain rdf:resource="http://schema.ga-group.nl/xqo/ContractSpecs"/>
+    <rdfs:label xml:lang="en">last delivery date</rdfs:label>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://schema.ga-group.nl/xqo/last-intent">
+    <rdfs:comment xml:lang="en">The first day on which traders are notified of their obligation to deliver or take delivery.</rdfs:comment>
+    <rdfs:label xml:lang="en">first notice date</rdfs:label>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://schema.ga-group.nl/xqo/last-trade">
+    <rdfs:comment xml:lang="en">The final day on which a contract </rdfs:comment>
+    <rdfs:label xml:lang="en">last trade trade</rdfs:label>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="http://schema.ga-group.nl/xqo/ordinal">
     <rdfs:comment xml:lang="en">Relates a futures contract to its ordinal value, implying an ordering and adjacency.</rdfs:comment>
@@ -92,9 +451,80 @@ datatype or an ISO 8601 notation, use raw strings in those cases
 
 The exchange discriminator can be captured by xqo:discriminator.</skos:scopeNote>
   </owl:DatatypeProperty>
+  <owl:ObjectProperty rdf:about="http://schema.ga-group.nl/xqo/point-ccy">
+    <rdfs:comment xml:lang="en">Currency in which the monetary value of a one-point move is expressed.</rdfs:comment>
+    <rdfs:label xml:lang="en">point currency</rdfs:label>
+    <rdfs:range rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/Currency"/>
+    <rdfs:seeAlso rdf:resource="http://schema.ga-group.nl/xqo/point-value"/>
+  </owl:ObjectProperty>
+  <owl:DatatypeProperty rdf:about="http://schema.ga-group.nl/xqo/point-value">
+    <rdfs:comment xml:lang="en">Monetary value of a one-point move.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://schema.ga-group.nl/xqo/ContractSpecs"/>
+    <rdfs:label xml:lang="en">point value</rdfs:label>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+    <rdfs:seeAlso rdf:resource="http://schema.ga-group.nl/xqo/point-ccy"/>
+  </owl:DatatypeProperty>
+  <owl:ObjectProperty rdf:about="http://schema.ga-group.nl/xqo/quote-unit">
+    <rdfs:comment xml:lang="en">Unit of quoting, deprecated.  Replaced by the 4-tuple of xqo:contract-value, xqo:contract-unit, xqo:point-value, and xqo:point-ccy.  Calculated as (xqo:point-value / xqo:contract-value) * (xqo:point-ccy / xqo:contract-unit).</rdfs:comment>
+    <rdfs:label xml:lang="en">quote unit</rdfs:label>
+    <rdfs:range rdf:resource="http://qudt.org/schema/qudt/Unit"/>
+    <rdfs:seeAlso rdf:resource="http://schema.ga-group.nl/xqo/contract-unit"/>
+    <rdfs:seeAlso rdf:resource="http://schema.ga-group.nl/xqo/point-value"/>
+    <owl:deprecated rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</owl:deprecated>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://schema.ga-group.nl/xqo/specifiedBy">
+    <rdfs:comment xml:lang="en">Links a futures contract to its contract specifications.</rdfs:comment>
+    <rdfs:domain rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/Future"/>
+    <rdfs:label xml:lang="en">specified by</rdfs:label>
+    <rdfs:range rdf:resource="http://schema.ga-group.nl/xqo/ContractSpecs"/>
+    <owl:inverseOf rdf:resource="http://purl.org/nemo/gufo#describes"/>
+  </owl:ObjectProperty>
+  <owl:DatatypeProperty rdf:about="http://schema.ga-group.nl/xqo/strip-length">
+    <rdfs:comment xml:lang="en">Number of consecutive contracts that make up a strip.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://schema.ga-group.nl/xqo/StripSpecs"/>
+    <rdfs:label xml:lang="en">strip length</rdfs:label>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  </owl:DatatypeProperty>
+  <owl:ObjectProperty rdf:about="http://schema.ga-group.nl/xqo/stripOf">
+    <rdfs:comment xml:lang="en">Relates a futures strip specification to the contract specs that it is made up of.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://schema.ga-group.nl/xqo/StripSpecs"/>
+    <rdfs:label xml:lang="en">strip of</rdfs:label>
+    <rdfs:range rdf:resource="http://schema.ga-group.nl/xqo/ContractSpecs"/>
+  </owl:ObjectProperty>
   <owl:DatatypeProperty rdf:about="http://schema.ga-group.nl/xqo/symbol">
     <rdfs:comment xml:lang="en">Relates a product or contract specification to the exchange's symbol code used for identifying it.</rdfs:comment>
     <rdfs:label xml:lang="en">symbol</rdfs:label>
     <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
   </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://schema.ga-group.nl/xqo/tick-size">
+    <rdfs:comment xml:lang="en">Minimum price increment in points.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://schema.ga-group.nl/xqo/ContractSpecs"/>
+    <rdfs:label xml:lang="en">tick size</rdfs:label>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+    <skos:editorialNote xml:lang="en">Some exchanges stipulate different
+tick sizes depending on whether the contract is, say, the front month
+(as opposed to back month and later), or e.g. a serial month (as
+opposed to a weekly or quarterly).  xqo provides supporting classes
+(anti-rigid roles) to distinguish these from one another but
+ultimately it is up to the modeller and the envisaged granularity to
+decide whether to use them.</skos:editorialNote>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://schema.ga-group.nl/xqo/tick-value">
+    <rdfs:comment xml:lang="en">Monetary value of the minimum price increment, calculated as xqo:tick-size * xqo:point-value, expressed in xqo:point-ccy.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://schema.ga-group.nl/xqo/ContractSpecs"/>
+    <rdfs:label xml:lang="en">tick value</rdfs:label>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+    <rdfs:seeAlso rdf:resource="http://schema.ga-group.nl/xqo/point-ccy"/>
+    <skos:editorialNote xml:lang="en">The note on `xqo:tick-size`
+applies here too.  FIBO provides `fibo-der-drc-bsc:hasTickValue` to
+capture the tick value (calculated as above) on a per-contract basis.
+Otherwise it's up to the modeller to define different contract specs
+for front month/back month, or serial month/quarterly, etc.</skos:editorialNote>
+  </owl:DatatypeProperty>
+  <owl:ObjectProperty rdf:about="http://schema.ga-group.nl/xqo/variantOf">
+    <rdfs:comment xml:lang="en">Links an operational futures variant to its outright contract.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://schema.ga-group.nl/xqo/OperationalVariant"/>
+    <rdfs:label xml:lang="en">variant of</rdfs:label>
+    <rdfs:subPropertyOf rdf:resource="http://purl.org/nemo/gufo#isDerivedFrom"/>
+  </owl:ObjectProperty>
 </rdf:RDF>

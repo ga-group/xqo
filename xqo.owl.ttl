@@ -1,15 +1,19 @@
 @prefix dc: <http://purl.org/dc/elements/1.1/> .
 @prefix dcat: <http://www.w3.org/ns/dcat#> .
 @prefix dct: <http://purl.org/dc/terms/> .
+@prefix fibo-fbc-fi-fi: <https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/> .
+@prefix fibo-fnd-acc-cur: <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/> .
 @prefix gufo: <http://purl.org/nemo/gufo#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix pav: <http://purl.org/pav/> .
+@prefix qudt: <http://qudt.org/schema/qudt/> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix swrl: <http://www.w3.org/2003/11/swrl#> .
 @prefix tempo: <http://purl.org/tempo/> .
+@prefix unit: <http://qudt.org/vocab/unit/> .
 @prefix vann: <http://purl.org/vocab/vann/> .
 @prefix xqo: <http://schema.ga-group.nl/xqo/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
@@ -25,7 +29,11 @@ xqo:
 	dc:creator	"Sebastian Freundt"^^xsd:string ;
 	dc:description	"""Overview
 --------
-The exchange quirks ontology (xqo) provides vocabulary .
+The exchange quirks ontology (xqo) provides vocabulary to classify and
+relate certain operational contract variants of exchange-listed
+derivatives, to capture the instantiation templates of exchange-listed
+derivatives, as well as their instantiations.
+
 
 
 Why?
@@ -35,7 +43,38 @@ FIBO's official ontology (much like FIX) stop at exchange-specific
 implementations, and instead refer to the possibility of extending the
 standard unofficially as needed.  And while FIX covers pre-trade, FIBO
 is generally post-trade, and neither cover analytical workflows like
-universe selection, exchange selection, order type selection, etc.
+universe selection, exchange selection, order type selection, trading
+parameters nor important dates associated with the exposure.
+
+
+How?
+----
+
+A class, `xqo:ExecutionModality` is introduced, and the most
+prominent modalities are identified and introduced as classes in their
+own right.  Moreover, a class `xqo:OperationalVariant` is
+introduced, itself a subclass of `gufo:Role` to capture the
+operational contract (or chain, or synthesis) as a variant of the
+outright contract (or chain, or synthesis).  Then for each of the
+modalities a variant is introduced, itself a subclass of
+`xqo:OperationalVariant` which is inferred if a resource states
+
+    R xqo:executedVia xqo:<Modality> .
+
+=>
+
+    R a xqo:<Modality>Variant .
+
+and, conversely:
+
+    R a xqo:<Modality>Variant .
+
+=>
+
+    R xqo:executedVia [
+            a xqo:<Modality> 
+    ] .
+
 
 
 Where?
@@ -55,7 +94,7 @@ The project's canonical home is <http://schema.ga-group.nl/xqo/>.
 	dct:modified	"2026-10-01T05:00:00Z"^^xsd:dateTime ;
 	dct:publisher	<https://orcid.org/0000-0002-7352-2825> ;
 	dct:title	"xqo -- exchange quirks ontology" ;
-	owl:imports	gufo: ;
+	owl:imports	fibo-fbc-fi-fi: , fibo-fnd-acc-cur: , gufo: ;
 	owl:versionIRI	<http://schema.ga-group.nl/xqo/0.1/> ;
 	owl:versionInfo	"0.1"^^xsd:string ;
 	rdfs:label	"xqo"@en ;
@@ -66,6 +105,316 @@ The project's canonical home is <http://schema.ga-group.nl/xqo/>.
 #################################################################
 # Classes
 #################################################################
+
+## variants
+
+xqo:OperationalVariant
+	a	owl:Class ;
+	owl:equivalentClass	[
+		a	owl:Restriction ;
+		owl:onProperty	xqo:variantOf ;
+		owl:minCardinality	"1"^^xsd:nonNegativeInteger ;
+	] ;
+	rdfs:comment	"A variant of a futures contract that inherits all of the economic attributes of the bare contract and only differs in operational ways."@en ;
+	rdfs:label	"future variant"@en ;
+	rdfs:subClassOf	gufo:Role ;
+	skos:editorialNote	"""This class isn't subclass of any particular thing involving """@en .
+
+xqo:ExecutionModality
+	a	owl:Class ;
+	rdfs:comment	"A benchmark‑priced or rule‑driven mode by which a futures contract is entered or exited, where the execution price is determined not by the continuous limit order book but by a reference benchmark, auction process, or designated price‑formation rule."@en ;
+	rdfs:label	"execution modality"@en .
+
+xqo:BTIC
+	a	owl:Class ;
+	a	xqo:ExecutionModality , xqo:BTIC ;
+	rdfs:comment	"Modality in which a futures trade is priced relative to the official closing value of an underlying (equity) index, using a negotiated basis applied to the index close to determine the final futures execution price."@en ;
+	rdfs:label	"BTIC"@en ;
+	skos:editorialNote	"type-punning is used to allow users to either generically reference the execution modality, or to create their own subclasses, possibly encoding further exchange-specific details"@en .
+
+xqo:TACO
+	a	owl:Class ;
+	a	xqo:ExecutionModality , xqo:TACO ;
+	rdfs:comment	"Modality in which a futures trade is priced relative to the official opening value of the underlying (equity) index, using a negotiated basis applied to the cash‑market open to determine the final futures execution price."@en ;
+	rdfs:label	"TACO"@en ;
+	skos:editorialNote	"type-punning is used to allow users to either generically reference the execution modality, or to create their own subclasses, possibly encoding further exchange-specific details"@en .
+
+xqo:TAIC
+	a	owl:Class ;
+	a	xqo:ExecutionModality , xqo:TAIC ;
+	rdfs:comment	"Modality in which a futures trade is priced relative to the official closing value of the underlying index without a basis applied to the index close to determine the final futures execution price."@en ;
+	rdfs:label	"TAIC"@en ;
+	skos:editorialNote	"type-punning is used to allow users to either generically reference the execution modality, or to create their own subclasses, possibly encoding further exchange-specific details"@en .
+
+xqo:TAL
+	a	owl:Class ;
+	a	xqo:ExecutionModality , xqo:TAL ;
+	rdfs:comment	"Modality in which a futures trade is priced at the last traded price prior to the TAL execution window."@en ;
+	rdfs:label	"TAL"@en ;
+	skos:editorialNote	"type-punning is used to allow users to either generically reference the execution modality, or to create their own subclasses, possibly encoding further exchange-specific details"@en .
+
+xqo:TAM
+	a	owl:Class ;
+	a	xqo:ExecutionModality , xqo:TAM ;
+	rdfs:comment	"Modality in which a futures trade is priced at a session marker."@en ;
+	rdfs:label	"TAM"@en ;
+	skos:editorialNote	"type-punning is used to allow users to either generically reference the execution modality, or to create their own subclasses, possibly encoding further exchange-specific details"@en ;
+	skos:scopeNote	"""It is either unambigious which marker is referenced, for example if the trading venue only publishes a single session marker, or TAM markers are indistinguishable, and the combination of base contract plus marker type is not unique.
+
+If one needs to uphold the uniqueness of base contract and marker type, or distinguish several TAM markers specifically they should be introduced as subclasses of xqo:TAM."""@en .
+
+xqo:TAMM
+	a	owl:Class ;
+	a	xqo:ExecutionModality , xqo:TAMM ;
+	rdfs:comment	"Modality in which a futures trade is priced at a morning session's marker."@en ;
+	rdfs:label	"TAMM"@en ;
+	skos:editorialNote	"type-punning is used to allow users to either generically reference the execution modality, or to create their own subclasses, possibly encoding further exchange-specific details"@en .
+
+xqo:TAS
+	a	owl:Class ;
+	a	xqo:ExecutionModality , xqo:TAS ;
+	rdfs:comment	"Modality in which a futures trade is priced at the official settlement price of the contract, optionally adjusted by a negotiated tick offset."@en ;
+	rdfs:label	"TAS"@en ;
+	skos:editorialNote	"type-punning is used to allow users to either generically reference the execution modality, or to create their own subclasses, possibly encoding further exchange-specific details"@en .
+
+xqo:TMAC
+	a	owl:Class ;
+	a	xqo:ExecutionModality , xqo:TMAC ;
+	rdfs:comment	"Modality in which a futures trade is priced at the closing‑auction marker."@en ;
+	rdfs:label	"TMAC"@en ;
+	skos:editorialNote	"type-punning is used to allow users to either generically reference the execution modality, or to create their own subclasses, possibly encoding further exchange-specific details"@en .
+
+
+xqo:BTICVariant
+	a	owl:Class ;
+	owl:equivalentClass	[
+		a	owl:Restriction ;
+		owl:onProperty	xqo:executedVia ;
+		owl:someValuesFrom	xqo:BTIC ;
+	] ;
+	rdfs:comment	"Operational contract variant that uses the basis-trade-at-index-close execution modality."@en ;
+	rdfs:label	"BTIC variant"@en ;
+	rdfs:subClassOf	xqo:OperationalVariant .
+
+xqo:TACOVariant
+	a	owl:Class ;
+	owl:equivalentClass	[
+		a	owl:Restriction ;
+		owl:onProperty	xqo:executedVia ;
+		owl:someValuesFrom	xqo:TACO ;
+	] ;
+	rdfs:comment	"Operational contract variant that uses the (basis-)trade-at-cash-open execution modality."@en ;
+	rdfs:label	"TACO variant"@en ;
+	rdfs:subClassOf	xqo:OperationalVariant .
+
+xqo:TAICVariant
+	a	owl:Class ;
+	owl:equivalentClass	[
+		a	owl:Restriction ;
+		owl:onProperty	xqo:executedVia ;
+		owl:someValuesFrom	xqo:TAIC ;
+	] ;
+	rdfs:comment	"Operational contract variant that uses the trade-at-index-close execution modality."@en ;
+	rdfs:label	"TAIC variant"@en ;
+	rdfs:subClassOf	xqo:OperationalVariant .
+
+xqo:TALVariant
+	a	owl:Class ;
+	owl:equivalentClass	[
+		a	owl:Restriction ;
+		owl:onProperty	xqo:executedVia ;
+		owl:someValuesFrom	xqo:TAL ;
+	] ;
+	rdfs:comment	"Operational contract variant that uses the trade-at-last execution modality."@en ;
+	rdfs:label	"TAL variant"@en ;
+	rdfs:subClassOf	xqo:OperationalVariant .
+
+xqo:TAMVariant
+	a	owl:Class ;
+	owl:equivalentClass	[
+		a	owl:Restriction ;
+		owl:onProperty	xqo:executedVia ;
+		owl:someValuesFrom	xqo:TAM ;
+	] ;
+	rdfs:comment	"Operational contract variant that uses the trade-at-marker execution modality."@en ;
+	rdfs:label	"TAM variant"@en ;
+	rdfs:subClassOf	xqo:OperationalVariant .
+
+xqo:TAMMVariant
+	a	owl:Class ;
+	owl:equivalentClass	[
+		a	owl:Restriction ;
+		owl:onProperty	xqo:executedVia ;
+		owl:someValuesFrom	xqo:TAMM ;
+	] ;
+	rdfs:comment	"Operational contract variant that used the trade-at-morning-marker execution modality."@en ;
+	rdfs:label	"TAMM variant"@en ;
+	rdfs:subClassOf	xqo:OperationalVariant .
+
+xqo:TASVariant
+	a	owl:Class ;
+	owl:equivalentClass	[
+		a	owl:Restriction ;
+		owl:onProperty	xqo:executedVia ;
+		owl:someValuesFrom	xqo:TAS ;
+	] ;
+	rdfs:comment	"Operational contract variant that uses the trade-at-settlement execution modality."@en ;
+	rdfs:label	"TAS variant"@en ;
+	rdfs:subClassOf	xqo:OperationalVariant .
+
+xqo:TMACVariant
+	a	owl:Class ;
+	owl:equivalentClass	[
+		a	owl:Restriction ;
+		owl:onProperty	xqo:executedVia ;
+		owl:someValuesFrom	xqo:TMAC ;
+	] ;
+	rdfs:comment	"Operational contract variant that uses the trade-marker-at-close execution modality."@en ;
+	rdfs:label	"TMAC variant"@en ;
+	rdfs:subClassOf	xqo:OperationalVariant .
+
+## specs
+
+xqo:ContractSpecs
+	a	owl:Class ;
+	rdfs:comment	"Exchange-specific, instantiation-neutral description of a futures contract."@en ;
+	rdfs:label	"contract specs"@en ;
+	rdfs:subClassOf	gufo:Description .
+
+xqo:ComboSpecs
+	a	owl:Class ;
+	rdfs:comment	"Exchange-specific, instantiation-neutral description of futures comboes."@en ;
+	rdfs:label	"combo specs"@en ;
+	rdfs:subClassOf	xqo:ContractSpecs .
+
+xqo:StripSpecs
+	a	owl:Class ;
+	owl:equivalentClass	[
+		a	owl:Restriction ;
+		owl:onProperty	xqo:strip-length ;
+		owl:minCardinality	"1"^^xsd:nonNegativeInteger ;
+	] ;
+	rdfs:comment	"Exchange-specific, instantiation-neutral description of futures strips."@en ;
+	rdfs:label	"strip specs"@en ;
+	rdfs:subClassOf	xqo:ComboSpecs .
+
+## supporting roles
+
+xqo:FrontMonth
+	a	owl:Class ;
+	rdfs:subClassOf	gufo:Role .
+
+xqo:BackMonth
+	a	owl:Class ;
+	rdfs:subClassOf	gufo:Role .
+
+xqo:SerialMonth
+	a	owl:Class ;
+	rdfs:subClassOf	gufo:Role .
+
+xqo:Quarterly
+	a	owl:Class ;
+	rdfs:subClassOf	gufo:Role .
+
+xqo:ShortDated
+	a	owl:Class ;
+	rdfs:subClassOf	gufo:Role .
+
+
+xqo:FuturesCombo
+	a	owl:Class ;
+	owl:equivalentClass [
+		a	owl:Restriction ;
+		owl:onProperty	xqo:specifiedBy ;
+		owl:someValuesFrom	xqo:ComboSpecs ;
+	] ;
+	rdfs:comment	"Combination of futures contracts that are traded or analysed together as a package."@en ;
+	rdfs:label	"futures strip"@en ;
+	rdfs:subClassOf	fibo-fbc-fi-fi:Future .
+
+xqo:FuturesStrip
+	a	owl:Class ;
+	owl:equivalentClass [
+		a	owl:Restriction ;
+		owl:onProperty	xqo:specifiedBy ;
+		owl:someValuesFrom	xqo:StripSpecs ;
+	] ;
+	rdfs:comment	"Futures combo that covers consecutive delivery months or quarters."@en ;
+	rdfs:label	"futures strip"@en ;
+	rdfs:subClassOf	xqo:FuturesCombo .
+
+xqo:FuturesSpread
+	a	owl:Class ;
+	owl:equivalentClass [
+		a	owl:Restriction ;
+		owl:onProperty	xqo:specifiedBy ;
+		owl:someValuesFrom	xqo:SpreadSpecs ;
+	] ;
+	rdfs:comment	"Futures combo that ...."@en ;
+	rdfs:label	"futures spread"@en ;
+	rdfs:subClassOf	xqo:FuturesCombo .
+
+xqo:Pack
+	a	owl:Class ;
+	rdfs:comment	"Standardised strip of four consecutive quarterly contracts in a colour band."@en ;
+	rdfs:label	"pack"@en ;
+	rdfs:subClassOf	xqo:FuturesStrip .
+
+xqo:Bundle
+	a	owl:Class ;
+	rdfs:comment	"Standardised bundle of packs, e.g. 2-year bundle equals white pack plus red pack."@en ;
+	rdfs:label	"bundle"@en ;
+	rdfs:subClassOf	xqo:FuturesStrip .
+
+## individuals?
+
+#xqo:WhitePack
+#	a	owl:Class ;
+#	rdfs:comment	"Four consecutive quarterly contracts of the nearest year."@en ;
+#	rdfs:label	"white pack"@en ;
+#	rdfs:subClassOf	xqo:Pack .
+#
+#xqo:RedPack
+#	a	owl:Class ;
+#	rdfs:comment	"Four consecutive quarterly contracts of the second year."@en ;
+#	rdfs:label	"red pack"@en ;
+#	rdfs:subClassOf	xqo:Pack .
+#
+#xqo:GreenPack
+#	a	owl:Class ;
+#	rdfs:comment	"Four consecutive quarterly contracts of the third year."@en ;
+#	rdfs:label	"green pack"@en ;
+#	rdfs:subClassOf	xqo:Pack .
+#
+#xqo:BluePack
+#	a	owl:Class ;
+#	rdfs:comment	"Four consecutive quarterly contracts of the fourth year."@en ;
+#	rdfs:label	"blue pack"@en ;
+#	rdfs:subClassOf	xqo:Pack .
+#
+#xqo:GoldPack
+#	a	owl:Class ;
+#	rdfs:comment	"Four consecutive quarterly contracts of the fifth year."@en ;
+#	rdfs:label	"gold pack"@en ;
+#	rdfs:subClassOf	xqo:Pack .
+#
+#xqo:PurplePack
+#	a	owl:Class ;
+#	rdfs:comment	"Four consecutive quarterly contracts of the sixth year."@en ;
+#	rdfs:label	"purple pack"@en ;
+#	rdfs:subClassOf	xqo:Pack .
+#
+#xqo:OrangePack
+#	a	owl:Class ;
+#	rdfs:comment	"Four consecutive quarterly contracts of the seventh year."@en ;
+#	rdfs:label	"orange pack"@en ;
+#	rdfs:subClassOf	xqo:Pack .
+#
+#xqo:PinkPack
+#	a	owl:Class ;
+#	rdfs:comment	"Four consecutive quarterly contracts of the eigth year."@en ;
+#	rdfs:label	"pink pack"@en ;
+#	rdfs:subClassOf	xqo:Pack .
 
 
 #################################################################
@@ -84,6 +433,62 @@ xqo:componentOf
 	rdfs:comment	"Relates a futures contract to a composition concept."@en ;
 	rdfs:label	"component of"@en ;
 	rdfs:subPropertyOf	gufo:isProperPartOf .
+
+## specs
+
+xqo:specifiedBy
+	a	owl:ObjectProperty ;
+	owl:inverseOf	gufo:describes ;
+	rdfs:comment	"Links a futures contract to its contract specifications."@en ;
+	rdfs:domain	fibo-fbc-fi-fi:Future ;
+	rdfs:label	"specified by"@en ;
+	rdfs:range	xqo:ContractSpecs .
+
+xqo:contract-unit
+	a	owl:ObjectProperty ;
+	rdfs:comment	"Unit of the physical or notional amount of the underlying."@en ;
+	rdfs:label	"contract unit"@en ;
+	rdfs:range	qudt:Unit ;
+	rdfs:seeAlso	xqo:contract-size .
+
+xqo:point-ccy
+	a	owl:ObjectProperty ;
+	rdfs:comment	"Currency in which the monetary value of a one-point move is expressed."@en ;
+	rdfs:label	"point currency"@en ;
+	rdfs:range	fibo-fnd-acc-cur:Currency ;
+	rdfs:seeAlso	xqo:point-value .
+
+xqo:quote-unit
+	a	owl:ObjectProperty ;
+	owl:deprecated	true ;
+	rdfs:comment	"Unit of quoting, deprecated.  Replaced by the 4-tuple of xqo:contract-value, xqo:contract-unit, xqo:point-value, and xqo:point-ccy.  Calculated as (xqo:point-value / xqo:contract-value) * (xqo:point-ccy / xqo:contract-unit)."@en ;
+	rdfs:label	"quote unit"@en ;
+	rdfs:range	qudt:Unit ;
+	rdfs:seeAlso	xqo:contract-unit , xqo:point-value .
+
+xqo:stripOf
+	a	owl:ObjectProperty ;
+	rdfs:comment	"Relates a futures strip specification to the contract specs that it is made up of."@en ;
+	rdfs:domain	xqo:StripSpecs ;
+	rdfs:label	"strip of"@en ;
+	rdfs:range	xqo:ContractSpecs .
+
+
+## variants
+
+xqo:variantOf
+	a	owl:ObjectProperty ;
+	rdfs:comment	"Links an operational futures variant to its outright contract."@en ;
+	rdfs:domain	xqo:OperationalVariant ;
+	rdfs:label	"variant of"@en ;
+	rdfs:subPropertyOf	gufo:isDerivedFrom .
+
+xqo:executedVia
+	a	owl:ObjectProperty ;
+	rdfs:comment	"Links a futures variant to the execution modality that is used to enter or exit a position."@en ;
+	rdfs:domain	xqo:OperationalVariant ;
+	rdfs:label	"executed via"@en ;
+	rdfs:range	xqo:ExecutionModality .
 
 
 #################################################################
@@ -122,8 +527,172 @@ xqo:symbol
 	rdfs:label	"symbol"@en ;
 	rdfs:range	rdfs:Literal .
 
+## specs
+
+xqo:contract-size
+	a	owl:DatatypeProperty ;
+	rdfs:comment	"Physical or notional amount of the underlying that one contract controls."@en ;
+	rdfs:domain	xqo:ContractSpecs ;
+	rdfs:label	"contract size"@en ;
+	rdfs:range	xsd:decimal ;
+	rdfs:seeAlso	xqo:contract-unit ;
+	skos:editorialNote	"""Certain products stipulate different
+contract sizes depending on the month, the quarter, the semester, or
+the year in question.  For example if the contract were to specify a
+fixed amount per hour (as is the case for electricity), the resulting
+contract can be of size 672, 696, 719, 720, 721, 743, 744, 745, for
+months of 28, 29, 30, or 31 days and possibly accounting for the
+beginning or the end of daylight saving."""@en .
+
+xqo:point-value
+	a	owl:DatatypeProperty ;
+	rdfs:comment	"Monetary value of a one-point move."@en ;
+	rdfs:domain	xqo:ContractSpecs ;
+	rdfs:label	"point value"@en ;
+	rdfs:range	xsd:decimal ;
+	rdfs:seeAlso	xqo:point-ccy .
+
+xqo:tick-size
+	a	owl:DatatypeProperty ;
+	rdfs:comment	"Minimum price increment in points."@en ;
+	rdfs:domain	xqo:ContractSpecs ;
+	rdfs:label	"tick size"@en ;
+	rdfs:range	xsd:decimal ;
+	skos:editorialNote	"""Some exchanges stipulate different
+tick sizes depending on whether the contract is, say, the front month
+(as opposed to back month and later), or e.g. a serial month (as
+opposed to a weekly or quarterly).  xqo provides supporting classes
+(anti-rigid roles) to distinguish these from one another but
+ultimately it is up to the modeller and the envisaged granularity to
+decide whether to use them."""@en .
+
+xqo:tick-value
+	a	owl:DatatypeProperty ;
+	rdfs:comment	"Monetary value of the minimum price increment, calculated as xqo:tick-size * xqo:point-value, expressed in xqo:point-ccy."@en ;
+	rdfs:domain	xqo:ContractSpecs ;
+	rdfs:label	"tick value"@en ;
+	rdfs:range	xsd:decimal ;
+	rdfs:seeAlso	xqo:point-ccy ;
+	skos:editorialNote	"""The note on `xqo:tick-size`
+applies here too.  FIBO provides `fibo-der-drc-bsc:hasTickValue` to
+capture the tick value (calculated as above) on a per-contract basis.
+Otherwise it's up to the modeller to define different contract specs
+for front month/back month, or serial month/quarterly, etc."""@en .
+
+xqo:contract-months
+	a	owl:DatatypeProperty ;
+	rdfs:comment	"Indicator of concurrently active contracts in truffle syntax."@en ;
+	rdfs:domain	xqo:ContractSpecs ;
+	rdfs:label	"contract months"@en ;
+	rdfs:range	rdfs:Literal .
+
+xqo:strip-length
+	a	owl:DatatypeProperty ;
+	rdfs:comment	"Number of consecutive contracts that make up a strip."@en ;
+	rdfs:domain	xqo:StripSpecs ;
+	rdfs:label	"strip length"@en ;
+	rdfs:range	xsd:decimal .
+
+## specifics
+
+xqo:first-notice
+	a	owl:DatatypeProperty ;
+	rdfs:comment	"The first day on which traders are notified of their obligation to deliver or take delivery."@en ;
+	rdfs:label	"first notice date"@en ;
+	rdfs:range	xsd:date .
+
+xqo:first-intent
+	a	owl:DatatypeProperty ;
+	rdfs:comment	"The first day on which traders are notified of their obligation to deliver or take delivery."@en ;
+	rdfs:label	"first notice date"@en ;
+	rdfs:range	xsd:date .
+
+xqo:last-intent
+	a	owl:DatatypeProperty ;
+	rdfs:comment	"The first day on which traders are notified of their obligation to deliver or take delivery."@en ;
+	rdfs:label	"first notice date"@en ;
+	rdfs:range	xsd:date .
+
+xqo:first-trade
+	a	owl:DatatypeProperty ;
+	rdfs:comment	"The first day on which a contract is available for trading."@en ;
+	rdfs:label	"first trade date"@en ;
+	rdfs:range	xsd:date .
+
+xqo:last-trade
+	a	owl:DatatypeProperty ;
+	rdfs:comment	"The final day on which a contract "@en ;
+	rdfs:label	"last trade trade"@en ;
+	rdfs:range	xsd:date .
+
+xqo:first-delivery
+	a	owl:DatatypeProperty ;
+	rdfs:comment	""@en ;
+	rdfs:domain	xqo:ContractSpecs ;
+	rdfs:label	"first delivery date"@en ;
+	rdfs:range	xsd:date .
+
+xqo:last-delivery
+	a	owl:DatatypeProperty ;
+	rdfs:comment	""@en ;
+	rdfs:domain	xqo:ContractSpecs ;
+	rdfs:label	"last delivery date"@en ;
+	rdfs:range	xsd:date .
+
+xqo:final-settlement
+	a	owl:DatatypeProperty ;
+	rdfs:comment	""@en ;
+	rdfs:domain	xqo:ContractSpecs ;
+	rdfs:label	"final settlement date"@en ;
+	rdfs:range	xsd:date .
+
 
 #################################################################
 # Examples
 #################################################################
 
+#<http://example.com/cme/CLZ2>
+#	a	fibo-fbc-fi-fi:Future ;
+#	rdfs:label	"CLZ2" ;
+#	xqo:discriminator	"Z2" ;
+#	xqo:ordinal	"2022-12"^^xsd:gYearMonth .
+#
+#<http://example.com/cme/CLTZ2>
+#	a	xqo:TASVariant ;
+#	rdfs:label	"CLTZ2" ;
+#	xqo:discriminator	"Z2" ;
+#	xqo:ordinal	"2022-12"^^xsd:gYearMonth ;
+#	xqo:variantOf	<http://example.com/cme/CLZ2> .
+#
+#<http://example.com/cme/CLmmZ2>
+#	rdfs:label	"CLTZ2" ;
+#	xqo:executedVia	xqo:TAMM ;
+#	xqo:discriminator	"Z2" ;
+#	xqo:ordinal	"2022-12"^^xsd:gYearMonth ;
+#	xqo:variantOf	<http://example.com/cme/CLZ2> .
+
+xqo:CME_TAMM
+	a	xqo:TAMM .
+
+#<http://example.com/cme/DAmmZ2>
+#	rdfs:label	"DAmmZ2" ;
+#	xqo:executedVia	xqo:CME_TAMM ;
+#	xqo:discriminator	"Z2" ;
+#	xqo:ordinal	"2022-12"^^xsd:gYearMonth ;
+#	xqo:variantOf	<http://example.com/cme/CLZ2> .
+#
+#<http://example.com/cme/DAmmH3>
+#	a	xqo:OperationalVariant ;
+#	rdfs:label	"DAmmH3" ;
+#	xqo:executedVia	xqo:CME_TAMM ;
+#	xqo:discriminator	"H3" ;
+#	xqo:ordinal	"2023-03"^^xsd:gYearMonth ;
+#	xqo:variantOf	<http://example.com/cme/CLZ2> .
+#
+#<http://example.com/cme/DAmmM3>
+#	a	xqo:OperationalVariant ;
+#	a	xqo:TAMMVariant ;
+#	rdfs:label	"DAmmM3" ;
+#	xqo:discriminator	"M3" ;
+#	xqo:ordinal	"2023-06"^^xsd:gYearMonth ;
+#	xqo:variantOf	<http://example.com/cme/CLZ2> .
