@@ -298,6 +298,17 @@ xqo:StripSpecs
 	rdfs:label	"strip specs"@en ;
 	rdfs:subClassOf	xqo:ComboSpecs .
 
+xqo:SpreadSpecs
+	a	owl:Class ;
+	owl:equivalentClass	[
+		a	owl:Restriction ;
+		owl:onProperty	xqo:strip-length ;
+		owl:minCardinality	"1"^^xsd:nonNegativeInteger ;
+	] ;
+	rdfs:comment	"Exchange-specific, instantiation-neutral description of futures spreads."@en ;
+	rdfs:label	"spread specs"@en ;
+	rdfs:subClassOf	xqo:ComboSpecs .
+
 ## supporting roles
 
 xqo:FrontMonth
@@ -350,7 +361,7 @@ xqo:FuturesSpread
 		owl:onProperty	xqo:specifiedBy ;
 		owl:someValuesFrom	xqo:SpreadSpecs ;
 	] ;
-	rdfs:comment	"Futures combo that ...."@en ;
+	rdfs:comment	"Futures combo that simultaneously buys and sells different outrights."@en ;
 	rdfs:label	"futures spread"@en ;
 	rdfs:subClassOf	xqo:FuturesCombo .
 
@@ -471,6 +482,13 @@ xqo:stripOf
 	rdfs:comment	"Relates a futures strip specification to the contract specs that it is made up of."@en ;
 	rdfs:domain	xqo:StripSpecs ;
 	rdfs:label	"strip of"@en ;
+	rdfs:range	xqo:ContractSpecs .
+
+xqo:spreadOf
+	a	owl:ObjectProperty ;
+	rdfs:comment	"Relates a futures spread specification to the contract specs of its legs."@en ;
+	rdfs:domain	xqo:SpreadSpecs ;
+	rdfs:label	"spread of"@en ;
 	rdfs:range	xqo:ContractSpecs .
 
 
@@ -597,52 +615,66 @@ xqo:strip-length
 
 xqo:first-notice
 	a	owl:DatatypeProperty ;
-	rdfs:comment	"The first day on which traders are notified of their obligation to deliver or take delivery."@en ;
+	rdfs:comment	"First day on which buyers are notified of their obligation take delivery."@en ;
+	rdfs:domain	fibo-fbc-fi-fi:Future ;
 	rdfs:label	"first notice date"@en ;
+	rdfs:range	xsd:date .
+
+xqo:last-notice
+	a	owl:DatatypeProperty ;
+	rdfs:comment	"Final day on which buyers are notified of their obligation take delivery."@en ;
+	rdfs:domain	fibo-fbc-fi-fi:Future ;
+	rdfs:label	"last notice date"@en ;
 	rdfs:range	xsd:date .
 
 xqo:first-intent
 	a	owl:DatatypeProperty ;
-	rdfs:comment	"The first day on which traders are notified of their obligation to deliver or take delivery."@en ;
-	rdfs:label	"first notice date"@en ;
-	rdfs:range	xsd:date .
+	rdfs:comment	"First day on which sellers can express their intent to deliver."@en ;
+	rdfs:domain	fibo-fbc-fi-fi:Future ;
+	rdfs:label	"first intent date"@en ;
+	rdfs:range	xsd:date ;
+	skos:altLabel	"first position date"@en .
 
 xqo:last-intent
 	a	owl:DatatypeProperty ;
-	rdfs:comment	"The first day on which traders are notified of their obligation to deliver or take delivery."@en ;
-	rdfs:label	"first notice date"@en ;
-	rdfs:range	xsd:date .
+	rdfs:comment	"Final day on which sellers can express their intent or modify a previously expressed intent to deliver."@en ;
+	rdfs:domain	fibo-fbc-fi-fi:Future ;
+	rdfs:label	"last intent date"@en ;
+	rdfs:range	xsd:date ;
+	skos:altLabel	"last position date"@en .
 
 xqo:first-trade
 	a	owl:DatatypeProperty ;
-	rdfs:comment	"The first day on which a contract is available for trading."@en ;
+	rdfs:comment	"First day on which a contract is available for trading."@en ;
+	rdfs:domain	fibo-fbc-fi-fi:Future ;
 	rdfs:label	"first trade date"@en ;
 	rdfs:range	xsd:date .
 
 xqo:last-trade
 	a	owl:DatatypeProperty ;
-	rdfs:comment	"The final day on which a contract "@en ;
+	rdfs:comment	"Final day on which a contract is available for trading."@en ;
+	rdfs:domain	fibo-fbc-fi-fi:Future ;
 	rdfs:label	"last trade trade"@en ;
 	rdfs:range	xsd:date .
 
 xqo:first-delivery
 	a	owl:DatatypeProperty ;
-	rdfs:comment	""@en ;
-	rdfs:domain	xqo:ContractSpecs ;
+	rdfs:comment	"First day on which to take or make a delivery."@en ;
+	rdfs:domain	fibo-fbc-fi-fi:Future ;
 	rdfs:label	"first delivery date"@en ;
 	rdfs:range	xsd:date .
 
 xqo:last-delivery
 	a	owl:DatatypeProperty ;
-	rdfs:comment	""@en ;
-	rdfs:domain	xqo:ContractSpecs ;
+	rdfs:comment	"Final day on which to take or make a delivery."@en ;
+	rdfs:domain	fibo-fbc-fi-fi:Future ;
 	rdfs:label	"last delivery date"@en ;
 	rdfs:range	xsd:date .
 
 xqo:final-settlement
 	a	owl:DatatypeProperty ;
-	rdfs:comment	""@en ;
-	rdfs:domain	xqo:ContractSpecs ;
+	rdfs:comment	"Date on which all obligations are finally fulfilled and cash or securities are exchanged."@en ;
+	rdfs:domain	fibo-fbc-fi-fi:Future ;
 	rdfs:label	"final settlement date"@en ;
 	rdfs:range	xsd:date .
 

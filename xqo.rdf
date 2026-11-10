@@ -156,7 +156,7 @@ The project's canonical home is &lt;http://schema.ga-group.nl/xqo/&gt;.
     </owl:equivalentClass>
   </owl:Class>
   <owl:Class rdf:about="http://schema.ga-group.nl/xqo/FuturesSpread">
-    <rdfs:comment xml:lang="en">Futures combo that ....</rdfs:comment>
+    <rdfs:comment xml:lang="en">Futures combo that simultaneously buys and sells different outrights.</rdfs:comment>
     <rdfs:label xml:lang="en">futures spread</rdfs:label>
     <rdfs:subClassOf rdf:resource="http://schema.ga-group.nl/xqo/FuturesCombo"/>
     <owl:equivalentClass>
@@ -202,6 +202,17 @@ The project's canonical home is &lt;http://schema.ga-group.nl/xqo/&gt;.
   </owl:Class>
   <owl:Class rdf:about="http://schema.ga-group.nl/xqo/ShortDated">
     <rdfs:subClassOf rdf:resource="http://purl.org/nemo/gufo#Role"/>
+  </owl:Class>
+  <owl:Class rdf:about="http://schema.ga-group.nl/xqo/SpreadSpecs">
+    <rdfs:comment xml:lang="en">Exchange-specific, instantiation-neutral description of futures spreads.</rdfs:comment>
+    <rdfs:label xml:lang="en">spread specs</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://schema.ga-group.nl/xqo/ComboSpecs"/>
+    <owl:equivalentClass>
+      <owl:Restriction>
+        <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minCardinality>
+        <owl:onProperty rdf:resource="http://schema.ga-group.nl/xqo/strip-length"/>
+      </owl:Restriction>
+    </owl:equivalentClass>
   </owl:Class>
   <owl:Class rdf:about="http://schema.ga-group.nl/xqo/StripSpecs">
     <rdfs:comment xml:lang="en">Exchange-specific, instantiation-neutral description of futures strips.</rdfs:comment>
@@ -393,45 +404,58 @@ beginning or the end of daylight saving.</skos:editorialNote>
     <rdfs:range rdf:resource="http://schema.ga-group.nl/xqo/ExecutionModality"/>
   </owl:ObjectProperty>
   <owl:DatatypeProperty rdf:about="http://schema.ga-group.nl/xqo/final-settlement">
-    <rdfs:comment xml:lang="en"></rdfs:comment>
-    <rdfs:domain rdf:resource="http://schema.ga-group.nl/xqo/ContractSpecs"/>
+    <rdfs:comment xml:lang="en">Date on which all obligations are finally fulfilled and cash or securities are exchanged.</rdfs:comment>
+    <rdfs:domain rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/Future"/>
     <rdfs:label xml:lang="en">final settlement date</rdfs:label>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="http://schema.ga-group.nl/xqo/first-delivery">
-    <rdfs:comment xml:lang="en"></rdfs:comment>
-    <rdfs:domain rdf:resource="http://schema.ga-group.nl/xqo/ContractSpecs"/>
+    <rdfs:comment xml:lang="en">First day on which to take or make a delivery.</rdfs:comment>
+    <rdfs:domain rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/Future"/>
     <rdfs:label xml:lang="en">first delivery date</rdfs:label>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="http://schema.ga-group.nl/xqo/first-intent">
-    <rdfs:comment xml:lang="en">The first day on which traders are notified of their obligation to deliver or take delivery.</rdfs:comment>
-    <rdfs:label xml:lang="en">first notice date</rdfs:label>
+    <rdfs:comment xml:lang="en">First day on which sellers can express their intent to deliver.</rdfs:comment>
+    <rdfs:domain rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/Future"/>
+    <rdfs:label xml:lang="en">first intent date</rdfs:label>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
+    <skos:altLabel xml:lang="en">first position date</skos:altLabel>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="http://schema.ga-group.nl/xqo/first-notice">
-    <rdfs:comment xml:lang="en">The first day on which traders are notified of their obligation to deliver or take delivery.</rdfs:comment>
+    <rdfs:comment xml:lang="en">First day on which buyers are notified of their obligation take delivery.</rdfs:comment>
+    <rdfs:domain rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/Future"/>
     <rdfs:label xml:lang="en">first notice date</rdfs:label>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="http://schema.ga-group.nl/xqo/first-trade">
-    <rdfs:comment xml:lang="en">The first day on which a contract is available for trading.</rdfs:comment>
+    <rdfs:comment xml:lang="en">First day on which a contract is available for trading.</rdfs:comment>
+    <rdfs:domain rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/Future"/>
     <rdfs:label xml:lang="en">first trade date</rdfs:label>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="http://schema.ga-group.nl/xqo/last-delivery">
-    <rdfs:comment xml:lang="en"></rdfs:comment>
-    <rdfs:domain rdf:resource="http://schema.ga-group.nl/xqo/ContractSpecs"/>
+    <rdfs:comment xml:lang="en">Final day on which to take or make a delivery.</rdfs:comment>
+    <rdfs:domain rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/Future"/>
     <rdfs:label xml:lang="en">last delivery date</rdfs:label>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="http://schema.ga-group.nl/xqo/last-intent">
-    <rdfs:comment xml:lang="en">The first day on which traders are notified of their obligation to deliver or take delivery.</rdfs:comment>
-    <rdfs:label xml:lang="en">first notice date</rdfs:label>
+    <rdfs:comment xml:lang="en">Final day on which sellers can express their intent or modify a previously expressed intent to deliver.</rdfs:comment>
+    <rdfs:domain rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/Future"/>
+    <rdfs:label xml:lang="en">last intent date</rdfs:label>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
+    <skos:altLabel xml:lang="en">last position date</skos:altLabel>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://schema.ga-group.nl/xqo/last-notice">
+    <rdfs:comment xml:lang="en">Final day on which buyers are notified of their obligation take delivery.</rdfs:comment>
+    <rdfs:domain rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/Future"/>
+    <rdfs:label xml:lang="en">last notice date</rdfs:label>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="http://schema.ga-group.nl/xqo/last-trade">
-    <rdfs:comment xml:lang="en">The final day on which a contract </rdfs:comment>
+    <rdfs:comment xml:lang="en">Final day on which a contract is available for trading.</rdfs:comment>
+    <rdfs:domain rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/Future"/>
     <rdfs:label xml:lang="en">last trade trade</rdfs:label>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
   </owl:DatatypeProperty>
@@ -478,6 +502,12 @@ The exchange discriminator can be captured by xqo:discriminator.</skos:scopeNote
     <rdfs:label xml:lang="en">specified by</rdfs:label>
     <rdfs:range rdf:resource="http://schema.ga-group.nl/xqo/ContractSpecs"/>
     <owl:inverseOf rdf:resource="http://purl.org/nemo/gufo#describes"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://schema.ga-group.nl/xqo/spreadOf">
+    <rdfs:comment xml:lang="en">Relates a futures spread specification to the contract specs of its legs.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://schema.ga-group.nl/xqo/SpreadSpecs"/>
+    <rdfs:label xml:lang="en">spread of</rdfs:label>
+    <rdfs:range rdf:resource="http://schema.ga-group.nl/xqo/ContractSpecs"/>
   </owl:ObjectProperty>
   <owl:DatatypeProperty rdf:about="http://schema.ga-group.nl/xqo/strip-length">
     <rdfs:comment xml:lang="en">Number of consecutive contracts that make up a strip.</rdfs:comment>
