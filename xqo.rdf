@@ -207,23 +207,11 @@ The project's canonical home is &lt;http://schema.ga-group.nl/xqo/&gt;.
     <rdfs:comment xml:lang="en">Exchange-specific, instantiation-neutral description of futures spreads.</rdfs:comment>
     <rdfs:label xml:lang="en">spread specs</rdfs:label>
     <rdfs:subClassOf rdf:resource="http://schema.ga-group.nl/xqo/ComboSpecs"/>
-    <owl:equivalentClass>
-      <owl:Restriction>
-        <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minCardinality>
-        <owl:onProperty rdf:resource="http://schema.ga-group.nl/xqo/strip-length"/>
-      </owl:Restriction>
-    </owl:equivalentClass>
   </owl:Class>
   <owl:Class rdf:about="http://schema.ga-group.nl/xqo/StripSpecs">
     <rdfs:comment xml:lang="en">Exchange-specific, instantiation-neutral description of futures strips.</rdfs:comment>
     <rdfs:label xml:lang="en">strip specs</rdfs:label>
     <rdfs:subClassOf rdf:resource="http://schema.ga-group.nl/xqo/ComboSpecs"/>
-    <owl:equivalentClass>
-      <owl:Restriction>
-        <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minCardinality>
-        <owl:onProperty rdf:resource="http://schema.ga-group.nl/xqo/strip-length"/>
-      </owl:Restriction>
-    </owl:equivalentClass>
   </owl:Class>
   <owl:Class rdf:about="http://schema.ga-group.nl/xqo/TACO">
     <rdf:type rdf:resource="http://schema.ga-group.nl/xqo/ExecutionModality"/>

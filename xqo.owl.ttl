@@ -289,22 +289,12 @@ xqo:ComboSpecs
 
 xqo:StripSpecs
 	a	owl:Class ;
-	owl:equivalentClass	[
-		a	owl:Restriction ;
-		owl:onProperty	xqo:strip-length ;
-		owl:minCardinality	"1"^^xsd:nonNegativeInteger ;
-	] ;
 	rdfs:comment	"Exchange-specific, instantiation-neutral description of futures strips."@en ;
 	rdfs:label	"strip specs"@en ;
 	rdfs:subClassOf	xqo:ComboSpecs .
 
 xqo:SpreadSpecs
 	a	owl:Class ;
-	owl:equivalentClass	[
-		a	owl:Restriction ;
-		owl:onProperty	xqo:strip-length ;
-		owl:minCardinality	"1"^^xsd:nonNegativeInteger ;
-	] ;
 	rdfs:comment	"Exchange-specific, instantiation-neutral description of futures spreads."@en ;
 	rdfs:label	"spread specs"@en ;
 	rdfs:subClassOf	xqo:ComboSpecs .
