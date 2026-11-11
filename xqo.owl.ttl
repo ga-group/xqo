@@ -616,6 +616,24 @@ xqo:contract-months
 	rdfs:label	"contract months"@en ;
 	rdfs:range	rdfs:Literal .
 
+xqo:listed-from
+	a	owl:DatatypeProperty ;
+	rdfs:comment	"Date on which instantiations of the contract specs become available (again)."@en ;
+	rdfs:domain	xqo:ContractSpecs ;
+	rdfs:label	"listed from"@en ;
+	rdfs:range	xsd:date ;
+	rdfs:subPropertyOf	tempo:validFrom .
+
+xqo:listed-till
+	a	owl:DatatypeProperty ;
+	rdfs:comment	"Date on which no instantiations of the contract specs are available anymore."@en ;
+	rdfs:domain	xqo:ContractSpecs ;
+	rdfs:label	"listed till"@en ;
+	rdfs:range	xsd:date ;
+	rdfs:subPropertyOf	tempo:validTill .
+
+## combos
+
 xqo:strip-length
 	a	owl:DatatypeProperty ;
 	rdfs:comment	"Number of consecutive contracts that make up a strip."@en ;

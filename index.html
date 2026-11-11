@@ -1309,6 +1309,18 @@ contains the published ontology.</p>
                       <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
                     </span>
                   </li>
+                  <li>
+                    <span>
+                      <a href="#listed-from">listed from</a>
+                      <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
+                    </span>
+                  </li>
+                  <li>
+                    <span>
+                      <a href="#listed-till">listed till</a>
+                      <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
+                    </span>
+                  </li>
                 </ul>
               </td>
             </tr>
@@ -2634,6 +2646,98 @@ datatype or an ISO 8601 notation, use raw strings in those cases
             </tr>
           </table>
         </div>
+        <div class="property entity" id="listed-from">
+          <h3>listed from
+            <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>http://schema.ga-group.nl/xqo/listed-from</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
+              </th>
+              <td><p>Date on which instantiations of the contract specs become available (again).</p></td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#subPropertyOf" title="The subject is a subproperty of a property. Defined in The RDF Schema vocabulary (RDFS)">Sub Property Of</a>
+              </th>
+              <td>
+                <a href="http://purl.org/tempo/validFrom">tempo:validFrom</a>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
+              </th>
+              <td>
+                <span>
+                  <a href="#contractspecs">contract specs</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
+              </th>
+              <td>
+                <a href="http://www.w3.org/2001/XMLSchema#date">xsd:date</a>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="listed-till">
+          <h3>listed till
+            <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>http://schema.ga-group.nl/xqo/listed-till</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
+              </th>
+              <td><p>Date on which no instantiations of the contract specs are available anymore.</p></td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#subPropertyOf" title="The subject is a subproperty of a property. Defined in The RDF Schema vocabulary (RDFS)">Sub Property Of</a>
+              </th>
+              <td>
+                <a href="http://purl.org/tempo/validTill">tempo:validTill</a>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
+              </th>
+              <td>
+                <span>
+                  <a href="#contractspecs">contract specs</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
+              </th>
+              <td>
+                <a href="http://www.w3.org/2001/XMLSchema#date">xsd:date</a>
+              </td>
+            </tr>
+          </table>
+        </div>
         <div class="property entity" id="strip-length">
           <h3>strip length
             <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
@@ -3073,6 +3177,10 @@ datatype or an ISO 8601 notation, use raw strings in those cases
           <dd>
             <code>http://www.w3.org/2004/02/skos/core#</code>
           </dd>
+          <dt id="tempo">tempo</dt>
+          <dd>
+            <code>http://purl.org/tempo/</code>
+          </dd>
           <dt id="vann">vann</dt>
           <dd>
             <code>http://purl.org/vocab/vann/</code>
@@ -3311,6 +3419,12 @@ datatype or an ISO 8601 notation, use raw strings in those cases
               <a href="#contract-months">contract months</a>
             </li>
             <li>
+              <a href="#listed-from">listed from</a>
+            </li>
+            <li>
+              <a href="#listed-till">listed till</a>
+            </li>
+            <li>
               <a href="#strip-length">strip length</a>
             </li>
             <li>
@@ -3382,6 +3496,9 @@ datatype or an ISO 8601 notation, use raw strings in those cases
             </li>
             <li>
               <a href="#skos">skos</a>
+            </li>
+            <li>
+              <a href="#tempo">tempo</a>
             </li>
             <li>
               <a href="#vann">vann</a>
