@@ -330,7 +330,7 @@ xqo:FuturesCombo
 		owl:someValuesFrom	xqo:ComboSpecs ;
 	] ;
 	rdfs:comment	"Combination of futures contracts that are traded or analysed together as a package."@en ;
-	rdfs:label	"futures strip"@en ;
+	rdfs:label	"futures combo"@en ;
 	rdfs:subClassOf	fibo-fbc-fi-fi:Future .
 
 xqo:FuturesStrip
@@ -366,6 +366,11 @@ xqo:Bundle
 	rdfs:comment	"Standardised bundle of packs, e.g. 2-year bundle equals white pack plus red pack."@en ;
 	rdfs:label	"bundle"@en ;
 	rdfs:subClassOf	xqo:FuturesStrip .
+
+xqo:Leg
+	a	owl:Class ;
+	rdfs:comment	"Leg of a futures combo."@en ;
+	rdfs:label	"leg"@en .
 
 ## individuals?
 
@@ -497,6 +502,23 @@ xqo:executedVia
 	rdfs:domain	xqo:OperationalVariant ;
 	rdfs:label	"executed via"@en ;
 	rdfs:range	xqo:ExecutionModality .
+
+## legs
+
+xqo:leg
+	a	owl:ObjectProperty ;
+	rdfs:comment	"Links a futures combo to its legs."@en ;
+	rdfs:domain	xqo:FuturesCombo ;
+	rdfs:label	"leg"@en ;
+	rdfs:range	xqo:Leg ;
+	rdfs:subPropertyOf	gufo:hasProperPart .
+
+xqo:contract
+	a	owl:ObjectProperty ;
+	rdfs:comment	"Links a leg to the futures contract traded by that leg."@en ;
+	rdfs:domain	xqo:Leg ;
+	rdfs:label	"contract"@en ;
+	rdfs:range	fibo-fbc-fi-fi:Future .
 
 
 #################################################################
@@ -667,6 +689,15 @@ xqo:final-settlement
 	rdfs:domain	fibo-fbc-fi-fi:Future ;
 	rdfs:label	"final settlement date"@en ;
 	rdfs:range	xsd:date .
+
+## legs
+
+xqo:ratio
+	a	owl:DatatypeProperty ;
+	rdfs:comment	"Number of contracts in this leg.  Negative for short position, positive for long position."@en ;
+	rdfs:domain	xqo:Leg ;
+	rdfs:label	"ratio"@en ;
+	rdfs:range	xsd:decimal .
 
 
 #################################################################

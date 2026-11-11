@@ -146,7 +146,7 @@ The project's canonical home is &lt;http://schema.ga-group.nl/xqo/&gt;.
   </owl:Class>
   <owl:Class rdf:about="http://schema.ga-group.nl/xqo/FuturesCombo">
     <rdfs:comment xml:lang="en">Combination of futures contracts that are traded or analysed together as a package.</rdfs:comment>
-    <rdfs:label xml:lang="en">futures strip</rdfs:label>
+    <rdfs:label xml:lang="en">futures combo</rdfs:label>
     <rdfs:subClassOf rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/Future"/>
     <owl:equivalentClass>
       <owl:Restriction>
@@ -176,6 +176,10 @@ The project's canonical home is &lt;http://schema.ga-group.nl/xqo/&gt;.
         <owl:someValuesFrom rdf:resource="http://schema.ga-group.nl/xqo/StripSpecs"/>
       </owl:Restriction>
     </owl:equivalentClass>
+  </owl:Class>
+  <owl:Class rdf:about="http://schema.ga-group.nl/xqo/Leg">
+    <rdfs:comment xml:lang="en">Leg of a futures combo.</rdfs:comment>
+    <rdfs:label xml:lang="en">leg</rdfs:label>
   </owl:Class>
   <owl:Class rdf:about="http://schema.ga-group.nl/xqo/OperationalVariant">
     <rdfs:comment xml:lang="en">A variant of a futures contract that inherits all of the economic attributes of the bare contract and only differs in operational ways.</rdfs:comment>
@@ -353,6 +357,12 @@ If one needs to uphold the uniqueness of base contract and marker type, or disti
     <rdfs:label xml:lang="en">composed of</rdfs:label>
     <owl:inverseOf rdf:resource="http://schema.ga-group.nl/xqo/componentOf"/>
   </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://schema.ga-group.nl/xqo/contract">
+    <rdfs:comment xml:lang="en">Links a leg to the futures contract traded by that leg.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://schema.ga-group.nl/xqo/Leg"/>
+    <rdfs:label xml:lang="en">contract</rdfs:label>
+    <rdfs:range rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/Future"/>
+  </owl:ObjectProperty>
   <owl:DatatypeProperty rdf:about="http://schema.ga-group.nl/xqo/contract-months">
     <rdfs:comment xml:lang="en">Indicator of concurrently active contracts in truffle syntax.</rdfs:comment>
     <rdfs:domain rdf:resource="http://schema.ga-group.nl/xqo/ContractSpecs"/>
@@ -447,6 +457,13 @@ beginning or the end of daylight saving.</skos:editorialNote>
     <rdfs:label xml:lang="en">last trade trade</rdfs:label>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
   </owl:DatatypeProperty>
+  <owl:ObjectProperty rdf:about="http://schema.ga-group.nl/xqo/leg">
+    <rdfs:comment xml:lang="en">Links a futures combo to its legs.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://schema.ga-group.nl/xqo/FuturesCombo"/>
+    <rdfs:label xml:lang="en">leg</rdfs:label>
+    <rdfs:range rdf:resource="http://schema.ga-group.nl/xqo/Leg"/>
+    <rdfs:subPropertyOf rdf:resource="http://purl.org/nemo/gufo#hasProperPart"/>
+  </owl:ObjectProperty>
   <owl:DatatypeProperty rdf:about="http://schema.ga-group.nl/xqo/ordinal">
     <rdfs:comment xml:lang="en">Relates a futures contract to its ordinal value, implying an ordering and adjacency.</rdfs:comment>
     <rdfs:label xml:lang="en">ordinal</rdfs:label>
@@ -484,6 +501,12 @@ The exchange discriminator can be captured by xqo:discriminator.</skos:scopeNote
     <rdfs:seeAlso rdf:resource="http://schema.ga-group.nl/xqo/point-value"/>
     <owl:deprecated rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</owl:deprecated>
   </owl:ObjectProperty>
+  <owl:DatatypeProperty rdf:about="http://schema.ga-group.nl/xqo/ratio">
+    <rdfs:comment xml:lang="en">Number of contracts in this leg.  Negative for short position, positive for long position.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://schema.ga-group.nl/xqo/Leg"/>
+    <rdfs:label xml:lang="en">ratio</rdfs:label>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  </owl:DatatypeProperty>
   <owl:ObjectProperty rdf:about="http://schema.ga-group.nl/xqo/specifiedBy">
     <rdfs:comment xml:lang="en">Links a futures contract to its contract specifications.</rdfs:comment>
     <rdfs:domain rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/Future"/>
